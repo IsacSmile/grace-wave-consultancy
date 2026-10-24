@@ -143,16 +143,19 @@ export function EnquiryForm() {
   };
 
   return (
-    <div className="w-full max-w-xl rounded-3xl bg-[#071328] border-2 border-white p-6 sm:p-8 md:p-9 shadow-2xl relative">
-      {/* Card Header Bar */}
-      <div className="flex items-center justify-between pb-4 mb-5 border-b border-white/10">
-        <h3 className="font-heading font-bold text-xl sm:text-2xl text-white tracking-tight">
+    <div className="w-full max-w-xl rounded-3xl bg-white p-2.5 sm:p-3 shadow-2xl shadow-navy-950/60">
+      {/* Card Header Bar (Taller Top Border) */}
+      <div className="py-4 sm:py-5 px-4 sm:px-6 flex items-center justify-between">
+        <h3 className="font-heading font-bold text-lg sm:text-xl text-navy-950 tracking-tight">
           {siteConfig.contact.cardTitle}
         </h3>
-        <div className="w-9 h-9 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white shrink-0">
+        <div className="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm">
           <Send className="w-4 h-4 transform rotate-12" />
         </div>
       </div>
+
+      {/* Inner Panel */}
+      <div className="bg-[#071328] rounded-2xl p-5 sm:p-7 md:p-8 border border-white/10">
         
         {/* Success Confirmation State */}
         {submitSuccess ? (
@@ -394,6 +397,7 @@ export function EnquiryForm() {
             </form>
           </>
         )}
+      </div>
     </div>
   );
 }
