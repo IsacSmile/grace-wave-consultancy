@@ -129,9 +129,9 @@ export function About() {
       id="about"
       ref={sectionRef}
       aria-labelledby="about-heading"
-      className="relative w-full bg-[#F8FAFF] py-16 md:py-24 border-b border-slate-200/80 overflow-hidden"
+      className="relative w-full bg-white py-20 md:py-28 lg:py-32 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 xl:gap-16 items-stretch">
           
           {/* ================= COLUMN 1: IMAGE BLOCK (MOBILE FIRST, EQUAL HEIGHT ON LG) ================= */}
@@ -218,24 +218,30 @@ export function About() {
             ref={textContentRef}
             className="lg:col-span-6 xl:col-span-6 flex flex-col justify-center h-full py-1 lg:py-2 text-left relative z-10"
           >
+            {/* 0. Subtle Gold Accent Bar */}
+            <div
+              className="about-reveal-el w-12 h-0.5 bg-[#C5A059] rounded-full mb-5 md:mb-6"
+              aria-hidden="true"
+            />
+
             {/* 1. Small Uppercase Badge Pill */}
-            <div className="about-reveal-el mb-4">
-              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-teal-50 border border-teal-200/90 text-teal-800 text-xs font-bold tracking-wider uppercase">
+            <div className="about-reveal-el mb-5 md:mb-6">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-teal-50 border border-teal-200/90 text-[#0B1B4D] text-xs font-semibold uppercase tracking-[0.14em] shadow-xs">
                 <Sparkles className="w-3.5 h-3.5 text-teal-600" />
                 <span>{aboutData.badge}</span>
               </span>
             </div>
 
-            {/* 2. H2 Heading (Bold Navy, Clean 2 Lines) */}
+            {/* 2. H2 Heading (Bold Navy, Balanced Line Wrapping) */}
             <h2
               id="about-heading"
-              className="about-reveal-el font-heading font-extrabold text-2xl sm:text-3xl lg:text-4xl xl:text-[2.65rem] text-[#0B1B4D] tracking-tight leading-snug lg:leading-[1.28] mb-4 max-w-lg"
+              className="about-reveal-el font-heading font-bold text-3xl sm:text-4xl lg:text-5xl xl:text-[3.25rem] text-[#0B1B4D] tracking-tight leading-[1.15] text-balance mb-5 md:mb-6 max-w-xl"
             >
               {aboutData.heading}
             </h2>
 
             {/* 3. Concise Supporting Paragraph */}
-            <p className="about-reveal-el text-sm sm:text-base text-slate-500 font-normal leading-relaxed max-w-lg mb-6">
+            <p className="about-reveal-el text-base md:text-lg text-slate-600 font-normal leading-[1.7] max-w-xl text-pretty mb-6">
               {aboutData.paragraph}
             </p>
 

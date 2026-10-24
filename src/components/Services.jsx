@@ -6,6 +6,7 @@ import { siteConfig } from '../data/siteConfig';
 import { servicesData } from '../data/services';
 import { ServiceRow } from './ServiceRow';
 import { ServiceCursorPreview } from './ServiceCursorPreview';
+import { SectionHeading } from './SectionHeading';
 import { useHoverCapable } from '../hooks/useHoverCapable';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { useLenis } from './SmoothScroll';
@@ -27,7 +28,6 @@ export function Services() {
   const { scrollTo } = useLenis();
 
   const sectionRef = useRef(null);
-  const headerRef = useRef(null);
   const listRef = useRef(null);
 
   // First row (01 Accounting & Bookkeeping) open by default as requested
@@ -42,33 +42,12 @@ export function Services() {
   const [focusedElement, setFocusedElement] = useState(null);
 
 
-  // Scroll animations with GSAP ScrollTrigger
+  // Scroll animations with GSAP ScrollTrigger for service rows
   useEffect(() => {
     if (prefersReducedMotion) return;
 
     const ctx = gsap.context(() => {
-      // 1. Header fade up with stagger 0.1s
-      if (headerRef.current) {
-        const headerElements = headerRef.current.children;
-        gsap.fromTo(
-          headerElements,
-          { opacity: 0, y: 24 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            stagger: 0.1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: headerRef.current,
-              start: 'top 85%',
-              once: true,
-            },
-          }
-        );
-      }
-
-      // 2. Rows fade up (translateY 30px) with stagger 0.12s, start 'top 80%', once: true
+      // Rows fade up (translateY 30px) with stagger 0.12s, start 'top 80%', once: true
       if (listRef.current) {
         const rowElements = listRef.current.children;
         gsap.fromTo(
@@ -144,7 +123,7 @@ export function Services() {
       id="services"
       ref={sectionRef}
       aria-labelledby="services-title"
-      className="relative py-20 md:py-28 lg:py-32 bg-[#F8FAFF] text-slate-800 border-b border-slate-200/80 overflow-hidden"
+      className="relative py-20 md:py-28 lg:py-32 bg-[#F8FAFF] text-slate-800 overflow-hidden"
     >
       {/* Background Soft Ambient Light */}
       <div
@@ -156,25 +135,14 @@ export function Services() {
         aria-hidden="true"
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
         {/* ================= SECTION HEADER ================= */}
-        <div ref={headerRef} className="text-center max-w-3xl mx-auto mb-14 md:mb-20">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200/90 text-blue-900 text-xs sm:text-sm font-semibold tracking-wide uppercase mb-3 shadow-xs">
-            <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-            <span>{siteConfig.services.sectionBadge}</span>
-          </div>
-
-          <h2
-            id="services-title"
-            className="font-heading font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[#0B1B4D] tracking-tight leading-tight mb-4"
-          >
-            {siteConfig.services.title}
-          </h2>
-
-          <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
-            {siteConfig.services.subtitle}
-          </p>
-        </div>
+        <SectionHeading
+          badge={siteConfig.services.sectionBadge}
+          title={siteConfig.services.title}
+          subtitle={siteConfig.services.subtitle}
+          id="services-title"
+        />
 
         {/* ================= EDITORIAL SERVICE ROWS ================= */}
         <div className="relative">

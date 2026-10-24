@@ -87,7 +87,7 @@ export function Contact() {
       id="contact"
       ref={sectionRef}
       aria-labelledby="contact-heading"
-      className="relative w-full min-h-[100vh] lg:min-h-[100svh] flex items-center py-16 md:py-24 bg-[#060E18] text-white overflow-hidden"
+      className="relative w-full min-h-[100vh] lg:min-h-[100svh] flex items-center py-20 md:py-28 lg:py-32 bg-[#060E18] text-white overflow-hidden"
     >
       {/* Full-Bleed Background Photo & Gradient Wrapper (z-0, never drops behind body) */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -113,7 +113,7 @@ export function Contact() {
       </div>
 
       {/* Main Centered Container */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10">
+      <div className="relative max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 w-full z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
           {/* ================= LEFT CONTENT BLOCK (CLEAN & EDITORIAL) ================= */}
@@ -121,18 +121,24 @@ export function Contact() {
             ref={leftContentRef}
             className="lg:col-span-6 flex flex-col justify-center text-left space-y-7"
           >
+            {/* 0. Subtle Gold Accent Bar */}
+            <div
+              className="contact-reveal-el w-12 h-0.5 bg-[#C5A059] rounded-full mb-5 md:mb-6"
+              aria-hidden="true"
+            />
+
             {/* 1. Small Pill Badge */}
-            <div className="contact-reveal-el">
-              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-teal-300 text-xs sm:text-sm font-semibold tracking-wide backdrop-blur-sm shadow-sm">
-                <Sparkles className="w-3.5 h-3.5 text-teal-400" />
+            <div className="contact-reveal-el mb-5 md:mb-6">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-gold-400 text-xs font-semibold uppercase tracking-[0.14em] backdrop-blur-xs shadow-xs">
+                <Sparkles className="w-3.5 h-3.5 text-gold-400" />
                 <span>{siteConfig.contact.sectionBadge}</span>
               </span>
             </div>
 
-            {/* 2. Bold 2-Line H2 Heading */}
+            {/* 2. Bold H2 Heading */}
             <h2
               id="contact-heading"
-              className="contact-reveal-el font-heading font-black text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-[1.14]"
+              className="contact-reveal-el font-heading font-bold text-3xl sm:text-4xl lg:text-5xl xl:text-[3.25rem] text-white tracking-tight leading-[1.15] text-balance"
             >
               {siteConfig.contact.heading}
             </h2>

@@ -2,6 +2,7 @@ import React from 'react';
 import { FileCheck, BadgeDollarSign, Clock, Lock, ArrowRight, ShieldCheck } from 'lucide-react';
 import { siteConfig } from '../data/siteConfig';
 import { Reveal } from './Reveal';
+import { SectionHeading } from './SectionHeading';
 import { useLenis } from './SmoothScroll';
 
 const iconMap = {
@@ -20,31 +21,20 @@ export function WhyChooseUs() {
   };
 
   return (
-    <section id="why-choose-us" className="py-20 md:py-28 bg-navy-950 text-white relative overflow-hidden">
+    <section id="why-choose-us" className="py-20 md:py-28 lg:py-32 bg-navy-950 text-white relative overflow-hidden">
       {/* Background Subtle Gradient Glow */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-navy-800/30 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-gold-500/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <Reveal>
-            <span className="inline-block px-3.5 py-1 rounded-full bg-navy-800 text-gold-400 text-xs sm:text-sm font-semibold tracking-wide uppercase mb-3 border border-gold-500/30">
-              {siteConfig.whyChooseUs.sectionBadge}
-            </span>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <h2 className="font-heading font-bold text-2xl sm:text-3xl md:text-4xl text-white tracking-tight leading-tight mb-4">
-              {siteConfig.whyChooseUs.title}
-            </h2>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <p className="text-base sm:text-lg text-slate-300 leading-relaxed">
-              {siteConfig.whyChooseUs.subtitle}
-            </p>
-          </Reveal>
-        </div>
+        <SectionHeading
+          badge={siteConfig.whyChooseUs.sectionBadge}
+          title={siteConfig.whyChooseUs.title}
+          subtitle={siteConfig.whyChooseUs.subtitle}
+          tone="dark"
+        />
 
         {/* 4 Pillars Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">

@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MessageSquare, PhoneCall, FileText, CheckCircle2, ArrowRight } from 'lucide-react';
 import { siteConfig } from '../data/siteConfig';
 import { Reveal } from './Reveal';
+import { SectionHeading } from './SectionHeading';
 import { useLenis } from './SmoothScroll';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 
@@ -55,28 +56,16 @@ export function Process() {
     <section
       id="process"
       ref={processSectionRef}
-      className="py-20 md:py-28 bg-white text-slate-800 border-b border-slate-200 relative overflow-hidden"
+      className="py-20 md:py-28 lg:py-32 bg-white text-slate-800 relative overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
-          <Reveal>
-            <span className="inline-block px-3.5 py-1 rounded-full bg-navy-50 text-navy-800 text-xs sm:text-sm font-semibold tracking-wide uppercase mb-3 border border-navy-100">
-              {siteConfig.process.sectionBadge}
-            </span>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <h2 className="font-heading font-bold text-2xl sm:text-3xl md:text-4xl text-navy-950 tracking-tight leading-tight mb-4">
-              {siteConfig.process.title}
-            </h2>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
-              {siteConfig.process.subtitle}
-            </p>
-          </Reveal>
-        </div>
+        <SectionHeading
+          badge={siteConfig.process.sectionBadge}
+          title={siteConfig.process.title}
+          subtitle={siteConfig.process.subtitle}
+        />
 
         {/* Process Timeline with Scroll-Scrubbed Progress Line */}
         <div className="relative max-w-4xl mx-auto">
