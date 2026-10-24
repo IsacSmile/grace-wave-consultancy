@@ -30,14 +30,8 @@ export function Services() {
   const headerRef = useRef(null);
   const listRef = useRef(null);
 
-  // Mobile / touch devices have first row open by default so users see the image pattern immediately.
-  const [openId, setOpenId] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const isTouch = !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-      if (isTouch) return servicesData[0].id;
-    }
-    return null;
-  });
+  // First row (01 Accounting & Bookkeeping) open by default as requested
+  const [openId, setOpenId] = useState(servicesData[0].id);
 
   // Desktop hover tracking
   const [hoveredIndex, setHoveredIndex] = useState(-1);
