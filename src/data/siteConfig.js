@@ -6,6 +6,7 @@
  */
 
 export const siteConfig = {
+  // PLACEHOLDER: replace email, hours and address with real details before launch.
   business: {
     name: "Grace Way Accounting FZC LLC",
     legalName: "Grace Way Accounting FZC LLC",
@@ -15,11 +16,14 @@ export const siteConfig = {
     phone: "+971569148255",
     phoneDisplay: "+971 56 914 8255",
     phoneTel: "tel:+971569148255",
+    phoneSecondary: "+971505957886",
+    phoneSecondaryDisplay: "+971 50 595 7886",
+    phoneSecondaryTel: "tel:+971505957886",
     whatsappUrl: "https://wa.me/971569148255?text=Hello%20Grace%20Way%20Accounting,%20I%20would%20like%20to%20enquire%20about%20your%20services.",
     email: "info@gracewayaccounting.com", // Placeholder: client can edit
     emailMailto: "mailto:info@gracewayaccounting.com?subject=Service%20Enquiry%20-%20Grace%20Way%20Accounting",
     address: "Sharjah Publishing City Free Zone, Sharjah, United Arab Emirates", // Placeholder: client can edit
-    workingHours: "Monday – Friday: 9:00 AM – 6:00 PM (GST)",
+    workingHours: "Mon–Friday, 09:00 AM – 06:00 PM (GST)",
     statusNote: "Licensed Accounting & Business Advisory Consultancy (UAE)",
   },
 
@@ -285,8 +289,10 @@ export const siteConfig = {
 
   contact: {
     sectionBadge: "Get In Touch",
-    title: "Request a Free Consultation",
-    subtitle: "Have a question about UAE Corporate Tax, VAT, or bookkeeping? Send us an enquiry and our team will respond within 24 hours.",
+    heading: "Turning Challenges into Opportunities",
+    subtitle: "Have a question about UAE Corporate Tax, VAT, or bookkeeping? Send us an enquiry and our team will respond promptly.",
+    cardTitle: "Let's Talk – Free Consultation",
+    cardIntro: "Book your free session with our team and discover solutions crafted for your business.",
     googleMapsEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115409.80392341499!2d55.351283628469935!3d25.321684347781077!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5f082e6d5e1b%3A0x6b7cf4b64e59f400!2sSharjah%20Publishing%20City%20Free%20Zone!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae",
     formServices: [
       { value: "Accounting & Bookkeeping", label: "Accounting & Bookkeeping" },

@@ -1,166 +1,257 @@
-import React from 'react';
-import { Phone, Mail, MapPin, MessageCircle, Clock, ShieldCheck } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Phone, Mail, Clock, MessageCircle, MapPin, Sparkles, Map } from 'lucide-react';
 import { siteConfig } from '../data/siteConfig';
 import { EnquiryForm } from './EnquiryForm';
-import { Reveal } from './Reveal';
+import { useReducedMotion } from '../hooks/useReducedMotion';
+
+import contactBg from '../assets/contact/contact-bg.webp';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export function Contact() {
+  const sectionRef = useRef(null);
+  const bgImgRef = useRef(null);
+  const leftContentRef = useRef(null);
+  const formCardRef = useRef(null);
+  const dividerRef = useRef(null);
+  const [showMap, setShowMap] = useState(false);
+
+  const prefersReducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (prefersReducedMotion || !sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // 1. Desktop Background Parallax
+      if (window.innerWidth >= 1024 && bgImgRef.current) {
+        gsap.fromTo(
+          bgImgRef.current,
+          { yPercent: -5 },
+          {
+            yPercent: 5,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1,
+            },
+          }
+        );
+      }
+
+      // 2. Left Content Elements Stagger Entrance
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 75%',
+          once: true,
+        },
+      });
+
+      if (leftContentRef.current) {
+        const leftElements = leftContentRef.current.querySelectorAll('.contact-reveal-el');
+        tl.fromTo(
+          leftElements,
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 0.7, stagger: 0.1, ease: 'power3.out' }
+        );
+      }
+
+      if (dividerRef.current) {
+        tl.fromTo(
+          dividerRef.current,
+          { scaleX: 0, transformOrigin: 'left center' },
+          { scaleX: 1, duration: 0.6, ease: 'power2.out' },
+          '-=0.5'
+        );
+      }
+
+      // 3. Form Card Entrance
+      if (formCardRef.current) {
+        tl.fromTo(
+          formCardRef.current,
+          { opacity: 0, y: 50 },
+          { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
+          '-=0.4'
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, [prefersReducedMotion]);
+
   return (
-    <section id="contact" className="py-20 md:py-28 bg-slate-50 text-slate-800 relative scroll-mt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <Reveal>
-            <span className="inline-block px-3.5 py-1 rounded-full bg-navy-100 text-navy-800 text-xs sm:text-sm font-semibold tracking-wide uppercase mb-3 border border-navy-200/60">
-              {siteConfig.contact.sectionBadge}
-            </span>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <h2 className="font-heading font-bold text-2xl sm:text-3xl md:text-4xl text-navy-950 tracking-tight leading-tight mb-4">
-              {siteConfig.contact.title}
-            </h2>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
-              {siteConfig.contact.subtitle}
-            </p>
-          </Reveal>
-        </div>
+    <section
+      id="contact"
+      ref={sectionRef}
+      aria-labelledby="contact-heading"
+      className="relative w-full min-h-[100vh] lg:min-h-[100svh] flex items-center py-16 md:py-24 text-white overflow-hidden"
+    >
+      {/* Full-Bleed Background Photo */}
+      <img
+        ref={bgImgRef}
+        src={contactBg}
+        width={1600}
+        height={893}
+        alt="Dubai skyline and corporate office evening atmosphere"
+        loading="lazy"
+        className="absolute inset-0 w-full h-[115%] -top-[7.5%] object-cover object-center pointer-events-none -z-20 will-change-transform"
+      />
 
-        {/* Contact Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+      {/* Dark Navy Gradient Overlay ensuring AA contrast */}
+      <div
+        className="absolute inset-0 bg-gradient-to-br from-[#061224]/95 via-[#071733]/90 to-[#0B1B4D]/85 pointer-events-none -z-10"
+        aria-hidden="true"
+      />
+
+      {/* Main Centered Container */}
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
           
-          {/* Left Column: Direct Contact Info & Maps */}
-          <div className="lg:col-span-5 space-y-6">
-            <Reveal y={20}>
-              <div className="p-6 sm:p-7 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-5">
-                <h3 className="font-heading font-bold text-lg text-navy-950 pb-3 border-b border-slate-100">
-                  Direct Inquiries & Office Info
-                </h3>
+          {/* ================= LEFT CONTENT BLOCK ================= */}
+          <div
+            ref={leftContentRef}
+            className="lg:col-span-5 flex flex-col justify-end text-left space-y-6"
+          >
+            {/* 1. Small Pill Badge */}
+            <div className="contact-reveal-el">
+              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-navy-950/80 border border-teal-400/40 text-teal-300 text-xs sm:text-sm font-semibold shadow-sm backdrop-blur-xs">
+                <Sparkles className="w-3.5 h-3.5 text-teal-400" />
+                <span>{siteConfig.contact.sectionBadge}</span>
+              </span>
+            </div>
 
-                {/* Phone Call */}
+            {/* 2. Bold 2-Line H2 Heading */}
+            <h2
+              id="contact-heading"
+              className="contact-reveal-el font-heading font-black text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-[1.14]"
+            >
+              {siteConfig.contact.heading}
+            </h2>
+
+            {/* 3. Thin Animated Divider Line */}
+            <div
+              ref={dividerRef}
+              className="w-full h-px bg-white/20 my-2"
+              aria-hidden="true"
+            />
+
+            {/* 4. Info Row: Email & Working Hours */}
+            <div className="contact-reveal-el grid grid-cols-1 md:grid-cols-2 gap-5 pt-1">
+              <div>
+                <span className="block text-xs font-bold tracking-wider uppercase text-slate-300 mb-1">
+                  Email Address
+                </span>
+                <a
+                  href={siteConfig.business.emailMailto}
+                  className="text-base sm:text-lg lg:text-xl font-bold text-white hover:text-blue-400 transition-colors break-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded"
+                >
+                  {siteConfig.business.email}
+                </a>
+              </div>
+
+              <div>
+                <span className="block text-xs font-bold tracking-wider uppercase text-slate-300 mb-1">
+                  Working Hours
+                </span>
+                <div className="flex items-center gap-2 text-sm sm:text-base font-semibold text-slate-200">
+                  <Clock className="w-4 h-4 text-teal-400 shrink-0" />
+                  <span>{siteConfig.business.workingHours}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 5. Phone Lines & WhatsApp Quick Link */}
+            <div className="contact-reveal-el pt-2 space-y-2.5">
+              <span className="block text-xs font-bold tracking-wider uppercase text-slate-300 mb-1">
+                Direct Contact Lines
+              </span>
+              
+              <div className="flex flex-wrap items-center gap-3">
                 <a
                   href={siteConfig.business.phoneTel}
-                  className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-slate-50 transition-colors group min-h-[44px]"
-                  aria-label={`Call Grace Way Accounting at ${siteConfig.business.phoneDisplay}`}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-sm font-bold text-white transition-all min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                  aria-label={`Call primary phone ${siteConfig.business.phoneDisplay}`}
                 >
-                  <div className="w-10 h-10 rounded-xl bg-navy-900 text-gold-400 flex items-center justify-center shrink-0 group-hover:bg-gold-500 group-hover:text-navy-950 transition-colors">
-                    <Phone className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                      Call Us Directly
-                    </div>
-                    <div className="text-sm sm:text-base font-bold text-navy-900 group-hover:text-gold-600 transition-colors">
-                      {siteConfig.business.phoneDisplay}
-                    </div>
-                    <div className="text-[11px] text-slate-400">Toll-free / Direct Line (UAE)</div>
-                  </div>
+                  <Phone className="w-4 h-4 text-blue-400" />
+                  <span>{siteConfig.business.phoneDisplay}</span>
                 </a>
 
-                {/* WhatsApp Chat */}
+                {siteConfig.business.phoneSecondary && (
+                  <a
+                    href={siteConfig.business.phoneSecondaryTel}
+                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-sm font-bold text-white transition-all min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                    aria-label={`Call secondary phone ${siteConfig.business.phoneSecondaryDisplay}`}
+                  >
+                    <Phone className="w-4 h-4 text-teal-400" />
+                    <span>{siteConfig.business.phoneSecondaryDisplay}</span>
+                  </a>
+                )}
+
                 <a
                   href={siteConfig.business.whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-emerald-50/50 transition-colors group min-h-[44px]"
-                  aria-label="Chat with Grace Way Accounting on WhatsApp"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600/80 hover:bg-emerald-600 border border-emerald-500/50 text-sm font-bold text-white shadow-sm transition-all min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
+                  aria-label="Chat on WhatsApp"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 group-hover:bg-emerald-700 transition-colors">
-                    <MessageCircle className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-xs font-semibold text-emerald-700 uppercase tracking-wider">
-                      WhatsApp Quick Chat
-                    </div>
-                    <div className="text-sm sm:text-base font-bold text-navy-900 group-hover:text-emerald-700 transition-colors">
-                      {siteConfig.business.phoneDisplay}
-                    </div>
-                    <div className="text-[11px] text-slate-400">Fast response for urgent requests</div>
-                  </div>
+                  <MessageCircle className="w-4 h-4" />
+                  <span>Chat on WhatsApp</span>
                 </a>
+              </div>
+            </div>
 
-                {/* Email Mailto */}
-                <a
-                  href={siteConfig.business.emailMailto}
-                  className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-slate-50 transition-colors group min-h-[44px]"
-                  aria-label={`Email Grace Way Accounting at ${siteConfig.business.email}`}
+            {/* 6. Office Address & Google Map Embed / Toggle */}
+            <div className="contact-reveal-el pt-2 space-y-3">
+              <div className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-300">
+                <MapPin className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
+                <span>{siteConfig.business.address}</span>
+              </div>
+
+              {/* Map Toggle & Embed */}
+              <div>
+                <button
+                  type="button"
+                  onClick={() => setShowMap(!showMap)}
+                  className="inline-flex items-center gap-2 text-xs font-semibold text-blue-300 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded py-1"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-navy-900 text-gold-400 flex items-center justify-center shrink-0 group-hover:bg-gold-500 group-hover:text-navy-950 transition-colors">
-                    <Mail className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                      Official Email
-                    </div>
-                    <div className="text-sm sm:text-base font-bold text-navy-900 group-hover:text-gold-600 transition-colors break-all">
-                      {siteConfig.business.email}
-                    </div>
-                    <div className="text-[11px] text-slate-400">Formal RFPs & Documentation</div>
-                  </div>
-                </a>
+                  <Map className="w-3.5 h-3.5" />
+                  <span>{showMap ? 'Hide office map' : 'View office map location'}</span>
+                </button>
 
-                {/* Physical Address */}
-                <div className="flex items-start gap-3.5 p-3 rounded-xl">
-                  <div className="w-10 h-10 rounded-xl bg-navy-900 text-gold-400 flex items-center justify-center shrink-0">
-                    <MapPin className="w-5 h-5" />
+                {showMap && (
+                  <div className="mt-3 rounded-2xl overflow-hidden border border-white/20 shadow-lg h-48 sm:h-52 w-full animate-fade-in bg-slate-900">
+                    <iframe
+                      src={siteConfig.contact.googleMapsEmbedUrl}
+                      title="Grace Way Accounting Office Location Map"
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      allowFullScreen=""
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      className="w-full h-full"
+                    />
                   </div>
-                  <div>
-                    <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                      Consultancy Address
-                    </div>
-                    <div className="text-xs sm:text-sm font-medium text-navy-900 leading-relaxed">
-                      {siteConfig.business.address}
-                    </div>
-                    <div className="text-[11px] text-slate-400">United Arab Emirates</div>
-                  </div>
-                </div>
-
-                {/* Working Hours */}
-                <div className="flex items-start gap-3.5 p-3 rounded-xl bg-slate-50 border border-slate-100">
-                  <Clock className="w-5 h-5 text-slate-500 shrink-0 mt-0.5" />
-                  <div>
-                    <div className="text-xs font-semibold text-navy-900">Working Hours</div>
-                    <div className="text-xs text-slate-600">{siteConfig.business.workingHours}</div>
-                  </div>
-                </div>
+                )}
               </div>
-            </Reveal>
+            </div>
 
-            {/* Lazy-Loaded Google Maps Embed */}
-            <Reveal delay={0.1} y={20}>
-              <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white p-2">
-                <div className="relative w-full h-56 sm:h-64 rounded-xl overflow-hidden bg-slate-100">
-                  <iframe
-                    src={siteConfig.contact.googleMapsEmbedUrl}
-                    title="Grace Way Accounting Office Location Map"
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen=""
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    className="w-full h-full"
-                  />
-                </div>
-                <div className="pt-2 px-2 pb-1 text-center text-[11px] text-slate-500 flex items-center justify-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>Serving businesses across Dubai, Sharjah, Abu Dhabi & all UAE Emirates</span>
-                </div>
-              </div>
-            </Reveal>
           </div>
 
-          {/* Right Column: Enquiry Form */}
-          <div className="lg:col-span-7">
-            <Reveal delay={0.15} y={20}>
-              <EnquiryForm />
-            </Reveal>
+          {/* ================= RIGHT COLUMN: FORM CARD ================= */}
+          <div
+            ref={formCardRef}
+            className="lg:col-span-7 flex justify-center w-full"
+            style={prefersReducedMotion ? { opacity: 1, transform: 'none' } : undefined}
+          >
+            <EnquiryForm />
           </div>
 
         </div>
-
       </div>
     </section>
   );
