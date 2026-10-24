@@ -7,7 +7,7 @@ import { About } from './components/About';
 import { Services } from './components/Services';
 import { Marquee } from './components/Marquee';
 import { ServiceTabs } from './components/ServiceTabs';
-import { WhyChooseUs } from './components/WhyChooseUs';
+import { WhyGraceWay } from './components/WhyGraceWay';
 import { Process } from './components/Process';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
@@ -28,7 +28,7 @@ export default function App() {
           <Services />
           <Marquee />
           <ServiceTabs />
-          <WhyChooseUs />
+          <WhyGraceWay />
           <Process />
           <Contact />
         </main>
