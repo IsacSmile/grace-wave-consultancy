@@ -135,13 +135,14 @@ export function Services() {
         aria-hidden="true"
       />
 
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-5 md:px-6 lg:px-8">
         {/* ================= SECTION HEADER ================= */}
         <SectionHeading
           badge={siteConfig.services.sectionBadge}
           title={siteConfig.services.title}
           subtitle={siteConfig.services.subtitle}
           id="services-title"
+          className="!mb-8 md:!mb-14 lg:!mb-16"
         />
 
         {/* ================= EDITORIAL SERVICE ROWS ================= */}
@@ -187,19 +188,19 @@ export function Services() {
         </div>
 
         {/* ================= TAILORED ASSISTANCE BANNER ================= */}
-        <div className="mt-14 md:mt-20 p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-[#071328] via-[#0A1F4D] to-[#071328] text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl border border-blue-900/40">
-          <div className="text-center md:text-left">
-            <h3 className="font-heading font-bold text-lg sm:text-xl text-white mb-1.5">
+        <div className="mt-10 md:mt-20 p-6 md:p-8 rounded-2xl bg-gradient-to-r from-[#071328] via-[#0A1F4D] to-[#071328] text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-xl border border-blue-900/40">
+          <div className="text-left w-full md:w-auto">
+            <h3 className="font-heading font-semibold md:font-bold text-xl text-white mb-1.5 leading-snug text-balance">
               {siteConfig.services.ctaBanner.title}
             </h3>
-            <p className="text-sm sm:text-base text-slate-300">
+            <p className="text-sm sm:text-base text-slate-300 line-clamp-2 md:line-clamp-none">
               {siteConfig.services.ctaBanner.subtitle}
             </p>
           </div>
           <button
             type="button"
             onClick={() => handleEnquire('Other')}
-            className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm sm:text-base font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/25 active:scale-[0.99] transition-all shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            className="w-full md:w-auto h-12 px-6 rounded-xl text-[15px] md:text-base font-semibold md:font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/25 active:scale-[0.99] transition-all shrink-0 cursor-pointer flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           >
             <span>{siteConfig.services.ctaBanner.buttonText}</span>
             <ArrowUpRight className="w-4 h-4" />

@@ -60,7 +60,7 @@ export function ServiceRow({
         onMouseLeave={() => onHover(-1)}
         onFocus={(e) => onFocus(index, e.currentTarget)}
         onBlur={onBlur}
-        className="w-full text-left py-6 sm:py-8 lg:py-10 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 rounded-xl transition-colors cursor-pointer select-none"
+        className="w-full text-left py-5 px-0 lg:py-10 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 transition-colors cursor-pointer select-none min-h-[72px] lg:min-h-0 active:bg-[#0A1F4D]/[0.03] lg:active:bg-transparent lg:rounded-xl"
       >
         {/* ================= DESKTOP LAYOUT (lg and up) ================= */}
         <div className="hidden lg:grid lg:grid-cols-12 lg:gap-6 lg:items-center">
@@ -103,28 +103,30 @@ export function ServiceRow({
         </div>
 
         {/* ================= MOBILE / TOUCH LAYOUT (< lg) ================= */}
-        <div className="lg:hidden flex items-center justify-between gap-3 min-h-[64px]">
-          <div className="flex items-center gap-3.5 flex-1 min-w-0">
-            <span className="font-mono text-base font-bold text-[#C5A059] shrink-0">
+        <div className="lg:hidden grid grid-cols-[44px_1fr_36px] items-center gap-4 w-full">
+          {/* Col 1: 44px Icon Tile */}
+          <div className="w-[44px] h-[44px] rounded-xl bg-[#0A1F4D] text-[#D4AF37] flex items-center justify-center shrink-0">
+            <IconComponent className="w-5 h-5" />
+          </div>
+
+          {/* Col 2: Text Column (small index above title) */}
+          <div className="flex flex-col min-w-0">
+            <span className="text-[11px] tracking-[0.18em] font-medium text-[#C5A059] mb-0.5">
               {service.index}
             </span>
-            <div className="w-11 h-11 rounded-2xl bg-[#0A1F4D] text-[#D4AF37] flex items-center justify-center shrink-0 shadow-sm">
-              <IconComponent className="w-5 h-5" />
-            </div>
-            <h3 className="font-heading font-bold text-lg xs:text-xl text-[#0B1B4D] leading-snug truncate">
+            <h3 className="text-[17px] font-semibold text-[#0B1B4D] leading-[1.3] tracking-tight text-balance">
               {service.title}
             </h3>
           </div>
 
-          <div className="shrink-0 pl-2">
-            <div
-              className={`w-9 h-9 rounded-full flex items-center justify-center border transition-all duration-300 ${
-                isOpen
-                  ? 'bg-[#0A1F4D] text-[#D4AF37] border-[#0A1F4D] rotate-180'
-                  : 'bg-white text-slate-500 border-slate-200'
-              }`}
-            >
-              <ChevronDown className="w-5 h-5" />
+          {/* Col 3: 36px Chevron Circle */}
+          <div className="flex justify-end shrink-0">
+            <div className="w-9 h-9 rounded-full bg-white border border-[#0A1F4D]/15 flex items-center justify-center shrink-0">
+              <ChevronDown
+                className={`w-4 h-4 text-[#0B1B4D] transition-transform duration-300 transform-gpu ${
+                  isOpen ? 'rotate-180' : 'rotate-0'
+                }`}
+              />
             </div>
           </div>
         </div>
@@ -153,43 +155,48 @@ export function ServiceRow({
         }`}
       >
         <div className="overflow-hidden">
-          <div className="pb-6 pt-1.5">
-            {/* --- Mobile View Order: Image -> Description -> Bullets -> Enquire Button --- */}
-            <div className="lg:hidden flex flex-col gap-4">
-              <div className="overflow-hidden rounded-2xl bg-slate-100 border border-slate-200/80 shadow-xs">
+          <div className="pt-1 pb-6 lg:pb-6 lg:pt-1.5">
+            {/* --- Mobile View Order: Image -> Intro Line -> Bullets -> Enquire Button --- */}
+            <div className="lg:hidden flex flex-col">
+              {/* 1. Image: aspect-[16/10], rounded-2xl, object-cover, no shadow */}
+              <div className="overflow-hidden rounded-2xl">
                 <img
                   src={service.image}
                   alt={service.imageAlt}
                   width="800"
-                  height="1000"
+                  height="500"
                   loading="lazy"
-                  className={`w-full aspect-[16/10] object-cover transition-all duration-500 ease-out ${
-                    isOpen ? 'scale-100 opacity-100' : 'scale-105 opacity-80'
+                  className={`w-full aspect-[16/10] object-cover transition-all duration-500 ease-out transform-gpu ${
+                    isOpen ? 'scale-100 opacity-100' : 'scale-[1.04] opacity-0'
                   }`}
                 />
               </div>
 
-              <p className="text-base text-slate-600 leading-relaxed font-normal">
+              {/* 2. Intro line: 12px gap (mt-3), text-[15px], slate-600, leading-relaxed, max 2 to 3 lines */}
+              <p className="mt-3 text-[15px] text-slate-600 leading-relaxed font-normal line-clamp-3">
                 {service.description}
               </p>
 
-              <ul className="space-y-2.5">
+              {/* 3. 3 short bullets: 12px gap (mt-3), gold check 18px, text-[15px] medium, navy, gap-2.5 */}
+              <ul className="mt-3 flex flex-col gap-2.5">
                 {service.bullets.map((bullet, bIdx) => (
                   <li key={bIdx} className="flex items-center gap-2.5">
-                    <span className="w-5 h-5 rounded-full bg-amber-50 text-[#C5A059] flex items-center justify-center shrink-0 border border-[#C5A059]/30">
-                      <Check className="w-3.5 h-3.5" />
-                    </span>
-                    <span className="text-base text-[#0B1B4D] font-medium leading-snug">
+                    <Check
+                      className="w-[18px] h-[18px] text-[#C5A059] shrink-0"
+                      strokeWidth={2.5}
+                    />
+                    <span className="text-[15px] font-medium text-[#0B1B4D] leading-snug">
                       {bullet}
                     </span>
                   </li>
                 ))}
               </ul>
 
+              {/* 4. Enquire Now button: 20px gap (mt-5), full-width, h-12, rounded-xl, text-[15px], brand blue */}
               <button
                 type="button"
                 onClick={() => onEnquire(service.serviceValue)}
-                className="w-full h-12 rounded-xl text-base font-bold text-white bg-blue-600 hover:bg-blue-700 active:scale-[0.99] transition-all shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 cursor-pointer"
+                className="mt-5 w-full h-12 rounded-xl text-[15px] font-semibold text-white bg-blue-600 hover:bg-blue-700 active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
               >
                 <span>Enquire Now</span>
                 <ArrowUpRight className="w-4 h-4" />
