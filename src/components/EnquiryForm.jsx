@@ -143,7 +143,7 @@ export function EnquiryForm() {
   };
 
   return (
-    <div className="w-full rounded-3xl bg-gradient-to-br from-blue-600 via-blue-700 to-sky-700 p-2.5 sm:p-3 shadow-2xl">
+    <div className="w-full max-w-xl rounded-3xl bg-gradient-to-br from-blue-600 via-blue-700 to-sky-700 p-2.5 sm:p-3 shadow-2xl">
       {/* Card Header Bar */}
       <div className="py-3 sm:py-3.5 px-4 sm:px-6 flex items-center justify-between">
         <h3 className="font-heading font-bold text-lg sm:text-xl text-white tracking-tight">

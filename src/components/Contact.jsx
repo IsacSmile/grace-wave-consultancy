@@ -88,33 +88,34 @@ export function Contact() {
       id="contact"
       ref={sectionRef}
       aria-labelledby="contact-heading"
-      className="relative w-full min-h-[100vh] lg:min-h-[100svh] flex items-center py-16 md:py-24 text-white overflow-hidden"
+      className="relative w-full min-h-[100vh] lg:min-h-[100svh] flex items-center py-16 md:py-24 bg-[#060E18] text-white overflow-hidden"
     >
-      {/* Full-Bleed Background Photo */}
-      <img
-        ref={bgImgRef}
-        src={contactBg}
-        width={1600}
-        height={893}
-        alt="Dubai skyline and corporate office evening atmosphere"
-        loading="lazy"
-        className="absolute inset-0 w-full h-[115%] -top-[7.5%] object-cover object-center pointer-events-none -z-20 will-change-transform"
-      />
-
-      {/* Dark Navy Gradient Overlay ensuring AA contrast */}
-      <div
-        className="absolute inset-0 bg-gradient-to-br from-[#061224]/95 via-[#071733]/90 to-[#0B1B4D]/85 pointer-events-none -z-10"
-        aria-hidden="true"
-      />
+      {/* Full-Bleed Background Photo & Gradient Wrapper (z-0, never drops behind body) */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <img
+          ref={bgImgRef}
+          src={contactBg}
+          width={1600}
+          height={893}
+          alt="Dubai skyline and corporate office evening atmosphere"
+          loading="lazy"
+          className="absolute inset-0 w-full h-[115%] -top-[7.5%] object-cover object-center opacity-50 will-change-transform"
+        />
+        {/* Dark Navy Gradient Overlay ensuring AA contrast */}
+        <div
+          className="absolute inset-0 bg-gradient-to-br from-[#060E18]/95 via-[#071733]/90 to-[#0A1A36]/85"
+          aria-hidden="true"
+        />
+      </div>
 
       {/* Main Centered Container */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           
           {/* ================= LEFT CONTENT BLOCK ================= */}
           <div
             ref={leftContentRef}
-            className="lg:col-span-5 flex flex-col justify-end text-left space-y-6"
+            className="lg:col-span-6 flex flex-col justify-end text-left space-y-6"
           >
             {/* 1. Small Pill Badge */}
             <div className="contact-reveal-el">
@@ -140,14 +141,14 @@ export function Contact() {
             />
 
             {/* 4. Info Row: Email & Working Hours */}
-            <div className="contact-reveal-el grid grid-cols-1 md:grid-cols-2 gap-5 pt-1">
+            <div className="contact-reveal-el grid grid-cols-1 sm:grid-cols-2 gap-5 pt-1">
               <div>
                 <span className="block text-xs font-bold tracking-wider uppercase text-slate-300 mb-1">
                   Email Address
                 </span>
                 <a
                   href={siteConfig.business.emailMailto}
-                  className="text-base sm:text-lg lg:text-xl font-bold text-white hover:text-blue-400 transition-colors break-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded"
+                  className="text-sm sm:text-base font-bold text-white hover:text-blue-400 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded"
                 >
                   {siteConfig.business.email}
                 </a>
@@ -245,7 +246,7 @@ export function Contact() {
           {/* ================= RIGHT COLUMN: FORM CARD ================= */}
           <div
             ref={formCardRef}
-            className="lg:col-span-7 flex justify-center w-full"
+            className="lg:col-span-6 flex justify-center w-full"
             style={prefersReducedMotion ? { opacity: 1, transform: 'none' } : undefined}
           >
             <EnquiryForm />
