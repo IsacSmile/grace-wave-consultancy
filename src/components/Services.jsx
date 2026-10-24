@@ -1,138 +1,247 @@
-import React from 'react';
-import { BookOpenCheck, ShieldCheck, TrendingUp, CheckCircle, ArrowDown, ArrowUpRight } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Sparkles, ArrowUpRight } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { siteConfig } from '../data/siteConfig';
-import { Reveal } from './Reveal';
+import { servicesData } from '../data/services';
+import { ServiceRow } from './ServiceRow';
+import { ServiceCursorPreview } from './ServiceCursorPreview';
+import { useHoverCapable } from '../hooks/useHoverCapable';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 import { useLenis } from './SmoothScroll';
 
-const iconMap = {
-  BookOpenCheck: BookOpenCheck,
-  ShieldAlert: ShieldCheck,
-  TrendingUp: TrendingUp,
-};
+gsap.registerPlugin(ScrollTrigger);
 
+/**
+ * Services Component (Redesigned Editorial Interactive Layout)
+ * Replaces old card grid and ServiceDetail sections.
+ * Features:
+ * - Desktop: Hover row with 1px hairlines, GSAP floating cursor preview with velocity tilt and crossfade,
+ *   keyboard-accessible fixed preview, and expand-on-click drawer.
+ * - Mobile/Touch: Clean accordion with first row open by default, 64px+ touch targets, inline lazy WebP images,
+ *   3 checklist bullets, and Lenis auto-scroll.
+ */
 export function Services() {
+  const isHoverCapable = useHoverCapable();
+  const prefersReducedMotion = useReducedMotion();
   const { scrollTo } = useLenis();
 
-  const handleCardClick = (e, targetId) => {
-    e.preventDefault();
-    scrollTo(`#${targetId}`, 76);
+  const sectionRef = useRef(null);
+  const headerRef = useRef(null);
+  const listRef = useRef(null);
+
+  // Mobile / touch devices have first row open by default so users see the image pattern immediately.
+  const [openId, setOpenId] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const isTouch = !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      if (isTouch) return servicesData[0].id;
+    }
+    return null;
+  });
+
+  // Desktop hover tracking
+  const [hoveredIndex, setHoveredIndex] = useState(-1);
+  const [isOverExpanded, setIsOverExpanded] = useState(false);
+
+  // Desktop keyboard focus tracking
+  const [focusedIndex, setFocusedIndex] = useState(-1);
+  const [focusedElement, setFocusedElement] = useState(null);
+
+
+  // Scroll animations with GSAP ScrollTrigger
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    const ctx = gsap.context(() => {
+      // 1. Header fade up with stagger 0.1s
+      if (headerRef.current) {
+        const headerElements = headerRef.current.children;
+        gsap.fromTo(
+          headerElements,
+          { opacity: 0, y: 24 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: headerRef.current,
+              start: 'top 85%',
+              once: true,
+            },
+          }
+        );
+      }
+
+      // 2. Rows fade up (translateY 30px) with stagger 0.12s, start 'top 80%', once: true
+      if (listRef.current) {
+        const rowElements = listRef.current.children;
+        gsap.fromTo(
+          rowElements,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            stagger: 0.12,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: listRef.current,
+              start: 'top 80%',
+              once: true,
+            },
+          }
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, [prefersReducedMotion]);
+
+  // Toggle row accordion
+  const handleToggle = (id, rowElement) => {
+    setOpenId((prev) => {
+      const next = prev === id ? null : id;
+      // After opening, if the row top is off-screen, smooth-scroll with lenis.scrollTo so the row header is visible below navbar
+      if (next !== null && rowElement) {
+        setTimeout(() => {
+          const rect = rowElement.getBoundingClientRect();
+          const navbarHeight = 84;
+          if (rect.top < navbarHeight) {
+            scrollTo(rowElement, navbarHeight + 8);
+          }
+          ScrollTrigger.refresh();
+        }, 120);
+      } else {
+        setTimeout(() => ScrollTrigger.refresh(), 200);
+      }
+      return next;
+    });
   };
 
-  const handleEnquiryClick = (e) => {
-    e.preventDefault();
+  // Enquire action: scrolls via Lenis to #contact and preselects service in EnquiryForm
+  const handleEnquire = (serviceValue) => {
+    window.dispatchEvent(
+      new CustomEvent('enquiry:select-service', { detail: serviceValue })
+    );
+    window.dispatchEvent(
+      new CustomEvent('select-service', { detail: serviceValue })
+    );
     scrollTo('#contact', 76);
   };
 
+  // Keyboard navigation handlers
+  const handleFocus = (index, element) => {
+    setFocusedIndex(index);
+    setFocusedElement(element);
+  };
+
+  const handleBlur = () => {
+    setFocusedIndex(-1);
+    setFocusedElement(null);
+  };
+
+  const isAnyOpen = openId !== null;
+  const isAnyHovered = hoveredIndex !== -1;
+
   return (
-    <section id="services" className="py-20 md:py-28 bg-slate-50 text-slate-800 border-b border-slate-200/80">
+    <section
+      id="services"
+      ref={sectionRef}
+      aria-labelledby="services-title"
+      className="relative py-20 md:py-28 lg:py-32 bg-[#F8FAFF] text-slate-800 border-b border-slate-200/80 overflow-hidden"
+    >
+      {/* Background Soft Ambient Light */}
+      <div
+        className="absolute top-0 right-1/4 w-[500px] h-[500px] rounded-full bg-blue-100/40 blur-3xl pointer-events-none -z-10"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute bottom-10 left-10 w-[450px] h-[450px] rounded-full bg-teal-50/50 blur-3xl pointer-events-none -z-10"
+        aria-hidden="true"
+      />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <Reveal>
-            <span className="inline-block px-3.5 py-1 rounded-full bg-navy-100 text-navy-800 text-xs sm:text-sm font-semibold tracking-wide uppercase mb-3 border border-navy-200/60">
-              {siteConfig.services.sectionBadge}
-            </span>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <h2 className="font-heading font-bold text-2xl sm:text-3xl md:text-4xl text-navy-950 tracking-tight leading-tight mb-4">
-              {siteConfig.services.title}
-            </h2>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
-              {siteConfig.services.subtitle}
-            </p>
-          </Reveal>
-        </div>
-
-        {/* 3 Overview Service Cards with Stagger Reveal */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-16">
-          {siteConfig.services.list.map((service, idx) => {
-            const IconComponent = iconMap[service.icon] || BookOpenCheck;
-
-            return (
-              <Reveal key={service.id} delay={idx * 0.1} y={35} className="h-full">
-                <div className="h-full flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-white border border-slate-200 hover:border-gold-400 hover:shadow-elevated transition-all duration-300 group">
-                  <div>
-                    {/* Icon & Index Badge */}
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="w-14 h-14 rounded-2xl bg-navy-900 text-gold-400 flex items-center justify-center shadow-md group-hover:bg-gold-500 group-hover:text-navy-950 transition-colors">
-                        <IconComponent className="w-7 h-7" />
-                      </div>
-                      <span className="font-heading font-bold text-2xl text-slate-300 group-hover:text-gold-500 transition-colors">
-                        0{idx + 1}
-                      </span>
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="font-heading font-bold text-xl text-navy-950 mb-3 group-hover:text-gold-600 transition-colors">
-                      {service.title}
-                    </h3>
-
-                    {/* Short Description */}
-                    <p className="text-sm text-slate-600 leading-relaxed mb-6">
-                      {service.shortDesc}
-                    </p>
-
-                    {/* Features checklist */}
-                    <ul className="space-y-2.5 mb-8">
-                      {service.features.map((feature) => (
-                        <li key={feature} className="flex items-center gap-2.5 text-xs sm:text-sm font-medium text-slate-700">
-                          <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Links: Learn details + Enquire */}
-                  <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                    <a
-                      href={`#${service.anchorId}`}
-                      onClick={(e) => handleCardClick(e, service.anchorId)}
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-navy-900 hover:text-gold-600 transition-colors min-h-[44px] py-2"
-                    >
-                      <span>Explore Scope</span>
-                      <ArrowDown className="w-3.5 h-3.5" />
-                    </a>
-
-                    <a
-                      href="#contact"
-                      onClick={handleEnquiryClick}
-                      className="inline-flex items-center gap-1 text-xs font-bold text-gold-600 hover:text-navy-900 transition-colors min-h-[44px] py-2"
-                    >
-                      <span>Enquire</span>
-                      <ArrowUpRight className="w-3.5 h-3.5" />
-                    </a>
-                  </div>
-                </div>
-              </Reveal>
-            );
-          })}
-        </div>
-
-        {/* Section CTA Callout Banner */}
-        <Reveal y={20}>
-          <div className="p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-navy-950 via-navy-900 to-navy-950 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl border border-navy-800">
-            <div className="text-center md:text-left">
-              <h4 className="font-heading font-bold text-lg sm:text-xl text-white mb-1.5">
-                {siteConfig.services.ctaBanner.title}
-              </h4>
-              <p className="text-xs sm:text-sm text-slate-300 max-w-xl">
-                {siteConfig.services.ctaBanner.subtitle}
-              </p>
-            </div>
-            <a
-              href="#contact"
-              onClick={handleEnquiryClick}
-              className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-navy-950 bg-gradient-to-r from-gold-400 to-gold-500 hover:from-gold-300 hover:to-gold-400 shadow-md hover:shadow-gold-glow transition-all"
-            >
-              <span>{siteConfig.services.ctaBanner.buttonText}</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </a>
+        {/* ================= SECTION HEADER ================= */}
+        <div ref={headerRef} className="text-center max-w-3xl mx-auto mb-14 md:mb-20">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200/90 text-blue-900 text-xs sm:text-sm font-semibold tracking-wide uppercase mb-3 shadow-xs">
+            <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+            <span>{siteConfig.services.sectionBadge}</span>
           </div>
-        </Reveal>
+
+          <h2
+            id="services-title"
+            className="font-heading font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[#0B1B4D] tracking-tight leading-tight mb-4"
+          >
+            {siteConfig.services.title}
+          </h2>
+
+          <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
+            {siteConfig.services.subtitle}
+          </p>
+        </div>
+
+        {/* ================= EDITORIAL SERVICE ROWS ================= */}
+        <div className="relative">
+          <ul
+            ref={listRef}
+            className="relative flex flex-col w-full divide-y-0"
+            role="list"
+          >
+            {servicesData.map((service, index) => (
+              <ServiceRow
+                key={service.id}
+                service={service}
+                index={index}
+                isOpen={openId === service.id}
+                onToggle={handleToggle}
+                isHovered={hoveredIndex === index}
+                isAnyHovered={isAnyHovered}
+                onHover={setHoveredIndex}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                onOverExpanded={setIsOverExpanded}
+                isHoverCapable={isHoverCapable}
+                prefersReducedMotion={prefersReducedMotion}
+                onEnquire={handleEnquire}
+              />
+            ))}
+          </ul>
+
+          {/* Desktop Floating Cursor Preview (Only mounted on hover-capable pointer devices) */}
+          {isHoverCapable && !prefersReducedMotion && (
+            <ServiceCursorPreview
+              services={servicesData}
+              containerRef={listRef}
+              activeHoverIndex={hoveredIndex}
+              isAnyOpen={isAnyOpen}
+              focusedIndex={focusedIndex}
+              focusedElement={focusedElement}
+              isHoverCapable={isHoverCapable}
+            />
+          )}
+        </div>
+
+        {/* ================= TAILORED ASSISTANCE BANNER ================= */}
+        <div className="mt-14 md:mt-20 p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-[#071328] via-[#0A1F4D] to-[#071328] text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl border border-blue-900/40">
+          <div className="text-center md:text-left">
+            <h3 className="font-heading font-bold text-lg sm:text-xl text-white mb-1.5">
+              {siteConfig.services.ctaBanner.title}
+            </h3>
+            <p className="text-sm sm:text-base text-slate-300">
+              {siteConfig.services.ctaBanner.subtitle}
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => handleEnquire('Other')}
+            className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm sm:text-base font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/25 active:scale-[0.99] transition-all shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          >
+            <span>{siteConfig.services.ctaBanner.buttonText}</span>
+            <ArrowUpRight className="w-4 h-4" />
+          </button>
+        </div>
 
       </div>
     </section>

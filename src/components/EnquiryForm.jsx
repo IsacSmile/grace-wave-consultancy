@@ -32,7 +32,11 @@ export function EnquiryForm() {
     };
 
     window.addEventListener('select-service', handleServiceSelect);
-    return () => window.removeEventListener('select-service', handleServiceSelect);
+    window.addEventListener('enquiry:select-service', handleServiceSelect);
+    return () => {
+      window.removeEventListener('select-service', handleServiceSelect);
+      window.removeEventListener('enquiry:select-service', handleServiceSelect);
+    };
   }, []);
 
   const validate = () => {

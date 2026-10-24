@@ -5,7 +5,6 @@ import { Hero } from './components/Hero';
 import { StatsStrip } from './components/StatsStrip';
 import { About } from './components/About';
 import { Services } from './components/Services';
-import { ServiceDetail } from './components/ServiceDetail';
 import { WhyChooseUs } from './components/WhyChooseUs';
 import { Process } from './components/Process';
 import { Contact } from './components/Contact';
@@ -25,7 +24,6 @@ export default function App() {
           <StatsStrip />
           <About />
           <Services />
-          <ServiceDetail />
           <WhyChooseUs />
           <Process />
           <Contact />

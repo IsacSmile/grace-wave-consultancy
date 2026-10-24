@@ -64,17 +64,7 @@ export function Hero() {
           );
         }
 
-        // 3. CTA buttons fade up
-        if (ctaButtonsRef.current) {
-          tl.fromTo(
-            ctaButtonsRef.current.children,
-            { opacity: 0, y: 16 },
-            { opacity: 1, y: 0, duration: 0.5, stagger: 0.08 },
-            '-=0.4'
-          );
-        }
-
-        // 4. Trust chips stagger last
+        // 3. Trust chips stagger last
         if (trustRowRef.current) {
           const chips = trustRowRef.current.querySelectorAll('.hero-trust-chip');
           tl.fromTo(
@@ -300,15 +290,15 @@ export function Hero() {
 
             {/* BOTTOM GROUP: Over her torso, layered on frosted surfaces */}
             <div className="relative z-30 w-full">
-              {/* 4. Action Buttons */}
+              {/* 4. Action Buttons (Desktop Only) */}
               <div
                 ref={ctaButtonsRef}
-                className="grid grid-cols-1 xs:grid-cols-2 lg:flex lg:flex-row items-stretch lg:items-center gap-2.5 sm:gap-3.5 w-full max-w-md lg:max-w-none mb-3 sm:mb-4 lg:mb-10"
+                className="hidden lg:flex lg:flex-row items-center gap-3.5 w-full lg:max-w-none mb-10"
               >
                 <a
                   href="#contact"
                   onClick={handleEnquiryClick}
-                  className="inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/25 active:scale-[0.99] transition-all min-h-[48px] h-12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-base font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/25 active:scale-[0.99] transition-all min-h-[48px] h-12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                 >
                   <span>{siteConfig.hero.primaryCta.text}</span>
                   <ArrowUpRight className="w-4 h-4" />
@@ -318,7 +308,7 @@ export function Hero() {
                   href={siteConfig.hero.secondaryCta.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-3.5 rounded-xl text-sm sm:text-base font-bold text-white bg-teal-600 hover:bg-teal-700 shadow-md shadow-teal-600/20 active:scale-[0.99] transition-all min-h-[48px] h-12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-base font-bold text-white bg-teal-600 hover:bg-teal-700 shadow-md shadow-teal-600/20 active:scale-[0.99] transition-all min-h-[48px] h-12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
                 >
                   <MessageCircle className="w-4 h-4 text-teal-100" />
                   <span>{siteConfig.hero.secondaryCta.text}</span>
@@ -328,7 +318,7 @@ export function Hero() {
               {/* 5. Trust Chips: 2x2 Frosted Cards on Mobile, 4 in row on Desktop */}
               <div
                 ref={trustRowRef}
-                className="pt-2.5 sm:pt-4 lg:pt-6 border-t border-slate-200/80 max-w-xl w-full"
+                className="pt-0 lg:pt-6 border-t-0 lg:border-t border-slate-200/80 max-w-xl w-full"
               >
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4">
                   {siteConfig.hero.trustRow.map((item) => {
