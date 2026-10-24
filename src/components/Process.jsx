@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Sparkles } from 'lucide-react';
 import { processSteps } from '../data/process';
 import { ProcessWheel } from './ProcessWheel';
 import { ProcessContent } from './ProcessContent';
 import { ProcessList } from './ProcessList';
-import { SectionHeading } from './SectionHeading';
 import { useLenis } from './SmoothScroll';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 
@@ -205,18 +205,22 @@ export function Process() {
         {processSteps[activeIndex]?.number || '01'}
       </div>
 
-      {/* Top-left: Compact Section Heading + Mobile Step Counter */}
-      <div className="absolute top-0 left-0 right-0 pt-[74px] sm:pt-[92px] px-5 sm:px-6 lg:px-8 pointer-events-none z-30">
-        <div className="max-w-7xl mx-auto flex items-start justify-between">
-          <SectionHeading
-            badge="HOW WE WORK"
-            title="From enquiry to onboarding"
-            className="text-left pointer-events-auto"
-          />
+      {/* Accessible semantic heading for screen readers & SEO */}
+      <h2 id="process-heading" className="sr-only">
+        How We Work: From Enquiry to Onboarding
+      </h2>
 
-          {/* Mobile small "01 / 04" counter in top right of header aligned with badge */}
+      {/* Top Header: Badge + Mobile Step Counter */}
+      <div className="absolute top-0 left-0 right-0 pt-[74px] sm:pt-[84px] px-5 sm:px-6 lg:px-8 pointer-events-none z-30">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-[0.14em] bg-blue-50/90 border border-blue-200/90 text-[#0B1B4D] pointer-events-auto shadow-xs">
+            <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+            <span>HOW WE WORK</span>
+          </div>
+
+          {/* Mobile small "01 / 04" counter */}
           <div
-            className="lg:hidden mt-1.5 pointer-events-auto shrink-0 inline-flex items-center gap-1 font-numeric-slashed text-[11px] sm:text-xs font-bold text-gold-700 tracking-wider bg-gold-50/90 px-2.5 py-0.5 sm:py-1 rounded-full border border-gold-200/60"
+            className="lg:hidden pointer-events-auto shrink-0 inline-flex items-center gap-1 font-numeric-slashed text-[11px] sm:text-xs font-bold text-gold-700 tracking-wider bg-gold-50/90 px-2.5 py-0.5 sm:py-1 rounded-full border border-gold-200/60"
             aria-hidden="true"
           >
             <span>STEP {processSteps[activeIndex]?.number || '01'}</span>
