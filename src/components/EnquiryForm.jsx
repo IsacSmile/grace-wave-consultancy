@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Send, Loader2, CheckCircle2, AlertCircle, RefreshCw, MessageCircle } from 'lucide-react';
+import { Send, Loader2, CheckCircle2, AlertCircle, RefreshCw } from 'lucide-react';
+import { WhatsAppIcon } from './WhatsAppIcon';
 import { siteConfig } from '../data/siteConfig';
 
 export function EnquiryForm() {
@@ -190,7 +191,7 @@ export function EnquiryForm() {
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-sm transition-colors min-h-[44px]"
               >
-                <MessageCircle className="w-4 h-4" />
+                <WhatsAppIcon className="w-4 h-4" />
                 <span>Chat on WhatsApp</span>
               </a>
             </div>

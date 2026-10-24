@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
-import { Check, Phone, MessageSquare, Mail, ArrowUpRight } from 'lucide-react';
+import { Check, Phone, Mail, ArrowUpRight } from 'lucide-react';
+import { WhatsAppIcon } from './WhatsAppIcon';
 import { siteConfig } from '../data/siteConfig';
 import { useLenis } from './SmoothScroll';
 
@@ -147,7 +148,7 @@ export function ProcessContent({ steps, activeIndex }) {
               rel="noopener noreferrer"
               className="h-11 px-4 rounded-xl text-xs sm:text-sm font-semibold text-emerald-950 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200/90 shadow-sm transition-all inline-flex items-center justify-center gap-2 flex-1 sm:flex-initial"
             >
-              <MessageSquare className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+              <WhatsAppIcon className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
               <span>WhatsApp</span>
             </a>
 

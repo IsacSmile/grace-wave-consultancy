@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageCircle } from 'lucide-react';
+import { WhatsAppIcon } from './WhatsAppIcon';
 import { siteConfig } from '../data/siteConfig';
 
 export function FloatingWhatsApp() {
@@ -18,7 +18,7 @@ export function FloatingWhatsApp() {
           aria-hidden="true"
         />
 
-        <MessageCircle className="w-7 h-7" />
+        <WhatsAppIcon className="w-7 h-7" />
 
         {/* Hover / screen-reader tooltip */}
         <span className="hidden sm:block absolute right-full mr-3.5 px-3 py-1.5 rounded-lg bg-navy-950 text-white text-xs font-semibold whitespace-nowrap shadow-lg border border-navy-800 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">

@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowUpRight, MessageCircle, ShieldCheck, CheckCircle2, FileText, TrendingUp, Sparkles } from 'lucide-react';
+import { ArrowUpRight, ShieldCheck, CheckCircle2, FileText, TrendingUp, Sparkles } from 'lucide-react';
+import { WhatsAppIcon } from './WhatsAppIcon';
 import { siteConfig } from '../data/siteConfig';
 import { useLenis } from './SmoothScroll';
 import { useReducedMotion } from '../hooks/useReducedMotion';
@@ -310,7 +311,7 @@ export function Hero() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-base font-bold text-white bg-teal-600 hover:bg-teal-700 shadow-md shadow-teal-600/20 active:scale-[0.99] transition-all min-h-[48px] h-12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
                 >
-                  <MessageCircle className="w-4 h-4 text-teal-100" />
+                  <WhatsAppIcon className="w-4 h-4 text-teal-100" />
                   <span>{siteConfig.hero.secondaryCta.text}</span>
                 </a>
               </div>

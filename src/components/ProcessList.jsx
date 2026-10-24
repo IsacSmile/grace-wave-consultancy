@@ -1,5 +1,6 @@
 import React from 'react';
-import { ArrowUpRight, Check, Phone, MessageSquare } from 'lucide-react';
+import { ArrowUpRight, Check, Phone } from 'lucide-react';
+import { WhatsAppIcon } from './WhatsAppIcon';
 import { Reveal } from './Reveal';
 import { SectionHeading } from './SectionHeading';
 import { siteConfig } from '../data/siteConfig';
@@ -105,7 +106,7 @@ export function ProcessList({ steps }) {
                           rel="noopener noreferrer"
                           className="h-10 px-4 rounded-xl text-xs font-semibold text-emerald-950 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 shadow-sm transition-all inline-flex items-center justify-center gap-1.5"
                         >
-                          <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
+                          <WhatsAppIcon className="w-3.5 h-3.5 text-emerald-600" />
                           <span>WhatsApp</span>
                         </a>
                       </div>
