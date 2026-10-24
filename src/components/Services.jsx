@@ -137,7 +137,7 @@ export function Services() {
   };
 
   const isAnyOpen = openId !== null;
-  const isAnyHovered = hoveredIndex !== -1;
+  const isAnyHovered = hoveredIndex !== -1 && hoveredIndex !== null && hoveredIndex >= 0;
 
   return (
     <section
@@ -209,7 +209,8 @@ export function Services() {
               services={servicesData}
               containerRef={listRef}
               activeHoverIndex={hoveredIndex}
-              isAnyOpen={isAnyOpen}
+              openId={openId}
+              isOverExpanded={isOverExpanded}
               focusedIndex={focusedIndex}
               focusedElement={focusedElement}
               isHoverCapable={isHoverCapable}

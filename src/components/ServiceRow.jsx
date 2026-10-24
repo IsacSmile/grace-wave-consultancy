@@ -57,7 +57,7 @@ export function ServiceRow({
         aria-controls={`service-panel-${service.id}`}
         onClick={() => onToggle(service.id, rowRef.current)}
         onMouseEnter={() => onHover(index)}
-        onMouseLeave={() => onHover(null)}
+        onMouseLeave={() => onHover(-1)}
         onFocus={(e) => onFocus(index, e.currentTarget)}
         onBlur={onBlur}
         className="w-full text-left py-6 sm:py-8 lg:py-10 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 rounded-xl transition-colors cursor-pointer select-none"

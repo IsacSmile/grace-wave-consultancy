@@ -8,14 +8,15 @@ const VIEWPORT_MARGIN = 20;
 /**
  * ServiceCursorPreview
  * Desktop-only floating preview card that follows the cursor using GSAP quickTo.
- * Hidden whenever any service accordion panel is open (isAnyOpen === true).
+ * Hidden for the currently expanded row or when cursor is inside an expanded drawer.
  * Clamped inside the viewport, tilts with mouse velocity, and crossfades stacked images.
  */
 export function ServiceCursorPreview({
   services,
   containerRef,
   activeHoverIndex,
-  isAnyOpen = false,
+  openId = null,
+  isOverExpanded = false,
   focusedIndex = -1,
   focusedElement = null,
   isHoverCapable = true,
@@ -90,8 +91,8 @@ export function ServiceCursorPreview({
       lastPointerPos.current = { clientX: e.clientX, clientY: e.clientY };
       setIsPointerInside(true);
 
-      // If a panel is open or keyboard focus is active, do not position for cursor
-      if (isAnyOpen || focusedIndex !== -1) return;
+      // If keyboard focus is active, do not position for cursor
+      if (focusedIndex !== -1) return;
 
       const targetX = e.clientX - PREVIEW_WIDTH * 0.45;
       const targetY = e.clientY - PREVIEW_HEIGHT * 0.45;
@@ -122,9 +123,12 @@ export function ServiceCursorPreview({
 
     const handleMouseMove = (e) => {
       lastPointerPos.current = { clientX: e.clientX, clientY: e.clientY };
+      if (!isPointerInside) {
+        setIsPointerInside(true);
+      }
 
-      // Rule 7: Skip updating quickTo follow while panel is open or keyboard active
-      if (isAnyOpen || focusedIndex !== -1 || !isPointerInside) return;
+      // Skip updating quickTo follow while keyboard active
+      if (focusedIndex !== -1) return;
 
       const targetX = e.clientX - PREVIEW_WIDTH * 0.45;
       const targetY = e.clientY - PREVIEW_HEIGHT * 0.45;
@@ -164,13 +168,23 @@ export function ServiceCursorPreview({
       container.removeEventListener('pointerleave', handlePointerLeave);
       container.removeEventListener('mousemove', handleMouseMove);
     };
-  }, [containerRef, isAnyOpen, focusedIndex, isPointerInside]);
+  }, [containerRef, focusedIndex, isPointerInside]);
 
   // Derived single source of truth for visibility:
-  // Visible ONLY when hoverCapable, pointer is inside (or keyboard focused), and NO panel is open.
+  // Visible ONLY when hoverCapable, target row is hovered/focused, the hovered row is NOT open, and cursor is not over expanded drawer.
   const isKeyboardActive = focusedIndex !== -1 && Boolean(focusedElement);
+  const effectiveIndex = focusedIndex !== -1 ? focusedIndex : activeHoverIndex;
+  const isTargetRowOpen =
+    effectiveIndex >= 0 &&
+    services[effectiveIndex] &&
+    services[effectiveIndex].id === openId;
+
   const showPreview =
-    isHoverCapable && !isAnyOpen && (isPointerInside || isKeyboardActive);
+    isHoverCapable &&
+    effectiveIndex >= 0 &&
+    !isTargetRowOpen &&
+    !isOverExpanded &&
+    (isPointerInside || isKeyboardActive);
 
   // Manage Preview Entrance and Exit with GSAP tween
   useEffect(() => {
@@ -181,7 +195,7 @@ export function ServiceCursorPreview({
     }
 
     if (showPreview) {
-      // If returning to visible from closed panel with cursor inside, sync position to prevent jump
+      // If returning to visible with cursor inside, sync position to prevent jump
       if (!isKeyboardActive && lastPointerPos.current.clientX > 0) {
         const targetX = lastPointerPos.current.clientX - PREVIEW_WIDTH * 0.45;
         const targetY = lastPointerPos.current.clientY - PREVIEW_HEIGHT * 0.45;
@@ -225,11 +239,10 @@ export function ServiceCursorPreview({
     }
   }, [showPreview, isKeyboardActive]);
 
-  // Rule 5: While a panel is open, row hovers do NOT crossfade images
-  const effectiveIndex = focusedIndex !== -1 ? focusedIndex : activeHoverIndex;
+  // Image crossfade on row hover/focus
   useEffect(() => {
-    if (isAnyOpen) return;
     if (effectiveIndex === null || effectiveIndex === undefined || effectiveIndex < 0) return;
+    if (isTargetRowOpen) return;
 
     imageRefs.current.forEach((el, idx) => {
       if (!el) return;
@@ -254,13 +267,14 @@ export function ServiceCursorPreview({
         });
       }
     });
-  }, [effectiveIndex, isAnyOpen]);
+  }, [effectiveIndex, isTargetRowOpen]);
 
-  // Rule 6: Keyboard Focus position (only when no panel is open)
+  // Keyboard Focus position (only when target row is not open)
   useEffect(() => {
-    if (isAnyOpen || focusedIndex === -1 || !focusedElement || !previewRef.current) {
+    if (focusedIndex === -1 || !focusedElement || !previewRef.current) {
       return;
     }
+    if (isTargetRowOpen) return;
 
     const rect = focusedElement.getBoundingClientRect();
     const targetX = Math.min(
@@ -280,7 +294,7 @@ export function ServiceCursorPreview({
       quickY.current(targetY);
       quickRot.current(0);
     }
-  }, [focusedIndex, focusedElement, isAnyOpen]);
+  }, [focusedIndex, focusedElement, isTargetRowOpen]);
 
   return (
     <div
