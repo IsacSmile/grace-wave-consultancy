@@ -103,3 +103,69 @@ html.lenis, html.lenis body {
 ::-webkit-scrollbar-thumb:hover {
   background: #D4AF37;
 }
+
+/* Process Section: Rotating Wheel & Geometry */
+.font-numeric-slashed {
+  font-feature-settings: "zero" 1, "tnum" 1;
+  font-variant-numeric: slashed-zero tabular-nums;
+}
+
+.process-section {
+  --R: max(340px, 100vw);
+  --dotX: max(48px, 15vw);
+  --step: 22deg;
+  --cy: 56%;
+  --content-left: calc(var(--dotX) + 86px);
+}
+
+@media (min-width: 640px) {
+  .process-section {
+    --dotX: 18vw;
+    --content-left: calc(var(--dotX) + 100px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .process-section {
+    --R: 90svh;
+    --dotX: max(64px, 14vw);
+    --step: 12deg;
+    --cy: 52%;
+    --content-left: calc(var(--dotX) + 160px);
+  }
+}
+
+.process-wheel-item {
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.process-step-num {
+  font-feature-settings: "zero" 1, "tnum" 1;
+  font-variant-numeric: slashed-zero tabular-nums;
+  transform: scale(calc(1 - 0.2 * min(var(--d, 0), 1)));
+  color: rgba(10, 31, 77, calc(1 - 0.72 * min(var(--d, 0), 1)));
+  opacity: max(0, calc(1 - 0.5 * var(--d, 0)));
+  transition: transform 0.1s ease-out, color 0.15s ease-out;
+  transform-origin: left center;
+}
+
+@media (min-width: 1024px) {
+  .process-step-num {
+    opacity: max(0, calc(1 - 0.4 * var(--d, 0)));
+  }
+}
+
+.process-wheel-item[data-hidden="true"] {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.process-step-dot {
+  width: calc(14px - 8px * min(var(--d, 0), 1));
+  height: calc(14px - 8px * min(var(--d, 0), 1));
+  background-color: rgba(10, 31, 77, calc(1 - 0.75 * min(var(--d, 0), 1)));
+  box-shadow: 0 0 0 calc(5px * max(0, 1 - 2 * var(--d, 0))) rgba(197, 160, 89, 0.25);
+  transition: width 0.15s ease-out, height 0.15s ease-out, background-color 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+

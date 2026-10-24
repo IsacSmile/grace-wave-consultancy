@@ -1,147 +1,235 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { MessageSquare, PhoneCall, FileText, CheckCircle2, ArrowRight } from 'lucide-react';
-import { siteConfig } from '../data/siteConfig';
-import { Reveal } from './Reveal';
+import { processSteps } from '../data/process';
+import { ProcessWheel } from './ProcessWheel';
+import { ProcessContent } from './ProcessContent';
+import { ProcessList } from './ProcessList';
 import { SectionHeading } from './SectionHeading';
 import { useLenis } from './SmoothScroll';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const iconMap = {
-  MessageSquare: MessageSquare,
-  PhoneCall: PhoneCall,
-  FileText: FileText,
-  CheckCircle2: CheckCircle2,
-};
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 export function Process() {
-  const processSectionRef = useRef(null);
-  const progressBarRef = useRef(null);
-  const { scrollTo } = useLenis();
+  const sectionRef = useRef(null);
+  const wheelRef = useRef(null);
+  const arcRef = useRef(null);
+  const itemRefs = useRef([]);
+  const scrollTriggerRef = useRef(null);
+  const snapTimerRef = useRef(null);
+  const currentActiveRef = useRef(0);
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isShortViewport, setIsShortViewport] = useState(false);
+
+  const { lenis } = useLenis();
   const prefersReducedMotion = useReducedMotion();
 
+  // Viewport height check: under 520px uses static fallback (landscape phones)
   useEffect(() => {
-    if (prefersReducedMotion || !processSectionRef.current || !progressBarRef.current) return;
+    const handleResize = () => {
+      setIsShortViewport(window.innerHeight < 520);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Refresh ScrollTrigger after fonts load
+  useEffect(() => {
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(() => {
+        ScrollTrigger.refresh();
+      });
+    }
+  }, []);
+
+  // Jump to step on click, focus, or keyboard
+  const handleStepSelect = (idx) => {
+    if (!scrollTriggerRef.current) return;
+    const st = scrollTriggerRef.current;
+    const n = processSteps.length;
+    const targetProgress = idx / (n - 1);
+    const targetScroll = st.start + targetProgress * (st.end - st.start);
+
+    if (lenis) {
+      lenis.scrollTo(targetScroll, {
+        duration: 0.7,
+        easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
+      });
+    } else {
+      window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+    }
+  };
+
+  useEffect(() => {
+    if (prefersReducedMotion || isShortViewport || !sectionRef.current || !wheelRef.current) return;
 
     const ctx = gsap.context(() => {
-      // Scrubbed progress line
-      gsap.fromTo(
-        progressBarRef.current,
-        { scaleY: 0 },
-        {
-          scaleY: 1,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: processSectionRef.current,
-            start: 'top 70%',
-            end: 'bottom 80%',
-            scrub: 0.5,
+      const n = processSteps.length;
+      const isLg = window.innerWidth >= 1024;
+      const stepAngle = isLg ? 12 : 22;
+      const totalRotation = -(n - 1) * stepAngle;
+
+      // 1. Arc stroke-like entrance (scaleY from center) and visible numbers entrance
+      if (arcRef.current) {
+        gsap.fromTo(
+          arcRef.current,
+          { scaleY: 0, opacity: 0 },
+          {
+            scaleY: 1,
+            opacity: 1,
+            duration: 0.8,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 80%',
+              once: true,
+            },
+          }
+        );
+      }
+
+      const validItems = itemRefs.current.filter(Boolean);
+      if (validItems.length > 0) {
+        gsap.fromTo(
+          validItems,
+          { opacity: 0, scale: 0.75 },
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 80%',
+              once: true,
+            },
+          }
+        );
+      }
+
+      // 2. Wheel rotation driven by ScrollTrigger pin scrub
+      const tween = gsap.to(wheelRef.current, {
+        rotation: totalRotation,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          pin: true,
+          start: 'top top',
+          end: () => `+=${(n - 1) * window.innerHeight * 0.8}`,
+          scrub: 0.5,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            const progress = self.progress;
+            const f = progress * (n - 1);
+            const isDesktop = window.innerWidth >= 1024;
+            const maxNeighbour = isDesktop ? 2.3 : 1.3;
+
+            // Set --d on each item via style.setProperty for 60fps CSS interpolation
+            itemRefs.current.forEach((el, idx) => {
+              if (!el) return;
+              const d = Math.abs(idx - f);
+              el.style.setProperty('--d', d.toFixed(3));
+              el.setAttribute('data-hidden', d > maxNeighbour ? 'true' : 'false');
+            });
+
+            // Update active index for content transition when rounded step changes
+            const rounded = Math.round(f);
+            if (rounded !== currentActiveRef.current) {
+              currentActiveRef.current = rounded;
+              setActiveIndex(rounded);
+            }
+
+            // Snap: after scrolling stops for 140ms strictly between 0 and 1
+            clearTimeout(snapTimerRef.current);
+            if (progress > 0.005 && progress < 0.995) {
+              snapTimerRef.current = setTimeout(() => {
+                const currentP = self.progress;
+                if (currentP > 0.005 && currentP < 0.995) {
+                  const nearestStep = Math.round(currentP * (n - 1));
+                  const targetP = nearestStep / (n - 1);
+                  if (Math.abs(targetP - currentP) > 0.015) {
+                    const targetScroll = self.start + targetP * (self.end - self.start);
+                    if (lenis) {
+                      lenis.scrollTo(targetScroll, {
+                        duration: 0.7,
+                        easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
+                      });
+                    } else {
+                      window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+                    }
+                  }
+                }
+              }, 140);
+            }
           },
-        }
-      );
-    }, processSectionRef);
+        },
+      });
 
-    return () => ctx.revert();
-  }, [prefersReducedMotion]);
+      scrollTriggerRef.current = tween.scrollTrigger;
+    }, sectionRef);
 
-  const handleEnquiryClick = (e) => {
-    e.preventDefault();
-    scrollTo('#contact', 76);
-  };
+    return () => {
+      clearTimeout(snapTimerRef.current);
+      ctx.revert();
+    };
+  }, [prefersReducedMotion, isShortViewport, lenis]);
+
+  // Fallback mode for reduced motion or short viewports (<520px)
+  if (prefersReducedMotion || isShortViewport) {
+    return <ProcessList steps={processSteps} />;
+  }
 
   return (
     <section
       id="process"
-      ref={processSectionRef}
-      className="py-20 md:py-28 lg:py-32 bg-white text-slate-800 relative overflow-hidden"
+      ref={sectionRef}
+      aria-labelledby="process-heading"
+      className="process-section relative w-full h-[100svh] bg-white text-slate-800 overflow-hidden select-none"
     >
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
-        
-        {/* Section Header */}
-        <SectionHeading
-          badge={siteConfig.process.sectionBadge}
-          title={siteConfig.process.title}
-          subtitle={siteConfig.process.subtitle}
-        />
-
-        {/* Process Timeline with Scroll-Scrubbed Progress Line */}
-        <div className="relative max-w-4xl mx-auto">
-          {/* Background Track Line (hidden on smallest screens, visible sm+) */}
-          <div
-            className="absolute left-6 sm:left-1/2 top-4 bottom-4 w-1 -translate-x-1/2 bg-slate-200 rounded-full"
-            aria-hidden="true"
-          >
-            {/* Scroll-Scrubbed Animated Progress Bar */}
-            <div
-              ref={progressBarRef}
-              className="w-full h-full bg-gradient-to-b from-navy-900 via-gold-500 to-navy-900 origin-top rounded-full"
-              style={prefersReducedMotion ? { transform: 'scaleY(1)' } : undefined}
-            />
-          </div>
-
-          {/* 4 Steps */}
-          <div className="space-y-12 sm:space-y-16 relative">
-            {siteConfig.process.steps.map((step, idx) => {
-              const IconComponent = iconMap[step.icon] || MessageSquare;
-              const isEven = idx % 2 === 1;
-
-              return (
-                <div
-                  key={step.step}
-                  className={`flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-10 ${
-                    isEven ? 'sm:flex-row-reverse text-left sm:text-right' : 'text-left'
-                  }`}
-                >
-                  {/* Step Card Content */}
-                  <div className="w-full sm:w-1/2 pl-14 sm:pl-0">
-                    <Reveal delay={idx * 0.08} y={24}>
-                      <div className="p-6 sm:p-7 rounded-2xl bg-slate-50 border border-slate-200/90 shadow-sm hover:border-gold-400 hover:shadow-md transition-all">
-                        <div className={`flex items-center gap-2 mb-2 ${isEven ? 'sm:justify-end' : ''}`}>
-                          <span className="text-xs font-bold text-gold-600 uppercase tracking-wider">
-                            Step {step.step} • {step.subtitle}
-                          </span>
-                        </div>
-                        <h3 className="font-heading font-bold text-lg sm:text-xl text-navy-950 mb-2">
-                          {step.title}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                          {step.description}
-                        </p>
-                      </div>
-                    </Reveal>
-                  </div>
-
-                  {/* Center Node Icon Marker */}
-                  <div className="absolute left-6 sm:left-1/2 -translate-x-1/2 w-12 h-12 rounded-2xl bg-navy-950 border-2 border-gold-400 text-gold-400 flex items-center justify-center shadow-md z-10">
-                    <IconComponent className="w-5 h-5" />
-                  </div>
-
-                  {/* Spacer for opposite column */}
-                  <div className="hidden sm:block sm:w-1/2" />
-                </div>
-              );
-            })}
-          </div>
+      {/* Top-left: Compact Section Heading */}
+      <div className="absolute top-0 left-0 right-0 pt-[92px] px-5 sm:px-6 lg:px-8 pointer-events-none z-30">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeading
+            badge="HOW WE WORK"
+            title="From enquiry to onboarding"
+            className="text-left pointer-events-auto"
+          />
         </div>
-
-        {/* Section Bottom CTA */}
-        <Reveal delay={0.2}>
-          <div className="mt-16 text-center">
-            <a
-              href="#contact"
-              onClick={handleEnquiryClick}
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold text-navy-950 bg-gradient-to-r from-gold-400 to-gold-500 hover:from-gold-300 hover:to-gold-400 shadow-md hover:shadow-gold-glow transition-all"
-            >
-              <span>Start With Step 01: Free Enquiry</span>
-              <ArrowRight className="w-4 h-4" />
-            </a>
-          </div>
-        </Reveal>
-
       </div>
+
+      {/* Rotating Wheel (Arc, Dots, Numbers) */}
+      <ProcessWheel
+        steps={processSteps}
+        wheelRef={wheelRef}
+        arcRef={arcRef}
+        itemRefs={itemRefs}
+        activeIndex={activeIndex}
+        onStepSelect={handleStepSelect}
+      />
+
+      {/* Content Column (Title, Description, CTA for Active Step) */}
+      <ProcessContent
+        steps={processSteps}
+        activeIndex={activeIndex}
+      />
+
+      {/* Visually hidden <ol> containing all four steps for screen readers and SEO */}
+      <ol className="sr-only">
+        {processSteps.map((step) => (
+          <li key={step.id}>
+            <h3>
+              Step {step.number}: {step.title}
+            </h3>
+            <p>{step.text}</p>
+          </li>
+        ))}
+      </ol>
     </section>
   );
 }
