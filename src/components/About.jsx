@@ -229,7 +229,7 @@ export function About() {
             {/* 2. H2 Heading (Bold Navy, Clean 2 Lines) */}
             <h2
               id="about-heading"
-              className="about-reveal-el font-heading font-extrabold text-2xl sm:text-3xl lg:text-4xl xl:text-[2.65rem] text-[#0B1B4D] tracking-tight leading-[1.18] mb-4 max-w-lg"
+              className="about-reveal-el font-heading font-extrabold text-2xl sm:text-3xl lg:text-4xl xl:text-[2.65rem] text-[#0B1B4D] tracking-tight leading-snug lg:leading-[1.28] mb-4 max-w-lg"
             >
               {aboutData.heading}
             </h2>
