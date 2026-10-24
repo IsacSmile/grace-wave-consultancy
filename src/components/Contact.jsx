@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Phone, Mail, Clock, MessageCircle, MapPin, Sparkles, Map } from 'lucide-react';
+import { Phone, Clock, MapPin, Sparkles } from 'lucide-react';
 import { siteConfig } from '../data/siteConfig';
 import { EnquiryForm } from './EnquiryForm';
 import { useReducedMotion } from '../hooks/useReducedMotion';
@@ -16,7 +16,6 @@ export function Contact() {
   const leftContentRef = useRef(null);
   const formCardRef = useRef(null);
   const dividerRef = useRef(null);
-  const [showMap, setShowMap] = useState(false);
 
   const prefersReducedMotion = useReducedMotion();
 
@@ -99,32 +98,32 @@ export function Contact() {
           height={893}
           alt="Dubai skyline and corporate office evening atmosphere"
           loading="lazy"
-          className="absolute inset-0 w-full h-[115%] -top-[7.5%] object-cover object-[center_30%] lg:object-center opacity-85 will-change-transform"
+          className="absolute inset-0 w-full h-[115%] -top-[7.5%] object-cover object-[center_30%] lg:object-center opacity-75 will-change-transform"
         />
         {/* Directional Overlay: darkens behind left text while letting the Dubai skyline & advisor shine through clearly */}
         <div
-          className="absolute inset-0 bg-gradient-to-r from-[#060E18]/90 via-[#060E18]/60 to-[#060E18]/40"
+          className="absolute inset-0 bg-gradient-to-r from-[#060E18]/95 via-[#060E18]/75 to-[#060E18]/50"
           aria-hidden="true"
         />
         {/* Subtle top/bottom vignette for smooth section transition */}
         <div
-          className="absolute inset-0 bg-gradient-to-b from-[#060E18]/60 via-transparent to-[#060E18]/80"
+          className="absolute inset-0 bg-gradient-to-b from-[#060E18]/70 via-transparent to-[#060E18]/85"
           aria-hidden="true"
         />
       </div>
 
       {/* Main Centered Container */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
-          {/* ================= LEFT CONTENT BLOCK ================= */}
+          {/* ================= LEFT CONTENT BLOCK (CLEAN & EDITORIAL) ================= */}
           <div
             ref={leftContentRef}
-            className="lg:col-span-6 flex flex-col justify-end text-left space-y-6"
+            className="lg:col-span-6 flex flex-col justify-center text-left space-y-7"
           >
             {/* 1. Small Pill Badge */}
             <div className="contact-reveal-el">
-              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-navy-950/80 border border-teal-400/40 text-teal-300 text-xs sm:text-sm font-semibold shadow-sm backdrop-blur-xs">
+              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-teal-300 text-xs sm:text-sm font-semibold tracking-wide backdrop-blur-sm shadow-sm">
                 <Sparkles className="w-3.5 h-3.5 text-teal-400" />
                 <span>{siteConfig.contact.sectionBadge}</span>
               </span>
@@ -141,108 +140,58 @@ export function Contact() {
             {/* 3. Thin Animated Divider Line */}
             <div
               ref={dividerRef}
-              className="w-full h-px bg-white/20 my-2"
+              className="w-full h-px bg-white/15 my-1"
               aria-hidden="true"
             />
 
-            {/* 4. Info Row: Email & Working Hours */}
-            <div className="contact-reveal-el grid grid-cols-1 sm:grid-cols-2 gap-5 pt-1">
+            {/* 4. Structured 2x2 Information Grid */}
+            <div className="contact-reveal-el grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 pt-1">
+              {/* Email */}
               <div>
-                <span className="block text-xs font-bold tracking-wider uppercase text-slate-300 mb-1">
+                <span className="block text-xs font-semibold tracking-wider uppercase text-slate-400 mb-1.5">
                   Email Address
                 </span>
                 <a
                   href={siteConfig.business.emailMailto}
-                  className="text-sm sm:text-base font-bold text-white hover:text-blue-400 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded"
+                  className="text-sm sm:text-base font-semibold text-white hover:text-blue-400 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded block"
                 >
                   {siteConfig.business.email}
                 </a>
               </div>
 
+              {/* Direct Phone */}
               <div>
-                <span className="block text-xs font-bold tracking-wider uppercase text-slate-300 mb-1">
+                <span className="block text-xs font-semibold tracking-wider uppercase text-slate-400 mb-1.5">
+                  Direct Line
+                </span>
+                <a
+                  href={siteConfig.business.phoneTel}
+                  className="text-sm sm:text-base font-semibold text-white hover:text-blue-400 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded block"
+                >
+                  {siteConfig.business.phoneDisplay}
+                </a>
+              </div>
+
+              {/* Working Hours */}
+              <div>
+                <span className="block text-xs font-semibold tracking-wider uppercase text-slate-400 mb-1.5">
                   Working Hours
                 </span>
-                <div className="flex items-center gap-2 text-sm sm:text-base font-semibold text-slate-200">
+                <div className="flex items-center gap-2 text-sm sm:text-base font-medium text-slate-200">
                   <Clock className="w-4 h-4 text-teal-400 shrink-0" />
                   <span>{siteConfig.business.workingHours}</span>
                 </div>
               </div>
-            </div>
 
-            {/* 5. Phone Lines & WhatsApp Quick Link */}
-            <div className="contact-reveal-el pt-2 space-y-2.5">
-              <span className="block text-xs font-bold tracking-wider uppercase text-slate-300 mb-1">
-                Direct Contact Lines
-              </span>
-              
-              <div className="flex flex-wrap items-center gap-3">
-                <a
-                  href={siteConfig.business.phoneTel}
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-sm font-bold text-white transition-all min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
-                  aria-label={`Call primary phone ${siteConfig.business.phoneDisplay}`}
-                >
-                  <Phone className="w-4 h-4 text-blue-400" />
-                  <span>{siteConfig.business.phoneDisplay}</span>
-                </a>
-
-                {siteConfig.business.phoneSecondary && (
-                  <a
-                    href={siteConfig.business.phoneSecondaryTel}
-                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-sm font-bold text-white transition-all min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
-                    aria-label={`Call secondary phone ${siteConfig.business.phoneSecondaryDisplay}`}
-                  >
-                    <Phone className="w-4 h-4 text-teal-400" />
-                    <span>{siteConfig.business.phoneSecondaryDisplay}</span>
-                  </a>
-                )}
-
-                <a
-                  href={siteConfig.business.whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600/80 hover:bg-emerald-600 border border-emerald-500/50 text-sm font-bold text-white shadow-sm transition-all min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
-                  aria-label="Chat on WhatsApp"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>Chat on WhatsApp</span>
-                </a>
-              </div>
-            </div>
-
-            {/* 6. Office Address & Google Map Embed / Toggle */}
-            <div className="contact-reveal-el pt-2 space-y-3">
-              <div className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-300">
-                <MapPin className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
-                <span>{siteConfig.business.address}</span>
-              </div>
-
-              {/* Map Toggle & Embed */}
+              {/* Office Location */}
               <div>
-                <button
-                  type="button"
-                  onClick={() => setShowMap(!showMap)}
-                  className="inline-flex items-center gap-2 text-xs font-semibold text-blue-300 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded py-1"
-                >
-                  <Map className="w-3.5 h-3.5" />
-                  <span>{showMap ? 'Hide office map' : 'View office map location'}</span>
-                </button>
-
-                {showMap && (
-                  <div className="mt-3 rounded-2xl overflow-hidden border border-white/20 shadow-lg h-48 sm:h-52 w-full animate-fade-in bg-slate-900">
-                    <iframe
-                      src={siteConfig.contact.googleMapsEmbedUrl}
-                      title="Grace Way Accounting Office Location Map"
-                      width="100%"
-                      height="100%"
-                      style={{ border: 0 }}
-                      allowFullScreen=""
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                      className="w-full h-full"
-                    />
-                  </div>
-                )}
+                <span className="block text-xs font-semibold tracking-wider uppercase text-slate-400 mb-1.5">
+                  Office Location
+                </span>
+                <div className="flex items-start gap-2 text-sm sm:text-base font-medium text-slate-200">
+                  <MapPin className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
+                  <span>{siteConfig.business.address}</span>
+                </div>
               </div>
             </div>
 
