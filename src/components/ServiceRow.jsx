@@ -153,9 +153,9 @@ export function ServiceRow({
         }`}
       >
         <div className="overflow-hidden">
-          <div className="pb-8 pt-2">
+          <div className="pb-6 pt-1.5">
             {/* --- Mobile View Order: Image -> Description -> Bullets -> Enquire Button --- */}
-            <div className="lg:hidden flex flex-col gap-5">
+            <div className="lg:hidden flex flex-col gap-4">
               <div className="overflow-hidden rounded-2xl bg-slate-100 border border-slate-200/80 shadow-xs">
                 <img
                   src={service.image}
@@ -173,13 +173,13 @@ export function ServiceRow({
                 {service.description}
               </p>
 
-              <ul className="space-y-3">
+              <ul className="space-y-2.5">
                 {service.bullets.map((bullet, bIdx) => (
-                  <li key={bIdx} className="flex items-start gap-3">
-                    <span className="w-5 h-5 rounded-full bg-amber-50 text-[#C5A059] flex items-center justify-center shrink-0 mt-0.5 border border-[#C5A059]/30">
+                  <li key={bIdx} className="flex items-center gap-2.5">
+                    <span className="w-5 h-5 rounded-full bg-amber-50 text-[#C5A059] flex items-center justify-center shrink-0 border border-[#C5A059]/30">
                       <Check className="w-3.5 h-3.5" />
                     </span>
-                    <span className="text-sm xs:text-base text-slate-700 font-medium leading-snug">
+                    <span className="text-base text-[#0B1B4D] font-medium leading-snug">
                       {bullet}
                     </span>
                   </li>
@@ -197,8 +197,8 @@ export function ServiceRow({
             </div>
 
             {/* --- Desktop View: Editorial 2-Column Expansion --- */}
-            <div className="hidden lg:grid lg:grid-cols-12 lg:gap-8 items-center bg-white/70 backdrop-blur-md rounded-2xl p-6 xl:p-8 border border-slate-200/80 shadow-xs">
-              <div className="lg:col-span-4 rounded-xl overflow-hidden shadow-sm aspect-[4/3] max-h-[280px]">
+            <div className="hidden lg:grid lg:grid-cols-12 lg:gap-6 items-center bg-white/70 backdrop-blur-md rounded-2xl p-5 xl:p-6 border border-slate-200/80 shadow-xs">
+              <div className="lg:col-span-4 rounded-xl overflow-hidden shadow-sm aspect-[4/3] max-h-[220px]">
                 <img
                   src={service.image}
                   alt={service.imageAlt}
@@ -209,18 +209,18 @@ export function ServiceRow({
                 />
               </div>
 
-              <div className="lg:col-span-8 flex flex-col justify-between h-full">
+              <div className="lg:col-span-8 flex flex-col justify-between h-full py-1">
                 <div>
-                  <p className="text-slate-600 text-base xl:text-lg leading-relaxed mb-5">
+                  <p className="text-slate-600 text-base md:text-lg leading-relaxed mb-3.5 line-clamp-2">
                     {service.description}
                   </p>
-                  <ul className="grid grid-cols-1 gap-2.5 mb-6">
+                  <ul className="grid grid-cols-1 md:grid-cols-3 gap-2.5 xl:gap-3 mb-5">
                     {service.bullets.map((bullet, bIdx) => (
-                      <li key={bIdx} className="flex items-start gap-3">
-                        <span className="w-5 h-5 rounded-full bg-amber-50 text-[#C5A059] flex items-center justify-center shrink-0 mt-0.5 border border-[#C5A059]/30">
+                      <li key={bIdx} className="flex items-center gap-2">
+                        <span className="w-5 h-5 rounded-full bg-amber-50 text-[#C5A059] flex items-center justify-center shrink-0 border border-[#C5A059]/30">
                           <Check className="w-3.5 h-3.5" />
                         </span>
-                        <span className="text-sm xl:text-base text-slate-700 font-medium">
+                        <span className="text-sm xl:text-base text-[#0B1B4D] font-medium leading-snug">
                           {bullet}
                         </span>
                       </li>
@@ -232,7 +232,7 @@ export function ServiceRow({
                   <button
                     type="button"
                     onClick={() => onEnquire(service.serviceValue)}
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-base font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/25 active:scale-[0.99] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 cursor-pointer"
+                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 xl:py-3 rounded-xl text-base font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/25 active:scale-[0.99] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 cursor-pointer"
                   >
                     <span>Enquire about {service.title}</span>
                     <ArrowUpRight className="w-4 h-4" />
