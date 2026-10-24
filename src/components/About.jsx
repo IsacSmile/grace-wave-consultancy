@@ -226,16 +226,16 @@ export function About() {
               </span>
             </div>
 
-            {/* 2. H2 Heading (Bold Navy, 2 to 3 lines) */}
+            {/* 2. H2 Heading (Bold Navy, Clean 2 Lines) */}
             <h2
               id="about-heading"
-              className="about-reveal-el font-heading font-black text-3xl sm:text-4xl lg:text-5xl text-[#0B1B4D] tracking-tight leading-[1.18] mb-5"
+              className="about-reveal-el font-heading font-extrabold text-2xl sm:text-3xl lg:text-4xl xl:text-[2.65rem] text-[#0B1B4D] tracking-tight leading-[1.18] mb-4 max-w-lg"
             >
               {aboutData.heading}
             </h2>
 
-            {/* 3. Supporting Paragraph */}
-            <p className="about-reveal-el text-base text-slate-600 leading-relaxed max-w-xl mb-7">
+            {/* 3. Concise Supporting Paragraph */}
+            <p className="about-reveal-el text-sm sm:text-base text-slate-500 font-normal leading-relaxed max-w-lg mb-6">
               {aboutData.paragraph}
             </p>
 

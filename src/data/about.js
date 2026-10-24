@@ -5,7 +5,7 @@ export const aboutData = {
   badge: "ABOUT THE COMPANY",
   heading: "Empowering businesses and individuals financially",
   paragraph:
-    "At Grace Way Accounting FZC LLC, our mission is to deliver dependable financial stewardship for UAE enterprises. We navigate the evolving Federal Tax Authority regulatory framework, providing clear bookkeeping, VAT compliance, and corporate tax advisory that keep your business compliant, agile, and strategically positioned for sustainable growth.",
+    "Dependable accounting, corporate tax, and statutory advisory tailored to keep your UAE business compliant, agile, and financially sound.",
   points: [
     "Accurate accounting and bookkeeping",
     "Reliable tax and compliance support",
