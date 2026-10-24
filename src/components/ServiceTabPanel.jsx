@@ -34,8 +34,8 @@ export function ServiceTabPanel({
       className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start"
     >
       {/* Mobile: Image block is FIRST (order-1 lg:order-2) */}
-      <div className="order-1 lg:order-2 lg:col-span-6 w-full">
-        <div className="relative rounded-3xl overflow-hidden w-full aspect-[4/3] lg:aspect-[4/5] bg-slate-100 shadow-sm border border-[#0B1B4D]/5">
+      <div className="order-1 lg:order-2 lg:col-span-5 w-full flex justify-center lg:justify-end">
+        <div className="relative rounded-3xl overflow-hidden w-full max-w-[360px] sm:max-w-[400px] lg:max-w-[440px] aspect-[4/3] lg:aspect-[4/5] bg-slate-100 shadow-sm border border-[#0B1B4D]/5">
           <img
             ref={imageRef}
             src={tab.image}
@@ -54,9 +54,9 @@ export function ServiceTabPanel({
           />
 
           {/* Overlaid Dark Info Card (bottom-left) */}
-          <div className="absolute bottom-3 left-3 md:bottom-6 md:left-6 z-10 bg-[#0B1B4D]/95 text-white rounded-2xl p-4 md:p-6 max-w-[280px] shadow-xl border border-white/10 backdrop-blur-sm">
+          <div className="absolute bottom-3 left-3 md:bottom-5 md:left-5 z-10 bg-[#0B1B4D]/95 text-white rounded-2xl p-3.5 md:p-5 max-w-[240px] sm:max-w-[260px] shadow-xl border border-white/10 backdrop-blur-sm">
             {/* Top Row: Label + 44px circular link button */}
-            <div className="flex items-center justify-between gap-4 mb-3">
+            <div className="flex items-center justify-between gap-3 mb-2.5">
               <span className="text-[10px] md:text-xs font-semibold tracking-widest text-[#C5A059] uppercase">
                 UAE Experience
               </span>
@@ -64,14 +64,14 @@ export function ServiceTabPanel({
                 type="button"
                 onClick={handleEnquireClick}
                 aria-label={`Enquire about ${tab.tabLabel} UAE experience`}
-                className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors min-h-[44px] min-w-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white shrink-0"
+                className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors min-h-[40px] min-w-[40px] sm:min-h-[44px] sm:min-w-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white shrink-0"
               >
                 <ArrowUpRight className="w-4 h-4 text-white" />
               </button>
             </div>
 
             {/* Bottom Row: Counter + Description */}
-            <div className="space-y-1">
+            <div className="space-y-0.5">
               <div className="flex items-baseline gap-1">
                 <span
                   ref={counterRef}
@@ -93,7 +93,7 @@ export function ServiceTabPanel({
       </div>
 
       {/* Left Column (Text): order-2 lg:order-1 */}
-      <div className="order-2 lg:order-1 lg:col-span-6 w-full flex flex-col justify-start">
+      <div className="order-2 lg:order-1 lg:col-span-7 w-full flex flex-col justify-start">
         {/* 1. Intro with 2px gold vertical bar */}
         <div className="border-l-2 border-[#C5A059] pl-5 mb-6 md:mb-8">
           <p className="text-lg md:text-xl font-medium text-[#0B1B4D] leading-[1.6] line-clamp-3">
