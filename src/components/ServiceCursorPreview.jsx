@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 
-const PREVIEW_WIDTH = 300;
-const PREVIEW_HEIGHT = 380;
+const PREVIEW_WIDTH = 180;
+const PREVIEW_HEIGHT = 228;
 const VIEWPORT_MARGIN = 20;
 
 /**
