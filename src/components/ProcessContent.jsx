@@ -15,8 +15,7 @@ export function ProcessContent({ steps, activeIndex }) {
   };
 
   useEffect(() => {
-    if (activeIndex === prevIndexRef.current) return;
-    prevIndexRef.current = activeIndex;
+    if (activeIndex === displayedIndex) return;
 
     const el = containerRef.current;
     if (!el) {
@@ -25,32 +24,32 @@ export function ProcessContent({ steps, activeIndex }) {
     }
 
     // GSAP imperative change animation:
-    // Outgoing block fades and moves y 0 to -12 (0.2s power2.in)
-    // Incoming block y 16 to 0 + opacity (0.45s power3.out)
+    // Outgoing block fades and moves y 0 to -8 (0.15s power2.in)
+    // Incoming block y 10 to 0 + opacity (0.35s power3.out)
     // gsap.killTweensOf + overwrite "auto" prevents tween stacking on fast scrolling
     gsap.killTweensOf(el);
     gsap.to(el, {
       opacity: 0,
-      y: -12,
-      duration: 0.2,
+      y: -8,
+      duration: 0.15,
       ease: 'power2.in',
       overwrite: 'auto',
       onComplete: () => {
         setDisplayedIndex(activeIndex);
         gsap.fromTo(
           el,
-          { opacity: 0, y: 16 },
+          { opacity: 0, y: 10 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.45,
+            duration: 0.35,
             ease: 'power3.out',
             overwrite: 'auto',
           }
         );
       },
     });
-  }, [activeIndex]);
+  }, [activeIndex, displayedIndex]);
 
   const step = steps[displayedIndex] || steps[0];
   const isLastStep = displayedIndex === steps.length - 1;

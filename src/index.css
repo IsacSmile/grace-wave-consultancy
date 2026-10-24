@@ -111,9 +111,9 @@ html.lenis, html.lenis body {
 }
 
 .process-section {
-  --R: max(340px, 100vw);
+  --R: max(340px, 92vw);
   --dotX: max(48px, 15vw);
-  --step: 22deg;
+  --step: 24deg;
   --cy: 56%;
   --content-left: calc(var(--dotX) + 86px);
 }
@@ -121,15 +121,16 @@ html.lenis, html.lenis body {
 @media (min-width: 640px) {
   .process-section {
     --dotX: 18vw;
+    --step: 22deg;
     --content-left: calc(var(--dotX) + 100px);
   }
 }
 
 @media (min-width: 1024px) {
   .process-section {
-    --R: 90svh;
+    --R: 85svh;
     --dotX: max(64px, 14vw);
-    --step: 12deg;
+    --step: 22deg;
     --cy: 52%;
     --content-left: calc(var(--dotX) + 160px);
   }
@@ -143,17 +144,10 @@ html.lenis, html.lenis body {
 .process-step-num {
   font-feature-settings: "zero" 1, "tnum" 1;
   font-variant-numeric: slashed-zero tabular-nums;
-  transform: scale(calc(1 - 0.2 * min(var(--d, 0), 1)));
+  transform: scale(calc(1 - 0.22 * min(var(--d, 0), 1)));
   color: rgba(10, 31, 77, calc(1 - 0.72 * min(var(--d, 0), 1)));
-  opacity: max(0, calc(1 - 0.5 * var(--d, 0)));
-  transition: transform 0.1s ease-out, color 0.15s ease-out;
+  opacity: max(0, calc(1 - 0.7 * var(--d, 0)));
   transform-origin: left center;
-}
-
-@media (min-width: 1024px) {
-  .process-step-num {
-    opacity: max(0, calc(1 - 0.4 * var(--d, 0)));
-  }
 }
 
 .process-wheel-item[data-hidden="true"] {
@@ -165,7 +159,6 @@ html.lenis, html.lenis body {
   width: calc(14px - 8px * min(var(--d, 0), 1));
   height: calc(14px - 8px * min(var(--d, 0), 1));
   background-color: rgba(10, 31, 77, calc(1 - 0.75 * min(var(--d, 0), 1)));
-  box-shadow: 0 0 0 calc(5px * max(0, 1 - 2 * var(--d, 0))) rgba(197, 160, 89, 0.25);
-  transition: width 0.15s ease-out, height 0.15s ease-out, background-color 0.15s ease-out, box-shadow 0.15s ease-out;
+  box-shadow: 0 0 0 calc(5px * max(0, 1 - 1.5 * var(--d, 0))) rgba(197, 160, 89, 0.25);
 }
 

@@ -59,7 +59,7 @@ export function ProcessWheel({
             transformOrigin: '0 0',
             transform: `rotate(calc(${idx} * var(--step))) translate(var(--R), -50%)`,
           }}
-          data-hidden={idx > 2}
+          data-hidden={idx > 1}
         >
           {/* Dot on the Arc (centered exactly on circumference at translateX(-50%)) */}
           <div

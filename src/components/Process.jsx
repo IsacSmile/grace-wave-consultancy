@@ -56,8 +56,8 @@ export function Process() {
 
     if (lenis) {
       lenis.scrollTo(targetScroll, {
-        duration: 0.7,
-        easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
+        duration: 0.8,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       });
     } else {
       window.scrollTo({ top: targetScroll, behavior: 'smooth' });
@@ -70,7 +70,7 @@ export function Process() {
     const ctx = gsap.context(() => {
       const n = processSteps.length;
       const isLg = window.innerWidth >= 1024;
-      const stepAngle = isLg ? 12 : 22;
+      const stepAngle = isLg ? 22 : 24;
       const totalRotation = -(n - 1) * stepAngle;
 
       // 1. Arc stroke-like entrance (scaleY from center) and visible numbers entrance
@@ -120,17 +120,16 @@ export function Process() {
           trigger: sectionRef.current,
           pin: true,
           start: 'top top',
-          end: () => `+=${(n - 1) * window.innerHeight * 0.8}`,
-          scrub: 0.5,
+          end: () => `+=${(n - 1) * window.innerHeight * 1.0}`,
+          scrub: 0.8,
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             const progress = self.progress;
-            const f = progress * (n - 1);
-            const isDesktop = window.innerWidth >= 1024;
-            const maxNeighbour = isDesktop ? 2.3 : 1.3;
+            const f = Math.max(0, Math.min(n - 1, progress * (n - 1)));
+            const maxNeighbour = 1.35;
 
-            // Set --d on each item via style.setProperty for 60fps CSS interpolation
+            // Set --d on each item via style.setProperty for 60fps/120fps CSS interpolation
             itemRefs.current.forEach((el, idx) => {
               if (!el) return;
               const d = Math.abs(idx - f);
@@ -145,27 +144,27 @@ export function Process() {
               setActiveIndex(rounded);
             }
 
-            // Snap: after scrolling stops for 140ms strictly between 0 and 1
+            // Snap: after scrolling stops for 160ms strictly between steps
             clearTimeout(snapTimerRef.current);
-            if (progress > 0.005 && progress < 0.995) {
+            if (progress > 0.04 && progress < 0.96) {
               snapTimerRef.current = setTimeout(() => {
                 const currentP = self.progress;
-                if (currentP > 0.005 && currentP < 0.995) {
+                if (currentP > 0.04 && currentP < 0.96) {
                   const nearestStep = Math.round(currentP * (n - 1));
                   const targetP = nearestStep / (n - 1);
                   if (Math.abs(targetP - currentP) > 0.015) {
                     const targetScroll = self.start + targetP * (self.end - self.start);
                     if (lenis) {
                       lenis.scrollTo(targetScroll, {
-                        duration: 0.7,
-                        easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)),
+                        duration: 0.75,
+                        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
                       });
                     } else {
                       window.scrollTo({ top: targetScroll, behavior: 'smooth' });
                     }
                   }
                 }
-              }, 140);
+              }, 160);
             }
           },
         },
