@@ -191,14 +191,38 @@ export function Process() {
       aria-labelledby="process-heading"
       className="process-section relative w-full h-[100svh] bg-white text-slate-800 overflow-hidden select-none"
     >
-      {/* Top-left: Compact Section Heading */}
-      <div className="absolute top-0 left-0 right-0 pt-[92px] px-5 sm:px-6 lg:px-8 pointer-events-none z-30">
-        <div className="max-w-7xl mx-auto">
+      {/* Optional Decoration: Faint Dotted Grid in right third (lg only, pure CSS, under 8% opacity) */}
+      <div
+        className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/3 process-dotted-grid pointer-events-none z-0"
+        aria-hidden="true"
+      />
+
+      {/* Optional Decoration: Large faint outlined step number in bottom-right corner (lg only, aria-hidden, under 8% opacity) */}
+      <div
+        className="hidden lg:block absolute right-10 bottom-6 font-heading font-extrabold text-[180px] leading-none process-bg-num pointer-events-none z-0 select-none transition-all duration-300"
+        aria-hidden="true"
+      >
+        {processSteps[activeIndex]?.number || '01'}
+      </div>
+
+      {/* Top-left: Compact Section Heading + Mobile Step Counter */}
+      <div className="absolute top-0 left-0 right-0 pt-[74px] sm:pt-[92px] px-5 sm:px-6 lg:px-8 pointer-events-none z-30">
+        <div className="max-w-7xl mx-auto flex items-start justify-between">
           <SectionHeading
             badge="HOW WE WORK"
             title="From enquiry to onboarding"
             className="text-left pointer-events-auto"
           />
+
+          {/* Mobile small "01 / 04" counter in top right of header aligned with badge */}
+          <div
+            className="lg:hidden mt-1.5 pointer-events-auto shrink-0 inline-flex items-center gap-1 font-numeric-slashed text-[11px] sm:text-xs font-bold text-gold-700 tracking-wider bg-gold-50/90 px-2.5 py-0.5 sm:py-1 rounded-full border border-gold-200/60"
+            aria-hidden="true"
+          >
+            <span>STEP {processSteps[activeIndex]?.number || '01'}</span>
+            <span className="text-gold-400">/</span>
+            <span className="text-gold-600">04</span>
+          </div>
         </div>
       </div>
 
@@ -212,13 +236,49 @@ export function Process() {
         onStepSelect={handleStepSelect}
       />
 
-      {/* Content Column (Title, Description, CTA for Active Step) */}
+      {/* Content Column (Title, Description, Checklist, Chips, CTA) */}
       <ProcessContent
         steps={processSteps}
         activeIndex={activeIndex}
       />
 
-      {/* Visually hidden <ol> containing all four steps for screen readers and SEO */}
+      {/* Desktop Progress Indicator: Thin vertical gold progress line with 4 ticks at far right edge (lg only) */}
+      <div
+        className="hidden lg:flex absolute right-8 top-1/2 -translate-y-1/2 flex-col items-center gap-3 pointer-events-none z-20"
+        aria-hidden="true"
+      >
+        <div className="relative w-[2px] h-36 bg-slate-200/80 rounded-full">
+          {/* Active progress bar */}
+          <div
+            className="absolute top-0 left-0 w-full bg-gold-500 rounded-full transition-all duration-200 ease-out"
+            style={{
+              height: `${(activeIndex / (processSteps.length - 1)) * 100}%`,
+            }}
+          />
+          {/* 4 Step Ticks */}
+          {processSteps.map((_, i) => (
+            <div
+              key={i}
+              className={`absolute left-1/2 -translate-x-1/2 w-2 h-2 rounded-full border transition-all duration-200 ${
+                i <= activeIndex
+                  ? 'bg-gold-500 border-gold-400 scale-110'
+                  : 'bg-white border-slate-300'
+              }`}
+              style={{
+                top: `${(i / (processSteps.length - 1)) * 100}%`,
+                transform: 'translate(-50%, -50%)',
+              }}
+            />
+          ))}
+        </div>
+        <div className="flex flex-col items-center font-numeric-slashed text-[11px] font-bold text-slate-400 leading-tight">
+          <span className="text-navy-950 font-extrabold">{processSteps[activeIndex]?.number || '01'}</span>
+          <span className="text-slate-300">/</span>
+          <span>04</span>
+        </div>
+      </div>
+
+      {/* Visually hidden <ol> containing all four steps with points & youProvide for screen readers and SEO */}
       <ol className="sr-only">
         {processSteps.map((step) => (
           <li key={step.id}>
@@ -226,6 +286,26 @@ export function Process() {
               Step {step.number}: {step.title}
             </h3>
             <p>{step.text}</p>
+            {step.points && (
+              <div>
+                <h4>What happens:</h4>
+                <ul>
+                  {step.points.map((point, idx) => (
+                    <li key={idx}>{point}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {step.youProvide && (
+              <div>
+                <h4>What we may need from you:</h4>
+                <ul>
+                  {step.youProvide.map((item, idx) => (
+                    <li key={idx}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </li>
         ))}
       </ol>

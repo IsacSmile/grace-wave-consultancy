@@ -73,7 +73,7 @@ export function ProcessWheel({
             onClick={() => onStepSelect(idx)}
             onFocus={() => onStepSelect(idx)}
             onKeyDown={(e) => handleKeyDown(e, idx)}
-            className="process-step-num ml-4 sm:ml-6 font-heading font-extrabold text-5xl sm:text-6xl lg:text-8xl tracking-tight leading-none min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 cursor-pointer select-none text-left"
+            className="process-step-num ml-4 sm:ml-6 font-heading font-extrabold text-5xl sm:text-6xl lg:text-8xl tracking-wider leading-none min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 cursor-pointer select-none text-left"
             aria-label={`Step ${step.number}: ${step.title}`}
             aria-current={activeIndex === idx ? 'step' : undefined}
           >

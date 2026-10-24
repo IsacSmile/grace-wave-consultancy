@@ -136,6 +136,15 @@ html.lenis, html.lenis body {
   }
 }
 
+@media (max-height: 680px) {
+  .process-short-hide {
+    display: none !important;
+  }
+  .process-section {
+    --cy: 62%;
+  }
+}
+
 .process-wheel-item {
   transform-origin: 0 0;
   will-change: transform;
@@ -144,9 +153,10 @@ html.lenis, html.lenis body {
 .process-step-num {
   font-feature-settings: "zero" 1, "tnum" 1;
   font-variant-numeric: slashed-zero tabular-nums;
+  letter-spacing: 0.04em;
   transform: scale(calc(1 - 0.22 * min(var(--d, 0), 1)));
   color: rgba(10, 31, 77, calc(1 - 0.72 * min(var(--d, 0), 1)));
-  opacity: max(0, calc(1 - 0.7 * var(--d, 0)));
+  opacity: max(0, calc(1 - 0.85 * var(--d, 0)));
   transform-origin: left center;
 }
 
@@ -160,5 +170,18 @@ html.lenis, html.lenis body {
   height: calc(14px - 8px * min(var(--d, 0), 1));
   background-color: rgba(10, 31, 77, calc(1 - 0.75 * min(var(--d, 0), 1)));
   box-shadow: 0 0 0 calc(5px * max(0, 1 - 1.5 * var(--d, 0))) rgba(197, 160, 89, 0.25);
+}
+
+.process-dotted-grid {
+  background-image: radial-gradient(circle, rgba(10, 31, 77, 0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.process-bg-num {
+  -webkit-text-stroke: 2px rgba(10, 31, 77, 0.045);
+  color: transparent;
+  font-feature-settings: "zero" 1, "tnum" 1;
+  font-variant-numeric: slashed-zero tabular-nums;
+  letter-spacing: 0.04em;
 }
 
