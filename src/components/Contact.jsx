@@ -99,11 +99,16 @@ export function Contact() {
           height={893}
           alt="Dubai skyline and corporate office evening atmosphere"
           loading="lazy"
-          className="absolute inset-0 w-full h-[115%] -top-[7.5%] object-cover object-center opacity-50 will-change-transform"
+          className="absolute inset-0 w-full h-[115%] -top-[7.5%] object-cover object-[center_30%] lg:object-center opacity-85 will-change-transform"
         />
-        {/* Dark Navy Gradient Overlay ensuring AA contrast */}
+        {/* Directional Overlay: darkens behind left text while letting the Dubai skyline & advisor shine through clearly */}
         <div
-          className="absolute inset-0 bg-gradient-to-br from-[#060E18]/95 via-[#071733]/90 to-[#0A1A36]/85"
+          className="absolute inset-0 bg-gradient-to-r from-[#060E18]/90 via-[#060E18]/60 to-[#060E18]/40"
+          aria-hidden="true"
+        />
+        {/* Subtle top/bottom vignette for smooth section transition */}
+        <div
+          className="absolute inset-0 bg-gradient-to-b from-[#060E18]/60 via-transparent to-[#060E18]/80"
           aria-hidden="true"
         />
       </div>
