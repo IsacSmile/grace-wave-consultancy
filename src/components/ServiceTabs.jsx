@@ -113,6 +113,34 @@ export function ServiceTabs() {
     if (incomingImg) gsap.killTweensOf(incomingImg);
     if (incomingItems) gsap.killTweensOf(incomingItems);
 
+    // Smooth container height transition on mobile
+    if (panelsContainerRef.current && incoming && window.innerWidth < 1024) {
+      const prevH = panelsContainerRef.current.offsetHeight;
+      incoming.style.visibility = 'hidden';
+      incoming.style.position = 'relative';
+      const nextH = incoming.offsetHeight || incoming.scrollHeight;
+      incoming.style.position = '';
+      incoming.style.visibility = '';
+
+      if (prevH && nextH && Math.abs(prevH - nextH) > 4) {
+        gsap.fromTo(
+          panelsContainerRef.current,
+          { height: prevH },
+          {
+            height: nextH,
+            duration: 0.35,
+            ease: 'power2.out',
+            onComplete: () => {
+              if (panelsContainerRef.current) {
+                panelsContainerRef.current.style.height = 'auto';
+              }
+              ScrollTrigger.refresh();
+            },
+          }
+        );
+      }
+    }
+
     // Outgoing panel: fades and moves y 0 to -12 (0.2s power2.in)
     if (outgoing) {
       gsap.to(outgoing, {
@@ -230,10 +258,15 @@ export function ServiceTabs() {
     }
   };
 
-  // ResizeObserver to ensure container min-height and prevent height jump
+  // On desktop only, ensure container min-height so tabs with similar height don't jitter
   useEffect(() => {
     const updateMinHeight = () => {
       if (!panelsContainerRef.current) return;
+      if (window.innerWidth < 1024) {
+        // Mobile must have natural auto height with zero empty gap
+        panelsContainerRef.current.style.minHeight = 'auto';
+        return;
+      }
       const heights = panelRefs.current.map((el) => (el ? el.scrollHeight || el.offsetHeight : 0));
       const maxHeight = Math.max(...heights, 0);
       if (maxHeight > 0) {
@@ -242,18 +275,8 @@ export function ServiceTabs() {
     };
 
     updateMinHeight();
-
-    const ro = new ResizeObserver(() => {
-      updateMinHeight();
-    });
-
-    panelRefs.current.forEach((el) => {
-      if (el) ro.observe(el);
-    });
-
     window.addEventListener('resize', updateMinHeight);
     return () => {
-      ro.disconnect();
       window.removeEventListener('resize', updateMinHeight);
     };
   }, []);
@@ -353,7 +376,7 @@ export function ServiceTabs() {
       id="solutions"
       ref={sectionRef}
       aria-labelledby="solutions-heading"
-      className="bg-white py-20 md:py-28 relative overflow-hidden"
+      className="bg-white py-12 sm:py-16 md:py-24 lg:py-28 relative overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
         {/* Section Header: Left-aligned global heading tokens */}
@@ -365,10 +388,10 @@ export function ServiceTabs() {
           tone="light"
         />
 
-        {/* Outer Panel: rounded-3xl, bg off-white (#F8FAFF), border 1px navy/8%, p-4 md:p-8 lg:p-12 */}
+        {/* Outer Panel: rounded-3xl, bg off-white (#F8FAFF), border 1px navy/8%, p-4 sm:p-6 md:p-8 lg:p-12 */}
         <div
           ref={outerPanelRef}
-          className="rounded-3xl bg-[#F8FAFF] border border-[#0B1B4D]/[0.08] p-4 md:p-8 lg:p-12 relative"
+          className="rounded-3xl bg-[#F8FAFF] border border-[#0B1B4D]/[0.08] p-4 sm:p-6 md:p-8 lg:p-12 relative"
         >
           {/* ================= DESKTOP TABS (md+) ================= */}
           <div className="hidden md:block relative mb-10">
@@ -477,7 +500,6 @@ export function ServiceTabs() {
                   <ServiceTabPanel
                     tab={tab}
                     isActive={isActive}
-                    panelRef={(el) => (panelRefs.current[idx] = el)}
                     imageRef={(el) => (imageRefs.current[idx] = el)}
                     itemsRef={(el) => (itemsRefs.current[idx] = el)}
                     counterRef={(el) => (counterRefs.current[idx] = el)}

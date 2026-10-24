@@ -12,7 +12,6 @@ const iconMap = {
 export function ServiceTabPanel({
   tab,
   isActive,
-  panelRef,
   imageRef,
   itemsRef,
   counterRef,
@@ -35,10 +34,7 @@ export function ServiceTabPanel({
   };
 
   return (
-    <div
-      ref={panelRef}
-      className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start"
-    >
+    <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
       {/* Mobile: Image block is FIRST (order-1 lg:order-2) */}
       <div className="order-1 lg:order-2 lg:col-span-5 w-full flex justify-center lg:justify-end">
         <div className="relative rounded-3xl overflow-hidden w-full max-w-[360px] sm:max-w-[400px] lg:max-w-[440px] aspect-[4/3] lg:aspect-[4/5] bg-slate-100 shadow-sm border border-[#0B1B4D]/5">
@@ -59,38 +55,38 @@ export function ServiceTabPanel({
             aria-hidden="true"
           />
 
-          {/* Overlaid Dark Info Card (bottom-left) */}
-          <div className="absolute bottom-3 left-3 md:bottom-5 md:left-5 z-10 bg-[#0B1B4D]/95 text-white rounded-2xl p-3.5 md:p-5 max-w-[240px] sm:max-w-[260px] shadow-xl border border-white/10 backdrop-blur-sm">
+          {/* Overlaid Dark Info Card (bottom-left): sleek & compact on mobile, scaled on desktop */}
+          <div className="absolute bottom-2 left-2 xs:bottom-2.5 xs:left-2.5 sm:bottom-3 sm:left-3 md:bottom-5 md:left-5 z-10 bg-[#0B1B4D]/95 text-white rounded-xl sm:rounded-2xl p-2 xs:p-2.5 sm:p-3.5 md:p-5 max-w-[145px] xs:max-w-[160px] sm:max-w-[200px] md:max-w-[250px] shadow-lg border border-white/10 backdrop-blur-sm">
             {/* Top Row: Label + circular link button */}
-            <div className="flex items-center justify-between gap-3 mb-2.5">
-              <span className="text-[10px] md:text-xs font-semibold tracking-widest text-[#C5A059] uppercase">
+            <div className="flex items-center justify-between gap-1.5 xs:gap-2 mb-1 xs:mb-1.5 md:mb-2.5">
+              <span className="text-[8px] xs:text-[9px] sm:text-[10px] md:text-xs font-semibold tracking-wider text-[#C5A059] uppercase truncate">
                 UAE Experience
               </span>
               <button
                 type="button"
                 onClick={handleEnquireClick}
                 aria-label={`Enquire about ${tab.tabLabel} UAE experience`}
-                className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors min-h-[40px] min-w-[40px] sm:min-h-[44px] sm:min-w-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white shrink-0"
+                className="w-5 h-5 xs:w-6 xs:h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors relative before:absolute before:-inset-2 before:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white shrink-0"
               >
-                <ArrowUpRight className="w-4 h-4 text-white" />
+                <ArrowUpRight className="w-2.5 h-2.5 xs:w-3 xs:h-3 md:w-4 md:h-4 text-white" />
               </button>
             </div>
 
             {/* Bottom Row: Counter + Description */}
             <div className="space-y-0.5">
-              <div className="flex items-baseline gap-1">
+              <div className="flex items-baseline gap-0.5 xs:gap-1">
                 <span
                   ref={counterRef}
-                  className="font-heading font-black text-2xl sm:text-3xl text-white tracking-tight"
+                  className="font-heading font-black text-base xs:text-lg sm:text-2xl md:text-3xl text-white tracking-tight"
                   aria-label={`${expStat.value}${expStat.suffix} Years of UAE market experience`}
                 >
                   {expStat.value}
                 </span>
-                <span className="font-heading font-bold text-xl sm:text-2xl text-[#C5A059]">
+                <span className="font-heading font-bold text-xs xs:text-sm sm:text-xl md:text-2xl text-[#C5A059]">
                   {expStat.suffix}
                 </span>
               </div>
-              <p className="text-xs sm:text-sm text-slate-300 font-medium leading-snug">
+              <p className="text-[8px] xs:text-[9px] sm:text-xs md:text-sm text-slate-300 font-medium leading-tight line-clamp-2 sm:line-clamp-none">
                 Years of UAE market experience
               </p>
             </div>
