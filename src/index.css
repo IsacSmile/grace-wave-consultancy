@@ -26,9 +26,11 @@
 }
 
 @layer utilities {
-  .hero-viewport-height {
-    min-height: 100vh;
-    min-height: 100svh;
+  @media (max-width: 1023px) {
+    .hero-viewport-height {
+      min-height: 100vh;
+      min-height: 100svh;
+    }
   }
 
   .no-scrollbar::-webkit-scrollbar {

@@ -190,7 +190,7 @@ export function Hero() {
       id="hero"
       ref={heroRef}
       style={{ '--face-window': '24svh' }}
-      className="relative w-full min-h-[100svh] flex flex-col justify-between bg-[#F8FAFF] text-slate-800 overflow-hidden hero-viewport-height lg:pt-24"
+      className="relative w-full min-h-[100svh] lg:min-h-0 flex flex-col justify-between lg:block bg-[#F8FAFF] text-slate-800 overflow-hidden hero-viewport-height pt-0 lg:pt-28 xl:pt-32 pb-0 lg:pb-16 xl:pb-20"
     >
       {/* Background Subtle Organic Squiggles (CSS/SVG, Desktop Only) */}
       <svg
@@ -237,11 +237,11 @@ export function Hero() {
       />
 
       {/* Layer 3 (Content Container): Flexible on mobile, two-column grid on desktop */}
-      <div className="relative z-10 w-full flex-1 max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 flex flex-col justify-between min-h-[100svh] lg:min-h-0 pt-[84px] pb-6 lg:pt-0 lg:pb-8 lg:flex lg:items-center">
-        <div className="w-full flex-1 flex flex-col justify-between lg:grid lg:grid-cols-12 lg:gap-8 lg:items-center">
+      <div className="relative z-10 w-full flex-1 lg:flex-initial max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 flex flex-col justify-between lg:block min-h-[100svh] lg:min-h-0 pt-[84px] lg:pt-0 pb-6 lg:pb-0">
+        <div className="w-full flex-1 lg:flex-initial flex flex-col justify-between lg:grid lg:grid-cols-12 lg:gap-8 lg:items-center">
           
           {/* ================= LEFT / CONTENT COLUMN ================= */}
-          <div className="relative z-20 w-full flex-1 flex flex-col justify-between lg:block lg:flex-initial lg:col-span-7 text-left pb-0 lg:pb-8">
+          <div className="relative z-20 w-full flex-1 lg:flex-initial flex flex-col justify-between lg:block lg:col-span-7 text-left pb-0">
             
             {/* TOP GROUP: Positioned above her head */}
             <div className="relative z-30">
@@ -347,7 +347,7 @@ export function Hero() {
           {/* ================= RIGHT COLUMN (PERSON + DESKTOP DECORATIVE SHAPES) ================= */}
           <div
             ref={imageContainerRef}
-            className="static lg:relative lg:col-span-5 flex items-end justify-center self-end w-full mt-0"
+            className="static lg:relative lg:col-span-5 flex items-end justify-center lg:self-center w-full mt-0"
           >
             {/* Composition Wrapper */}
             <div className="static lg:relative w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[480px] flex items-end justify-center">
