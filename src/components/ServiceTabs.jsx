@@ -105,7 +105,7 @@ export function ServiceTabs() {
     const outgoing = panelRefs.current[prevIndex];
     const incoming = panelRefs.current[nextIndex];
     const incomingImg = imageRefs.current[nextIndex];
-    const incomingItems = itemsRefs.current[nextIndex]?.querySelectorAll('.service-accordion-item');
+    const incomingItems = itemsRefs.current[nextIndex]?.querySelectorAll('.service-accordion-item, .service-panel-item');
 
     // Kill active tweens to prevent rapid-click stacking
     if (outgoing) gsap.killTweensOf(outgoing);

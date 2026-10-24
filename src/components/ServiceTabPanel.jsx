@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
-import { ChevronDown, ArrowUpRight } from 'lucide-react';
+import { ChevronDown, ArrowUpRight, TrendingUp, Compass, FileText } from 'lucide-react';
 import { useLenis } from './SmoothScroll';
 import { aboutData } from '../data/about';
+
+const iconMap = {
+  TrendingUp,
+  Compass,
+  FileText,
+};
 
 export function ServiceTabPanel({
   tab,
@@ -55,7 +61,7 @@ export function ServiceTabPanel({
 
           {/* Overlaid Dark Info Card (bottom-left) */}
           <div className="absolute bottom-3 left-3 md:bottom-5 md:left-5 z-10 bg-[#0B1B4D]/95 text-white rounded-2xl p-3.5 md:p-5 max-w-[240px] sm:max-w-[260px] shadow-xl border border-white/10 backdrop-blur-sm">
-            {/* Top Row: Label + 44px circular link button */}
+            {/* Top Row: Label + circular link button */}
             <div className="flex items-center justify-between gap-3 mb-2.5">
               <span className="text-[10px] md:text-xs font-semibold tracking-widest text-[#C5A059] uppercase">
                 UAE Experience
@@ -94,84 +100,162 @@ export function ServiceTabPanel({
 
       {/* Left Column (Text): order-2 lg:order-1 */}
       <div className="order-2 lg:order-1 lg:col-span-7 w-full flex flex-col justify-start">
-        {/* 1. Intro with 2px gold vertical bar */}
+        {/* Intro with 2px gold vertical bar */}
         <div className="border-l-2 border-[#C5A059] pl-5 mb-6 md:mb-8">
-          <p className="text-lg md:text-xl font-medium text-[#0B1B4D] leading-[1.6] line-clamp-3">
+          <p className="text-base sm:text-lg lg:text-xl font-medium text-[#0B1B4D] leading-[1.65]">
             {tab.intro}
           </p>
         </div>
 
-        {/* 2. Numbered Item List (Accordion, ONE open at a time) */}
-        <div ref={itemsRef} className="space-y-3.5 w-full">
-          {tab.items.map((item, idx) => {
-            const isOpen = openIndex === idx;
-            return (
-              <div
-                key={item.title}
-                className={`service-accordion-item rounded-2xl border transition-all duration-300 overflow-hidden ${
-                  isOpen
-                    ? 'bg-[#F4F6FB] border-[#C5A059]/40 border-l-4 border-l-[#C5A059] shadow-xs'
-                    : 'bg-white border-[#0B1B4D]/10 hover:border-[#0B1B4D]/20'
-                }`}
-              >
-                {/* Header Button (min 56px tall) */}
-                <button
-                  type="button"
-                  id={`accordion-btn-${tab.id}-${idx}`}
-                  aria-expanded={isOpen}
-                  aria-controls={`accordion-body-${tab.id}-${idx}`}
-                  onClick={() => setOpenIndex(prev => prev === idx ? -1 : idx)}
-                  className="w-full text-left min-h-[56px] px-5 py-4 flex items-center justify-between gap-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-2xl transition-colors"
-                >
-                  <div className="flex items-center gap-3 min-w-0">
-                    <span className="text-xs sm:text-sm font-bold text-[#C5A059] tabular-nums tracking-wider shrink-0 font-mono">
-                      {String(idx + 1).padStart(2, '0')}.
-                    </span>
-                    <span className="text-base md:text-lg font-semibold text-[#0B1B4D]">
-                      {item.title}
-                    </span>
-                  </div>
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0">
-                    <ChevronDown
-                      className={`w-4 h-4 transition-transform duration-300 ${
-                        isOpen ? 'rotate-180 text-[#C5A059]' : 'text-slate-400'
+        {/* ================= LAYOUT 1: Accordion (Accounting & Bookkeeping) ================= */}
+        {tab.type === 'accordion' && (
+          <div className="w-full">
+            <div ref={itemsRef} className="space-y-3.5 w-full">
+              {tab.items?.map((item, idx) => {
+                const isOpen = openIndex === idx;
+                return (
+                  <div
+                    key={item.title}
+                    className={`service-accordion-item rounded-2xl border transition-all duration-300 overflow-hidden ${
+                      isOpen
+                        ? 'bg-[#F4F6FB] border-[#C5A059]/40 border-l-4 border-l-[#C5A059] shadow-xs'
+                        : 'bg-white border-[#0B1B4D]/10 hover:border-[#0B1B4D]/20'
+                    }`}
+                  >
+                    {/* Header Button (min 56px tall) */}
+                    <button
+                      type="button"
+                      id={`accordion-btn-${tab.id}-${idx}`}
+                      aria-expanded={isOpen}
+                      aria-controls={`accordion-body-${tab.id}-${idx}`}
+                      onClick={() => setOpenIndex((prev) => (prev === idx ? -1 : idx))}
+                      className="w-full text-left min-h-[56px] px-5 py-4 flex items-center justify-between gap-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-2xl transition-colors"
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <span className="text-xs sm:text-sm font-bold text-[#C5A059] tabular-nums tracking-wider shrink-0 font-mono">
+                          {String(idx + 1).padStart(2, '0')}.
+                        </span>
+                        <span className="text-base md:text-lg font-semibold text-[#0B1B4D]">
+                          {item.title}
+                        </span>
+                      </div>
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0">
+                        <ChevronDown
+                          className={`w-4 h-4 transition-transform duration-300 ${
+                            isOpen ? 'rotate-180 text-[#C5A059]' : 'text-slate-400'
+                          }`}
+                          aria-hidden="true"
+                        />
+                      </div>
+                    </button>
+
+                    {/* Animated Body */}
+                    <div
+                      id={`accordion-body-${tab.id}-${idx}`}
+                      role="region"
+                      aria-labelledby={`accordion-btn-${tab.id}-${idx}`}
+                      className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
+                        isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
                       }`}
-                      aria-hidden="true"
-                    />
+                    >
+                      <div className="overflow-hidden">
+                        <p className="px-5 pb-5 pt-1 text-[15px] text-slate-600 leading-relaxed">
+                          {item.text}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </button>
+                );
+              })}
+            </div>
 
-                {/* Animated Body (grid-template-rows 0fr to 1fr) */}
+            <div className="mt-6 md:mt-8">
+              <button
+                type="button"
+                onClick={handleEnquireClick}
+                className="h-12 px-6 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 active:scale-[0.99] transition-all inline-flex items-center justify-center gap-2 w-full sm:w-auto min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              >
+                <span>Enquire about {tab.tabLabel}</span>
+                <ArrowUpRight className="w-4 h-4 shrink-0" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ================= LAYOUT 2: 2-Column Bullet List (Taxation & Compliance - Image 1) ================= */}
+        {tab.type === 'bullets' && (
+          <div className="w-full">
+            <div
+              ref={itemsRef}
+              className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 mb-8 pt-1"
+            >
+              {tab.bullets?.map((bullet) => (
                 <div
-                  id={`accordion-body-${tab.id}-${idx}`}
-                  role="region"
-                  aria-labelledby={`accordion-btn-${tab.id}-${idx}`}
-                  className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
-                    isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
-                  }`}
+                  key={bullet}
+                  className="service-panel-item flex items-center gap-3 py-1"
                 >
-                  <div className="overflow-hidden">
-                    <p className="px-5 pb-5 pt-1 text-[15px] text-slate-600 leading-relaxed">
-                      {item.text}
-                    </p>
-                  </div>
+                  <span className="text-[#C5A059] text-xs font-black shrink-0 leading-none">
+                    ◆
+                  </span>
+                  <span className="text-sm sm:text-base font-semibold text-[#0B1B4D]">
+                    {bullet}
+                  </span>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              ))}
+            </div>
 
-        {/* 3. Enquire Action Button */}
-        <div className="mt-6 md:mt-8">
-          <button
-            type="button"
-            onClick={handleEnquireClick}
-            className="h-12 px-6 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 active:scale-[0.99] transition-all inline-flex items-center justify-center gap-2 w-full sm:w-auto min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-          >
-            <span>Enquire about {tab.tabLabel}</span>
-            <ArrowUpRight className="w-4 h-4 shrink-0" />
-          </button>
-        </div>
+            <div className="mt-4 sm:mt-6">
+              <button
+                type="button"
+                onClick={handleEnquireClick}
+                className="h-12 px-7 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 active:scale-[0.99] transition-all inline-flex items-center justify-center gap-2 w-full sm:w-auto min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              >
+                <span>Enquire about {tab.tabLabel}</span>
+                <ArrowUpRight className="w-4 h-4 shrink-0" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ================= LAYOUT 3: 3 Icon-Tile Feature Blocks (Audit & Advisory - Image 2) ================= */}
+        {tab.type === 'features' && (
+          <div className="w-full">
+            <div ref={itemsRef} className="space-y-5 sm:space-y-6 mb-8 pt-1">
+              {tab.features?.map((feat) => {
+                const IconComponent = iconMap[feat.icon] || TrendingUp;
+                return (
+                  <div
+                    key={feat.title}
+                    className="service-panel-item flex items-start gap-4 sm:gap-4.5"
+                  >
+                    <div className="w-12 h-12 rounded-xl bg-[#0B1B4D] text-[#C5A059] flex items-center justify-center shrink-0 shadow-sm border border-[#0B1B4D]/10 mt-0.5">
+                      <IconComponent className="w-5 h-5" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-heading font-bold text-base sm:text-lg text-[#0B1B4D] leading-snug">
+                        {feat.title}
+                      </h4>
+                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mt-1">
+                        {feat.text}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="mt-4 sm:mt-6">
+              <button
+                type="button"
+                onClick={handleEnquireClick}
+                className="h-12 px-7 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 active:scale-[0.99] transition-all inline-flex items-center justify-center gap-2 w-full sm:w-auto min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              >
+                <span>Enquire about {tab.tabLabel}</span>
+                <ArrowUpRight className="w-4 h-4 shrink-0" />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
