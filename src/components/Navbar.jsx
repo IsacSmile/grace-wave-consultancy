@@ -92,23 +92,24 @@ export function Navbar() {
           </nav>
 
           {/* Right Action CTA (Desktop) */}
-          <div className="hidden sm:flex items-center gap-3">
+          <div className="hidden sm:flex items-center gap-2.5">
             <a
               href={`tel:${siteConfig.business.phones[0].tel}`}
-              className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-bold text-slate-800 hover:text-blue-600 border border-slate-200 hover:border-blue-400 rounded-xl bg-white/90 shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-bold text-[#0B1B4D] hover:text-blue-600 border border-slate-200/90 hover:border-slate-300 rounded-[7px] bg-white shadow-xs hover:shadow-sm active:scale-[0.98] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              title={`Call ${siteConfig.business.phones[0].display}`}
               aria-label={`Call Grace Way Accounting at ${siteConfig.business.phones[0].display}`}
             >
-              <Phone className="w-3.5 h-3.5 text-blue-600" />
-              <span>{siteConfig.business.phones[0].display}</span>
+              <Phone className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+              <span>Call Now</span>
             </a>
 
             <a
               href="#contact"
               onClick={(e) => handleNavClick(e, '#contact')}
-              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-sm hover:shadow-md transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-[7px] shadow-sm hover:shadow-md active:scale-[0.98] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
             >
               <span>Enquire Now</span>
-              <ArrowUpRight className="w-4 h-4" />
+              <ArrowUpRight className="w-4 h-4 shrink-0" />
             </a>
           </div>
 
@@ -184,16 +185,16 @@ export function Navbar() {
         <div className="pt-6 border-t border-slate-200 flex flex-col gap-3">
           <a
             href={`tel:${siteConfig.business.phones[0].tel}`}
-            className="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl text-sm font-semibold text-slate-800 bg-slate-50 border border-slate-200 min-h-[48px]"
+            className="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-[7px] text-sm font-bold text-[#0B1B4D] bg-white border border-slate-200/90 shadow-xs min-h-[48px]"
           >
             <Phone className="w-4 h-4 text-blue-600" />
-            <span>{siteConfig.business.phones[0].display}</span>
+            <span>Call Now ({siteConfig.business.phones[0].display})</span>
           </a>
 
           <a
             href="#contact"
             onClick={(e) => handleNavClick(e, '#contact')}
-            className="flex items-center justify-center gap-2 w-full py-3.5 px-4 rounded-xl text-sm font-bold text-white bg-blue-600 shadow-md min-h-[48px]"
+            className="flex items-center justify-center gap-2 w-full py-3.5 px-4 rounded-[7px] text-sm font-bold text-white bg-blue-600 shadow-sm min-h-[48px]"
           >
             <span>Get a Free Enquiry</span>
             <ArrowUpRight className="w-4 h-4" />
