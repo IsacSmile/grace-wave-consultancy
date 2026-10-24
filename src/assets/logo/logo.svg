@@ -1,0 +1,8 @@
+<!-- // PLACEHOLDER: replace with the final designed logo -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 40" height="40" fill="none">
+  <rect width="40" height="40" rx="10" fill="currentColor" fill-opacity="0.12" />
+  <rect x="0.5" y="0.5" width="39" height="39" rx="9.5" stroke="currentColor" stroke-opacity="0.25" />
+  <text x="20" y="26" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="800" font-size="17" fill="currentColor" letter-spacing="-0.03em">GW</text>
+  <text x="52" y="21" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="800" font-size="16" fill="currentColor" letter-spacing="-0.02em">Grace Way</text>
+  <text x="52" y="33" font-family="'Inter', system-ui, sans-serif" font-weight="700" font-size="9" fill="currentColor" fill-opacity="0.85" letter-spacing="0.12em">ACCOUNTING FZC LLC</text>
+</svg>

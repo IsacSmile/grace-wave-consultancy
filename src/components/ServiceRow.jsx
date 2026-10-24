@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import {
   BookOpenCheck,
   ShieldAlert,
+  ShieldCheck,
   TrendingUp,
   ArrowUpRight,
   ChevronDown,
@@ -11,6 +12,7 @@ import {
 const iconMap = {
   BookOpenCheck,
   ShieldAlert,
+  ShieldCheck,
   TrendingUp,
 };
 

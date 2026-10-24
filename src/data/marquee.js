@@ -1,15 +1,15 @@
 /**
  * Marquee Words Dataset
- * Key business and financial services pillars.
+ * Key business, tax, audit, and compliance services.
  * Words only - no claims, numbers, or slogans.
  */
 export const marqueeWords = [
   'Accounting',
   'Bookkeeping',
-  'Taxation',
-  'Compliance',
+  'Corporate Tax',
   'VAT',
+  'E-Invoicing',
+  'Auditing',
   'Advisory',
-  'Finance',
-  'Business',
+  'AML Compliance',
 ];

@@ -94,12 +94,12 @@ export function Navbar() {
           {/* Right Action CTA (Desktop) */}
           <div className="hidden sm:flex items-center gap-3">
             <a
-              href={siteConfig.business.phoneTel}
+              href={`tel:${siteConfig.business.phones[0].tel}`}
               className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-bold text-slate-800 hover:text-blue-600 border border-slate-200 hover:border-blue-400 rounded-xl bg-white/90 shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-              aria-label={`Call Grace Way Accounting at ${siteConfig.business.phoneDisplay}`}
+              aria-label={`Call Grace Way Accounting at ${siteConfig.business.phones[0].display}`}
             >
               <Phone className="w-3.5 h-3.5 text-blue-600" />
-              <span>{siteConfig.business.phoneDisplay}</span>
+              <span>{siteConfig.business.phones[0].display}</span>
             </a>
 
             <a
@@ -183,11 +183,11 @@ export function Navbar() {
         {/* Drawer Footer Actions */}
         <div className="pt-6 border-t border-slate-200 flex flex-col gap-3">
           <a
-            href={siteConfig.business.phoneTel}
+            href={`tel:${siteConfig.business.phones[0].tel}`}
             className="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl text-sm font-semibold text-slate-800 bg-slate-50 border border-slate-200 min-h-[48px]"
           >
             <Phone className="w-4 h-4 text-blue-600" />
-            <span>{siteConfig.business.phoneDisplay}</span>
+            <span>{siteConfig.business.phones[0].display}</span>
           </a>
 
           <a
@@ -200,7 +200,7 @@ export function Navbar() {
           </a>
 
           <p className="text-center text-[11px] text-slate-500 mt-1">
-            Sharjah, UAE • FTA Corporate Tax & VAT Support
+            Sharjah, UAE • Accounting, Tax & Advisory
           </p>
         </div>
       </aside>

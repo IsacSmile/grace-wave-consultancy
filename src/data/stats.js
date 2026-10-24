@@ -1,38 +1,34 @@
-// PLACEHOLDER: replace with real, verifiable figures before launch.
-// Do not invent awards, client counts, or staff numbers as final copy.
-// Any item can be removed or hidden by editing this array; layout automatically adapts to 2, 3, or 4 items.
+// Verified client facts.
+// PLACEHOLDER: enable additional figures only when verified with client.
 
 export const statsData = [
   {
-    id: 'projects',
-    value: 150,
-    suffix: 'k',
-    label: 'Projects Handled',
-    icon: 'FileCheck2',
-    placeholderNotice: 'Indicative transaction & filing volume (placeholder)',
-  },
-  {
-    id: 'clients',
+    id: 'experience',
     value: 25,
-    suffix: 'K',
-    label: 'Satisfied Clients',
-    icon: 'ThumbsUp',
-    placeholderNotice: 'Regional corporate accounts (placeholder)',
-  },
-  {
-    id: 'staff',
-    value: 120,
     suffix: '+',
-    label: 'Dedicated Advisors',
-    icon: 'Users',
-    placeholderNotice: 'Accounting & tax specialists (placeholder)',
-  },
-  {
-    id: 'awards',
-    value: 50,
-    suffix: '+',
-    label: 'Industry Recognitions',
+    label: 'Years of UAE Experience',
     icon: 'Award',
-    placeholderNotice: 'Professional certifications & citations (placeholder)',
   },
+  {
+    id: 'services',
+    value: 9,
+    suffix: '',
+    label: 'Core Services',
+    icon: 'FileCheck2',
+  },
+  // PLACEHOLDER: enable only with real figures
+  // {
+  //   id: 'clients',
+  //   value: 25,
+  //   suffix: 'K',
+  //   label: 'Satisfied Clients',
+  //   icon: 'ThumbsUp',
+  // },
+  // {
+  //   id: 'staff',
+  //   value: 120,
+  //   suffix: '+',
+  //   label: 'Dedicated Advisors',
+  //   icon: 'Users',
+  // },
 ];

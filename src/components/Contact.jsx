@@ -165,17 +165,24 @@ export function Contact() {
                 </a>
               </div>
 
-              {/* Direct Phone */}
+              {/* Direct Phones */}
               <div>
                 <span className="block text-xs font-semibold tracking-wider uppercase text-slate-400 mb-1.5">
-                  Direct Line
+                  Direct Lines
                 </span>
-                <a
-                  href={siteConfig.business.phoneTel}
-                  className="text-sm sm:text-base font-semibold text-white hover:text-blue-400 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded block"
-                >
-                  {siteConfig.business.phoneDisplay}
-                </a>
+                <div className="flex flex-col gap-1">
+                  {siteConfig.business.phones.map((p) => (
+                    <a
+                      key={p.tel}
+                      href={`tel:${p.tel}`}
+                      className="inline-flex items-center text-sm sm:text-base font-semibold text-white hover:text-blue-400 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded min-h-[44px]"
+                    >
+                      <Phone className="w-3.5 h-3.5 mr-2 text-teal-400 shrink-0" />
+                      <span>{p.display}</span>
+                      <span className="text-xs text-slate-400 font-normal ml-2">({p.label})</span>
+                    </a>
+                  ))}
+                </div>
               </div>
 
               {/* Working Hours */}

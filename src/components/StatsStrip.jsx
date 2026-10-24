@@ -23,7 +23,7 @@ export function StatsStrip() {
   const getGridColsClass = (length) => {
     switch (length) {
       case 2:
-        return 'grid-cols-1 sm:grid-cols-2';
+        return 'grid-cols-1 sm:grid-cols-2 max-w-3xl mx-auto';
       case 3:
         return 'grid-cols-1 sm:grid-cols-3';
       default:

@@ -45,14 +45,50 @@ export function Footer() {
 
             <div className="flex items-center gap-2 text-xs text-slate-400 pt-1">
               <Shield className="w-4 h-4 text-gold-400 shrink-0" />
-              <span>Full compliance with UAE Federal Decree-Law on Corporate Tax & VAT</span>
+              <span>Comprehensive accounting, auditing, taxation, compliance & advisory</span>
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Core Services Links */}
           <div className="lg:col-span-3 space-y-3">
             <h4 className="font-heading font-semibold text-white text-sm uppercase tracking-wider">
-              Quick Navigation
+              Core Services
+            </h4>
+            <ul className="space-y-2">
+              <li>
+                <a
+                  href="#services"
+                  onClick={(e) => handleNavClick(e, '#services')}
+                  className="hover:text-gold-400 transition-colors inline-block py-1 min-h-[36px]"
+                >
+                  Accounting & Bookkeeping
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#services"
+                  onClick={(e) => handleNavClick(e, '#services')}
+                  className="hover:text-gold-400 transition-colors inline-block py-1 min-h-[36px]"
+                >
+                  Taxation & Compliance
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#services"
+                  onClick={(e) => handleNavClick(e, '#services')}
+                  className="hover:text-gold-400 transition-colors inline-block py-1 min-h-[36px]"
+                >
+                  Audit & Advisory
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Quick Navigation */}
+          <div className="lg:col-span-2 space-y-3">
+            <h4 className="font-heading font-semibold text-white text-sm uppercase tracking-wider">
+              Navigation
             </h4>
             <ul className="space-y-2">
               {siteConfig.navigation.map((item) => (
@@ -70,7 +106,7 @@ export function Footer() {
           </div>
 
           {/* Contact Details */}
-          <div className="lg:col-span-4 space-y-3">
+          <div className="lg:col-span-3 space-y-3">
             <h4 className="font-heading font-semibold text-white text-sm uppercase tracking-wider">
               UAE Office & Enquiries
             </h4>
@@ -80,15 +116,17 @@ export function Footer() {
                 <span>{siteConfig.business.address}</span>
               </div>
 
-              <div className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-gold-400 shrink-0" />
-                <a
-                  href={siteConfig.business.phoneTel}
-                  className="hover:text-gold-400 transition-colors"
-                >
-                  {siteConfig.business.phoneDisplay}
-                </a>
-              </div>
+              {siteConfig.business.phones.map((p) => (
+                <div key={p.tel} className="flex items-center gap-2.5">
+                  <Phone className="w-4 h-4 text-gold-400 shrink-0" />
+                  <a
+                    href={`tel:${p.tel}`}
+                    className="hover:text-gold-400 transition-colors"
+                  >
+                    {p.display} <span className="text-slate-400 text-xs">({p.label})</span>
+                  </a>
+                </div>
+              ))}
 
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-gold-400 shrink-0" />
@@ -127,7 +165,7 @@ export function Footer() {
               © {siteConfig.footer.copyrightYear} {siteConfig.business.name}. All rights reserved.
             </div>
             <div>
-              UAE Commercial & Tax Advisory Services
+              UAE Accounting, Auditing & Advisory Services
             </div>
           </div>
         </div>

@@ -58,7 +58,7 @@ export default async function handler(req, res) {
     const allowedServices = [
       'Accounting & Bookkeeping',
       'Taxation & Compliance',
-      'Business Consultancy',
+      'Audit & Advisory',
       'Other',
     ];
     const isValidService = allowedServices.some(
