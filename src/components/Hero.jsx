@@ -335,7 +335,7 @@ export function Hero() {
                 height={900}
                 alt="Grace Way Accounting Corporate Financial Advisor"
                 loading="eager"
-                fetchPriority="high"
+                fetchpriority="high"
                 className="relative z-10 w-[78%] sm:w-[82%] lg:w-full h-auto object-contain object-bottom drop-shadow-xl"
               />
 
