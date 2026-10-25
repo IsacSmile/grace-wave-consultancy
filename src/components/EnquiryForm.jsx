@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Send, Loader2, CheckCircle2, AlertCircle, RefreshCw } from 'lucide-react';
+import { Send, Loader2, CheckCircle2, AlertCircle, RefreshCw, Phone } from 'lucide-react';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { siteConfig } from '../data/siteConfig';
 
@@ -10,8 +10,7 @@ export function EnquiryForm() {
     phone: '',
     service: siteConfig.contact.formServices[0].value,
     message: '',
-    website_url: '', // Honeypot field 1
-    website: '',     // Honeypot field 2
+    website: '', // Honeypot field (sent empty for real users)
   });
 
   const [errors, setErrors] = useState({});
@@ -43,7 +42,7 @@ export function EnquiryForm() {
   const validate = () => {
     const newErrors = {};
 
-    // Name validation
+    // Name validation: 2 to 100 characters
     if (!formData.name.trim()) {
       newErrors.name = 'Please enter your name.';
     } else if (formData.name.trim().length < 2) {
@@ -52,12 +51,13 @@ export function EnquiryForm() {
       newErrors.name = 'Name cannot exceed 100 characters.';
     }
 
-    // Phone validation (tolerant of UAE & international formats)
-    const phoneRegex = /^\+?[0-9\s\-()]{7,25}$/;
+    // Phone validation: allow digits, spaces, +, -, (, ), 7 to 15 digits after stripping
+    const phoneAllowedChars = /^[0-9\s+\-()]+$/;
+    const phoneDigits = formData.phone.trim().replace(/\D/g, '');
     if (!formData.phone.trim()) {
       newErrors.phone = 'Please provide a contact phone number.';
-    } else if (!phoneRegex.test(formData.phone.trim())) {
-      newErrors.phone = 'Please enter a valid telephone (e.g. +971 50 123 4567).';
+    } else if (!phoneAllowedChars.test(formData.phone.trim()) || phoneDigits.length < 7 || phoneDigits.length > 15) {
+      newErrors.phone = 'Please enter a valid telephone (7 to 15 digits, e.g. +971 56 914 8255).';
     }
 
     // Email validation
@@ -66,6 +66,8 @@ export function EnquiryForm() {
       newErrors.email = 'Please provide your email address.';
     } else if (!emailRegex.test(formData.email.trim())) {
       newErrors.email = 'Please provide a valid email address.';
+    } else if (formData.email.trim().length > 100) {
+      newErrors.email = 'Email address cannot exceed 100 characters.';
     }
 
     // Service validation
@@ -73,7 +75,7 @@ export function EnquiryForm() {
       newErrors.service = 'Please select a service.';
     }
 
-    // Message validation
+    // Message validation: 10 to 1000 characters
     if (!formData.message.trim()) {
       newErrors.message = 'Please include details about your enquiry.';
     } else if (formData.message.trim().length < 10) {
@@ -98,7 +100,9 @@ export function EnquiryForm() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
     if (!validate()) return;
 
     setIsSubmitting(true);
@@ -111,14 +115,24 @@ export function EnquiryForm() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ...formData,
-          website_url: formData.website_url || formData.website, // pass either honeypot
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          service: formData.service,
+          message: formData.message.trim(),
+          website: formData.website || '',
         }),
       });
 
-      const data = await response.json().catch(() => ({}));
+      let data = null;
+      try {
+        data = await response.json();
+      } catch {
+        // Non-JSON response (e.g. 404 HTML, plain Vite dev server without /api)
+        data = null;
+      }
 
-      if (response.ok && data.ok) {
+      if (response.ok && data?.ok) {
         setSubmitSuccess(true);
         setFormData({
           name: '',
@@ -126,16 +140,29 @@ export function EnquiryForm() {
           phone: '',
           service: siteConfig.contact.formServices[0].value,
           message: '',
-          website_url: '',
           website: '',
         });
+        setErrors({});
+      } else if (response.status === 400) {
+        setSubmitError('Please check the highlighted fields.');
+        if (data?.fields && Array.isArray(data.fields)) {
+          const serverErrors = {};
+          data.fields.forEach((field) => {
+            serverErrors[field] = data.error || 'Please correct this field.';
+          });
+          setErrors((prev) => ({ ...prev, ...serverErrors }));
+        }
+      } else if (response.status === 429) {
+        setSubmitError(data?.error || 'Too many enquiries. Please try again later or call us.');
       } else {
+        // 500 server error, non-JSON HTML, or unexpected status
         setSubmitError(
-          data.error || 'Failed to submit your enquiry. Please verify your details or contact us directly.'
+          data?.error || 'Failed to submit your enquiry. Please verify your details or contact us directly via telephone or WhatsApp.'
         );
       }
     } catch (err) {
-      setSubmitError('A network connection error occurred. Please reach out via phone or WhatsApp.');
+      // Network connectivity failure
+      setSubmitError('Network problem, please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -210,18 +237,51 @@ export function EnquiryForm() {
               <div
                 role="alert"
                 aria-live="assertive"
-                className="mb-5 p-3.5 rounded-xl bg-rose-50 border border-rose-200 flex items-start gap-3 text-rose-800 text-xs sm:text-sm"
+                className="mb-5 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs sm:text-sm animate-fade-in"
               >
-                <AlertCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
-                <div className="flex-1">
-                  <span className="font-bold block text-rose-900">Submission Error</span>
-                  <span>{submitError}</span>
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
+                  <div className="flex-1">
+                    <span className="font-bold block text-rose-900">Submission Error</span>
+                    <p className="mt-0.5 leading-relaxed">{submitError}</p>
+
+                    {/* Visible direct contact links & retry button */}
+                    <div className="mt-3 pt-3 border-t border-rose-200 flex flex-wrap items-center gap-3 text-xs">
+                      <a
+                        href={siteConfig.business.phoneTel}
+                        className="inline-flex items-center gap-1 font-bold text-rose-900 hover:text-rose-700 underline"
+                      >
+                        <Phone className="w-3.5 h-3.5" />
+                        <span>Call +971 56 914 8255</span>
+                      </a>
+                      <span className="text-rose-300">|</span>
+                      <a
+                        href={siteConfig.business.whatsappUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 font-bold text-emerald-700 hover:text-emerald-800 underline"
+                      >
+                        <WhatsAppIcon className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>WhatsApp</span>
+                      </a>
+                      <span className="text-rose-300">|</span>
+                      <button
+                        type="button"
+                        onClick={handleSubmit}
+                        disabled={isSubmitting}
+                        className="inline-flex items-center gap-1 font-bold text-blue-700 hover:text-blue-800 underline cursor-pointer ml-auto disabled:opacity-50"
+                      >
+                        <RefreshCw className="w-3 h-3" />
+                        <span>Retry</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
 
             <form onSubmit={handleSubmit} noValidate className="space-y-4 sm:space-y-4.5">
-              {/* Off-screen Honeypot fields (catches bots silently) */}
+              {/* Off-screen Honeypot field (catches spam bots silently) */}
               <div style={{ position: 'absolute', left: '-9999px', opacity: 0 }} aria-hidden="true">
                 <label htmlFor="website">Website</label>
                 <input
@@ -229,16 +289,6 @@ export function EnquiryForm() {
                   id="website"
                   name="website"
                   value={formData.website}
-                  onChange={handleChange}
-                  tabIndex="-1"
-                  autoComplete="off"
-                />
-                <label htmlFor="website_url">Website URL</label>
-                <input
-                  type="text"
-                  id="website_url"
-                  name="website_url"
-                  value={formData.website_url}
                   onChange={handleChange}
                   tabIndex="-1"
                   autoComplete="off"

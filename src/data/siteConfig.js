@@ -4,6 +4,7 @@ import { faFacebookF } from '@fortawesome/free-brands-svg-icons/faFacebookF';
 import { faLinkedinIn } from '@fortawesome/free-brands-svg-icons/faLinkedinIn';
 import { faXTwitter } from '@fortawesome/free-brands-svg-icons/faXTwitter';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons/faYoutube';
+import { SERVICE_OPTIONS } from './serviceOptions.js';
 
 /**
  * Grace Way Accounting FZC LLC - Central Site Configuration
@@ -304,12 +305,7 @@ export const siteConfig = {
     cardTitle: "Let's Talk – Free Consultation",
     cardIntro: "Book your free session with our team and discover solutions crafted for your business.",
     googleMapsEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115409.80392341499!2d55.351283628469935!3d25.321684347781077!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5f082e6d5e1b%3A0x6b7cf4b64e59f400!2sSharjah!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae", // PLACEHOLDER: client to provide
-    formServices: [
-      { value: "Accounting & Bookkeeping", label: "Accounting & Bookkeeping" },
-      { value: "Taxation & Compliance", label: "Taxation & Compliance" },
-      { value: "Audit & Advisory", label: "Audit & Advisory" },
-      { value: "Other", label: "Other" },
-    ],
+    formServices: SERVICE_OPTIONS,
   },
 
   // Social profiles (LinkedIn, Instagram, X/Twitter, WhatsApp)
