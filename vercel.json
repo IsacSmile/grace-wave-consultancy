@@ -54,6 +54,10 @@
     {
       "source": "/admin(.*)",
       "destination": "/index.html"
+    },
+    {
+      "source": "/((?!api/|@|src/|node_modules/|assets/|.*\\..*).*)",
+      "destination": "/index.html"
     }
   ]
 }

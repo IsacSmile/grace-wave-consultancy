@@ -67,24 +67,31 @@ Built with **React (Vite)**, **Tailwind CSS**, **Lenis Smooth Scroll**, **GSAP +
 ## Quick Start (Local Setup)
 
 ### 1. Prerequisites
+
 - Node.js 18+ (tested on Node v20/v22)
 - npm 9+
 
 ### 2. Install Dependencies
+
 ```bash
 npm install
 ```
 
 ### 3. Configure Environment Variables
+
 Copy `.env.example` to `.env`:
+
 ```bash
 cp .env.example .env
 ```
+
 Fill in your Neon Postgres connection string:
+
 ```ini
 DATABASE_URL=postgresql://<user>:<password>@<ep-placeholder>.region.aws.neon.tech/neondb?sslmode=require
 RATE_LIMIT_SALT=your_custom_secret_salt_here
 ```
+
 > **Security Note:** `DATABASE_URL` is used strictly on the server (`api/enquiry.js`). It does not have a `VITE_` prefix and is never exposed in the client-side JavaScript bundle.
 
 ---
@@ -94,6 +101,7 @@ RATE_LIMIT_SALT=your_custom_secret_salt_here
 1. Go to [Neon Console](https://console.neon.tech) and create a free project (or use an existing one).
 2. Open the **SQL Editor** tab in your Neon dashboard.
 3. Paste the contents of `db/schema.sql` and click **Run**:
+
    ```sql
    CREATE TABLE IF NOT EXISTS enquiries (
      id BIGSERIAL PRIMARY KEY,
@@ -110,6 +118,7 @@ RATE_LIMIT_SALT=your_custom_secret_salt_here
    CREATE INDEX IF NOT EXISTS idx_enquiries_created_at ON enquiries (created_at DESC);
    CREATE INDEX IF NOT EXISTS idx_enquiries_ip_hash ON enquiries (ip_hash, created_at);
    ```
+
 4. Copy the **Connection String** from the dashboard (select `Pooled connection` or standard `postgres://...`).
 5. Paste it as `DATABASE_URL` into your `.env` file and into Vercel Project Environment Variables.
 
@@ -118,16 +127,21 @@ RATE_LIMIT_SALT=your_custom_secret_salt_here
 ## Running Locally
 
 ### Option A: Frontend Only (Vite Dev Server)
+
 ```bash
 npm run dev
 ```
+
 Runs the Vite development server at `http://localhost:3000`.
 
 ### Option B: Full Stack with API (`vercel dev`)
+
 To test both the React frontend and the `/api/enquiry` serverless endpoint locally:
+
 ```bash
 npx vercel dev
 ```
+
 `vercel dev` starts local Vercel serverless runtime and proxies frontend requests, allowing live testing of the submission form against your Neon Postgres database.
 
 ---
@@ -138,6 +152,7 @@ All text, contact information, services, and values are centralized in a single 
 **`src/data/siteConfig.js`**
 
 To update content, open `src/data/siteConfig.js`:
+
 - **Phone / WhatsApp**: Update `business.phone`, `business.phoneDisplay`, and `business.whatsappUrl` (configured to `+971569148255`).
 - **Email & Address**: Replace the placeholder `business.email` (`info@gracewayaccounting.com`) and `business.address`.
 - **Services Copy**: Update `services.list` to modify descriptions, deliverables, or features.
