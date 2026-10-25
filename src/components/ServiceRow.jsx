@@ -241,10 +241,10 @@ export function ServiceRow({
                   <button
                     type="button"
                     onClick={() => onEnquire(service.serviceValue)}
-                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 xl:py-3 rounded-xl text-base font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/25 active:scale-[0.99] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 cursor-pointer"
+                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 xl:py-3 rounded-xl text-base font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/25 active:scale-[0.99] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 cursor-pointer whitespace-nowrap"
                   >
                     <span>Enquire about {service.title}</span>
-                    <ArrowUpRight className="w-4 h-4" />
+                    <ArrowUpRight className="w-4 h-4 shrink-0" />
                   </button>
                 </div>
               </div>

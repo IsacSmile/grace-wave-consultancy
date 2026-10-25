@@ -197,9 +197,9 @@ export function Process() {
         aria-hidden="true"
       />
 
-      {/* Optional Decoration: Large faint outlined step number in bottom-right corner (lg only, aria-hidden, under 8% opacity) */}
+      {/* Optional Decoration: Large faint outlined step number in bottom-right corner (lg only, aria-hidden, under 4% opacity) */}
       <div
-        className="hidden lg:block absolute right-10 bottom-6 font-heading font-extrabold text-[180px] leading-none process-bg-num pointer-events-none z-0 select-none transition-all duration-300"
+        className="hidden lg:block absolute right-8 bottom-4 font-heading font-extrabold text-[160px] leading-none process-bg-num pointer-events-none z-0 select-none transition-all duration-300"
         aria-hidden="true"
       >
         {processSteps[activeIndex]?.number || '01'}

@@ -378,7 +378,7 @@ export function ServiceTabs() {
       aria-labelledby="solutions-heading"
       className="bg-white py-12 sm:py-16 md:py-24 lg:py-28 relative overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header: Left-aligned global heading tokens */}
         <SectionHeading
           id="solutions-heading"

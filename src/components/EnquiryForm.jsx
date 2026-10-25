@@ -148,30 +148,32 @@ export function EnquiryForm() {
   };
 
   return (
-    <div className="w-full max-w-xl rounded-3xl bg-white p-2.5 sm:p-3 shadow-2xl shadow-navy-950/60">
-      {/* Card Header Bar (Taller Top Border) */}
-      <div className="py-4 sm:py-5 px-4 sm:px-6 flex items-center justify-between">
-        <h3 className="font-heading font-bold text-lg sm:text-xl text-navy-950 tracking-tight">
-          {siteConfig.contact.cardTitle}
-        </h3>
-        <div className="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm">
-          <Send className="w-4 h-4 transform rotate-12" />
+    <div className="w-full max-w-xl rounded-[28px] sm:rounded-[36px] bg-blue-50 border border-blue-200/90 p-3 sm:p-5 md:p-6 shadow-xl shadow-navy-950/5">
+      {/* Card Header matching reference: paper plane icon + title + decorative ring */}
+      <div className="px-2 sm:px-3 pt-1 pb-4 sm:pb-5 flex items-center justify-between">
+        <div className="flex items-center gap-2.5 text-navy-950">
+          <Send className="w-5 h-5 text-blue-600 transform -rotate-12 stroke-[2.2]" />
+          <h3 className="font-heading font-bold text-base sm:text-lg md:text-xl text-navy-950 tracking-tight">
+            Free Consultation for Our Services
+          </h3>
         </div>
+        {/* Top-right decorative circle ring matching reference */}
+        <div className="w-7 h-7 rounded-full border border-blue-300/80 shrink-0" aria-hidden="true" />
       </div>
 
-      {/* Inner Panel */}
-      <div className="bg-[#071328] rounded-2xl p-5 sm:p-7 md:p-8 border border-white/10">
+      {/* Inner White Panel */}
+      <div className="bg-white rounded-2xl sm:rounded-[24px] p-5 sm:p-7 md:p-8 shadow-xs border border-slate-100">
         
         {/* Success Confirmation State */}
         {submitSuccess ? (
           <div className="py-6 sm:py-8 text-center animate-fade-in">
-            <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center mx-auto mb-5 shadow-sm">
+            <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center mx-auto mb-5 shadow-xs">
               <CheckCircle2 className="w-9 h-9" />
             </div>
-            <h4 className="font-heading font-bold text-2xl text-white mb-2">
+            <h4 className="font-heading font-bold text-2xl text-navy-950 mb-2">
               Enquiry Received
             </h4>
-            <p className="text-sm text-slate-300 max-w-md mx-auto mb-6 leading-relaxed">
+            <p className="text-sm text-slate-600 max-w-md mx-auto mb-6 leading-relaxed">
               Thank you for reaching out to <strong>{siteConfig.business.name}</strong>. An accounting consultant will examine your requirements and get in touch with you shortly.
             </p>
 
@@ -179,7 +181,7 @@ export function EnquiryForm() {
               <button
                 type="button"
                 onClick={handleReset}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-sm font-semibold text-white bg-white/10 hover:bg-white/20 transition-colors min-h-[44px]"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors min-h-[44px]"
               >
                 <RefreshCw className="w-4 h-4" />
                 <span>Send Another Enquiry</span>
@@ -198,9 +200,9 @@ export function EnquiryForm() {
           </div>
         ) : (
           <>
-            {/* Intro text */}
-            <p className="text-xs sm:text-sm text-slate-300 mb-6 leading-relaxed">
-              {siteConfig.contact.cardIntro}
+            {/* Intro text matching reference */}
+            <p className="text-xs sm:text-sm text-slate-500 mb-6 leading-relaxed">
+              Please fill out the form below with your details and message, and our team will get back to you as soon as possible.
             </p>
 
             {/* Error banner */}
@@ -208,17 +210,17 @@ export function EnquiryForm() {
               <div
                 role="alert"
                 aria-live="assertive"
-                className="mb-5 p-3.5 rounded-xl bg-rose-500/15 border border-rose-500/40 flex items-start gap-3 text-rose-200 text-xs sm:text-sm"
+                className="mb-5 p-3.5 rounded-xl bg-rose-50 border border-rose-200 flex items-start gap-3 text-rose-800 text-xs sm:text-sm"
               >
-                <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+                <AlertCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
                 <div className="flex-1">
-                  <span className="font-bold block text-rose-300">Submission Error</span>
+                  <span className="font-bold block text-rose-900">Submission Error</span>
                   <span>{submitError}</span>
                 </div>
               </div>
             )}
 
-            <form onSubmit={handleSubmit} noValidate className="space-y-4 sm:space-y-5">
+            <form onSubmit={handleSubmit} noValidate className="space-y-4 sm:space-y-4.5">
               {/* Off-screen Honeypot fields (catches bots silently) */}
               <div style={{ position: 'absolute', left: '-9999px', opacity: 0 }} aria-hidden="true">
                 <label htmlFor="website">Website</label>
@@ -246,8 +248,8 @@ export function EnquiryForm() {
               {/* Row 1: Name & Phone */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="name" className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                    Your Name <span className="text-rose-400">*</span>
+                  <label htmlFor="name" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                    First Name <span className="text-rose-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -257,22 +259,22 @@ export function EnquiryForm() {
                     onChange={handleChange}
                     aria-invalid={errors.name ? 'true' : 'false'}
                     aria-describedby={errors.name ? 'name-error' : undefined}
-                    className={`w-full h-12 px-4 rounded-xl text-base text-white bg-white/5 hover:bg-white/[0.07] focus:bg-white/[0.08] border transition-all focus:outline-none focus:ring-2 ${
+                    className={`w-full h-12 px-4 rounded-xl text-sm sm:text-base text-slate-900 bg-white border transition-all focus:outline-none focus:ring-2 ${
                       errors.name
-                        ? 'border-rose-400 focus:ring-rose-400/40'
-                        : 'border-white/15 hover:border-white/25 focus:border-blue-400 focus:ring-blue-400/30'
+                        ? 'border-rose-400 focus:ring-rose-400/20'
+                        : 'border-slate-200 hover:border-slate-300 focus:border-blue-500 focus:ring-blue-500/20'
                     }`}
                   />
                   {errors.name && (
-                    <p id="name-error" className="mt-1 text-xs text-rose-400" aria-live="polite">
+                    <p id="name-error" className="mt-1 text-xs text-rose-500" aria-live="polite">
                       {errors.name}
                     </p>
                   )}
                 </div>
 
                 <div>
-                  <label htmlFor="phone" className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                    Phone Number <span className="text-rose-400">*</span>
+                  <label htmlFor="phone" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                    Phone <span className="text-rose-500">*</span>
                   </label>
                   <input
                     type="tel"
@@ -283,72 +285,71 @@ export function EnquiryForm() {
                     onChange={handleChange}
                     aria-invalid={errors.phone ? 'true' : 'false'}
                     aria-describedby={errors.phone ? 'phone-error' : undefined}
-                    className={`w-full h-12 px-4 rounded-xl text-base text-white bg-white/5 hover:bg-white/[0.07] focus:bg-white/[0.08] border transition-all focus:outline-none focus:ring-2 ${
+                    className={`w-full h-12 px-4 rounded-xl text-sm sm:text-base text-slate-900 bg-white border transition-all focus:outline-none focus:ring-2 ${
                       errors.phone
-                        ? 'border-rose-400 focus:ring-rose-400/40'
-                        : 'border-white/15 hover:border-white/25 focus:border-blue-400 focus:ring-blue-400/30'
+                        ? 'border-rose-400 focus:ring-rose-400/20'
+                        : 'border-slate-200 hover:border-slate-300 focus:border-blue-500 focus:ring-blue-500/20'
                     }`}
                   />
                   {errors.phone && (
-                    <p id="phone-error" className="mt-1 text-xs text-rose-400" aria-live="polite">
+                    <p id="phone-error" className="mt-1 text-xs text-rose-500" aria-live="polite">
                       {errors.phone}
                     </p>
                   )}
                 </div>
               </div>
 
-              {/* Row 2: Email & Service */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="email" className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                    Email Address <span className="text-rose-400">*</span>
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    aria-invalid={errors.email ? 'true' : 'false'}
-                    aria-describedby={errors.email ? 'email-error' : undefined}
-                    className={`w-full h-12 px-4 rounded-xl text-base text-white bg-white/5 hover:bg-white/[0.07] focus:bg-white/[0.08] border transition-all focus:outline-none focus:ring-2 ${
-                      errors.email
-                        ? 'border-rose-400 focus:ring-rose-400/40'
-                        : 'border-white/15 hover:border-white/25 focus:border-blue-400 focus:ring-blue-400/30'
-                    }`}
-                  />
-                  {errors.email && (
-                    <p id="email-error" className="mt-1 text-xs text-rose-400" aria-live="polite">
-                      {errors.email}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label htmlFor="service" className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                    Service Required <span className="text-rose-400">*</span>
-                  </label>
-                  <select
-                    id="service"
-                    name="service"
-                    value={formData.service}
-                    onChange={handleChange}
-                    className="w-full h-12 px-4 rounded-xl text-base text-white bg-[#0e1f3d] hover:bg-[#122548] border border-white/15 hover:border-white/25 transition-all focus:outline-none focus:ring-2 focus:border-blue-400 focus:ring-blue-400/30"
-                  >
-                    {siteConfig.contact.formServices.map((svc) => (
-                      <option key={svc.value} value={svc.value} className="bg-[#071328] text-white">
-                        {svc.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+              {/* Row 2: Email */}
+              <div>
+                <label htmlFor="email" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Email <span className="text-rose-500">*</span>
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  aria-invalid={errors.email ? 'true' : 'false'}
+                  aria-describedby={errors.email ? 'email-error' : undefined}
+                  className={`w-full h-12 px-4 rounded-xl text-sm sm:text-base text-slate-900 bg-white border transition-all focus:outline-none focus:ring-2 ${
+                    errors.email
+                      ? 'border-rose-400 focus:ring-rose-400/20'
+                      : 'border-slate-200 hover:border-slate-300 focus:border-blue-500 focus:ring-blue-500/20'
+                  }`}
+                />
+                {errors.email && (
+                  <p id="email-error" className="mt-1 text-xs text-rose-500" aria-live="polite">
+                    {errors.email}
+                  </p>
+                )}
               </div>
 
-              {/* Message */}
+              {/* Row 3: Service Required */}
+              <div>
+                <label htmlFor="service" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Service Required <span className="text-rose-500">*</span>
+                </label>
+                <select
+                  id="service"
+                  name="service"
+                  value={formData.service}
+                  onChange={handleChange}
+                  className="w-full h-12 px-4 rounded-xl text-sm sm:text-base text-slate-900 bg-white border border-slate-200 hover:border-slate-300 transition-all focus:outline-none focus:ring-2 focus:border-blue-500 focus:ring-blue-500/20 cursor-pointer"
+                >
+                  {siteConfig.contact.formServices.map((svc) => (
+                    <option key={svc.value} value={svc.value} className="bg-white text-slate-900">
+                      {svc.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Row 4: Write Message */}
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label htmlFor="message" className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
-                    Message <span className="text-rose-400">*</span>
+                  <label htmlFor="message" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                    Write Message <span className="text-rose-500">*</span>
                   </label>
                   <span className="text-[11px] text-slate-400">
                     {formData.message.length}/1000
@@ -362,25 +363,25 @@ export function EnquiryForm() {
                   onChange={handleChange}
                   aria-invalid={errors.message ? 'true' : 'false'}
                   aria-describedby={errors.message ? 'message-error' : undefined}
-                  className={`w-full p-4 rounded-xl text-base text-white bg-white/5 hover:bg-white/[0.07] focus:bg-white/[0.08] border transition-all focus:outline-none focus:ring-2 resize-y min-h-[120px] ${
+                  className={`w-full p-4 rounded-xl text-sm sm:text-base text-slate-900 bg-white border transition-all focus:outline-none focus:ring-2 resize-y min-h-[110px] ${
                     errors.message
-                      ? 'border-rose-400 focus:ring-rose-400/40'
-                      : 'border-white/15 hover:border-white/25 focus:border-blue-400 focus:ring-blue-400/30'
+                      ? 'border-rose-400 focus:ring-rose-400/20'
+                      : 'border-slate-200 hover:border-slate-300 focus:border-blue-500 focus:ring-blue-500/20'
                   }`}
                 />
                 {errors.message && (
-                  <p id="message-error" className="mt-1 text-xs text-rose-400" aria-live="polite">
+                  <p id="message-error" className="mt-1 text-xs text-rose-500" aria-live="polite">
                     {errors.message}
                   </p>
                 )}
               </div>
 
-              {/* Submit Button */}
+              {/* Submit Button: website theme standard primary button */}
               <div className="pt-2">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-8 h-12 rounded-full text-base font-bold text-white bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-600/30 hover:shadow-blue-600/40 disabled:opacity-60 disabled:cursor-not-allowed transition-all transform active:scale-[0.99] min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 h-12 rounded-xl text-base font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 active:scale-[0.99] transition-all min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
                 >
                   {isSubmitting ? (
                     <>

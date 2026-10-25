@@ -169,10 +169,15 @@ export function ServiceTabPanel({
               <button
                 type="button"
                 onClick={handleEnquireClick}
-                className="h-12 px-6 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 active:scale-[0.99] transition-all inline-flex items-center justify-center gap-2 w-full sm:w-auto min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                className="h-11 sm:h-12 px-3.5 xs:px-4 sm:px-6 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 active:scale-[0.99] transition-all inline-flex items-center justify-center gap-1.5 sm:gap-2 w-full sm:w-auto min-h-[44px] sm:min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 whitespace-nowrap text-xs min-[360px]:text-[13px] min-[390px]:text-sm sm:text-base tracking-tight"
               >
-                <span>Enquire about {tab.tabLabel}</span>
-                <ArrowUpRight className="w-4 h-4 shrink-0" />
+                <span className="hidden min-[340px]:inline whitespace-nowrap">
+                  Enquire about {tab.tabLabel}
+                </span>
+                <span className="min-[340px]:hidden whitespace-nowrap">
+                  Enquire Now
+                </span>
+                <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
               </button>
             </div>
           </div>
@@ -204,10 +209,15 @@ export function ServiceTabPanel({
               <button
                 type="button"
                 onClick={handleEnquireClick}
-                className="h-12 px-7 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 active:scale-[0.99] transition-all inline-flex items-center justify-center gap-2 w-full sm:w-auto min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                className="h-11 sm:h-12 px-3.5 xs:px-4 sm:px-6 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 active:scale-[0.99] transition-all inline-flex items-center justify-center gap-1.5 sm:gap-2 w-full sm:w-auto min-h-[44px] sm:min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 whitespace-nowrap text-xs min-[360px]:text-[13px] min-[390px]:text-sm sm:text-base tracking-tight"
               >
-                <span>Enquire about {tab.tabLabel}</span>
-                <ArrowUpRight className="w-4 h-4 shrink-0" />
+                <span className="hidden min-[340px]:inline whitespace-nowrap">
+                  Enquire about {tab.tabLabel}
+                </span>
+                <span className="min-[340px]:hidden whitespace-nowrap">
+                  Enquire Now
+                </span>
+                <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
               </button>
             </div>
           </div>
@@ -244,10 +254,15 @@ export function ServiceTabPanel({
               <button
                 type="button"
                 onClick={handleEnquireClick}
-                className="h-12 px-7 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 active:scale-[0.99] transition-all inline-flex items-center justify-center gap-2 w-full sm:w-auto min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                className="h-11 sm:h-12 px-3.5 xs:px-4 sm:px-6 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 active:scale-[0.99] transition-all inline-flex items-center justify-center gap-1.5 sm:gap-2 w-full sm:w-auto min-h-[44px] sm:min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 whitespace-nowrap text-xs min-[360px]:text-[13px] min-[390px]:text-sm sm:text-base tracking-tight"
               >
-                <span>Enquire about {tab.tabLabel}</span>
-                <ArrowUpRight className="w-4 h-4 shrink-0" />
+                <span className="hidden min-[340px]:inline whitespace-nowrap">
+                  Enquire about {tab.tabLabel}
+                </span>
+                <span className="min-[340px]:hidden whitespace-nowrap">
+                  Enquire Now
+                </span>
+                <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
               </button>
             </div>
           </div>
