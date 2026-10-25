@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { FileCheck2, ThumbsUp, Users, Award, Smile } from 'lucide-react';
+import { FileCheck2, ThumbsUp, Users, Award, Smile, MapPin } from 'lucide-react';
 import { statsData } from '../data/stats';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 
@@ -13,6 +13,7 @@ const iconMap = {
   Smile,
   Users,
   Award,
+  MapPin,
 };
 
 export function StatsStrip() {
@@ -25,7 +26,7 @@ export function StatsStrip() {
       case 2:
         return 'grid-cols-1 sm:grid-cols-2 max-w-3xl mx-auto';
       case 3:
-        return 'grid-cols-1 sm:grid-cols-3';
+        return 'grid-cols-1 md:grid-cols-3 max-w-5xl mx-auto';
       default:
         // 4 items (or default): 2x2 on mobile, 4-in-a-row on lg+
         return 'grid-cols-2 lg:grid-cols-4';
@@ -196,7 +197,7 @@ export function StatsStrip() {
                       </span>
                     </div>
 
-                    <div className="text-xs sm:text-sm font-semibold text-slate-200 mt-1 leading-tight truncate">
+                    <div className="text-xs sm:text-sm font-semibold text-slate-200 mt-1 leading-tight break-words sm:break-normal">
                       {stat.label}
                     </div>
                   </dd>

@@ -16,6 +16,13 @@ export const statsData = [
     label: 'Core Services',
     icon: 'FileCheck2',
   },
+  {
+    id: 'locations',
+    value: 7,
+    suffix: '',
+    label: 'Emirates Covered',
+    icon: 'MapPin',
+  },
   // PLACEHOLDER: enable only with real figures
   // {
   //   id: 'clients',
