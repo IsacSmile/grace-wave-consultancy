@@ -4,6 +4,7 @@ import { ALLOWED_SERVICES } from '../src/data/serviceOptions.js';
 
 const COOKIE_NAME = 'gw_admin';
 const COOKIE_MAX_AGE = 8 * 60 * 60; // 8 hours in seconds
+const MAX_PAYLOAD_SIZE = 8192; // 8KB payload cap to prevent buffer exhaustion DoS
 
 /**
  * Extracts a cookie value by name from the request headers
@@ -16,26 +17,55 @@ function getCookie(req, name) {
 }
 
 /**
- * Creates a signed session token: base64url(JSON { exp }) + "." + HMAC-SHA256(payload, secret) in base64url
+ * Computes a client binding fingerprint from IP hash and User-Agent
+ * Prevents session hijacking if an attacker steals the session cookie
  */
-function createSessionToken(secret) {
+function computeClientBinding(ipHash, userAgent, secret) {
+  return crypto
+    .createHmac('sha256', secret)
+    .update(`${ipHash}:${userAgent}`)
+    .digest('base64url')
+    .slice(0, 16);
+}
+
+/**
+ * Derives a dynamic signing key bound to both the session secret and the current admin password.
+ * If the admin password is changed or rotated, all existing sessions immediately become invalid.
+ */
+function deriveSigningKey(sessionSecret, adminPassword) {
+  return crypto
+    .createHmac('sha256', sessionSecret)
+    .update(adminPassword)
+    .digest();
+}
+
+/**
+ * Creates a signed, device-bound session token:
+ * base64url(JSON { exp, bnd }) + "." + HMAC-SHA256(payload, signingKey) in base64url
+ */
+function createSessionToken(sessionSecret, adminPassword, ipHash, userAgent) {
   const exp = Math.floor(Date.now() / 1000) + COOKIE_MAX_AGE;
-  const payloadStr = JSON.stringify({ exp });
+  const bnd = computeClientBinding(ipHash, userAgent, sessionSecret);
+  const payloadStr = JSON.stringify({ exp, bnd });
   const payloadB64 = Buffer.from(payloadStr, 'utf8').toString('base64url');
-  const signature = crypto.createHmac('sha256', secret).update(payloadB64).digest('base64url');
+
+  const signingKey = deriveSigningKey(sessionSecret, adminPassword);
+  const signature = crypto.createHmac('sha256', signingKey).update(payloadB64).digest('base64url');
   return `${payloadB64}.${signature}`;
 }
 
 /**
- * Verifies the session token using timingSafeEqual and checks expiration
+ * Verifies session token signature, expiration, and client IP/Device binding
  */
-function verifySessionToken(token, secret) {
+function verifySessionToken(token, sessionSecret, adminPassword, ipHash, userAgent) {
   if (!token || typeof token !== 'string') return false;
   const parts = token.split('.');
   if (parts.length !== 2) return false;
   const [payloadB64, signature] = parts;
 
-  const expectedSig = crypto.createHmac('sha256', secret).update(payloadB64).digest('base64url');
+  // 1. Verify HMAC signature in constant time
+  const signingKey = deriveSigningKey(sessionSecret, adminPassword);
+  const expectedSig = crypto.createHmac('sha256', signingKey).update(payloadB64).digest('base64url');
   const sigBuf = Buffer.from(signature);
   const expBuf = Buffer.from(expectedSig);
 
@@ -43,25 +73,78 @@ function verifySessionToken(token, secret) {
     return false;
   }
 
+  // 2. Parse payload and verify expiry
+  let payload;
   try {
-    const payload = JSON.parse(Buffer.from(payloadB64, 'base64url').toString('utf8'));
-    if (!payload.exp || typeof payload.exp !== 'number') return false;
-    if (payload.exp <= Math.floor(Date.now() / 1000)) return false;
-    return true;
+    payload = JSON.parse(Buffer.from(payloadB64, 'base64url').toString('utf8'));
+  } catch {
+    return false;
+  }
+
+  if (!payload.exp || typeof payload.exp !== 'number') return false;
+  if (payload.exp <= Math.floor(Date.now() / 1000)) return false;
+
+  // 3. Verify Client Binding (Anti-Session-Hijacking: token cannot be used from another IP or browser)
+  if (payload.bnd) {
+    const expectedBinding = computeClientBinding(ipHash, userAgent, sessionSecret);
+    const bndBuf = Buffer.from(payload.bnd);
+    const expBndBuf = Buffer.from(expectedBinding);
+    if (bndBuf.length !== expBndBuf.length || !crypto.timingSafeEqual(bndBuf, expBndBuf)) {
+      console.warn('[Admin Security Alert]: Session token client binding mismatch. Rejecting hijacked token.');
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/**
+ * Verifies request origin against host to prevent Cross-Site Request Forgery (CSRF)
+ */
+function isTrustedOrigin(req) {
+  const origin = req.headers['origin'] || req.headers['referer'];
+  if (!origin) return true; // Direct programmatic calls without browser origin
+  try {
+    const originHost = new URL(origin).host;
+    const reqHost = req.headers['host'];
+    return originHost === reqHost;
   } catch {
     return false;
   }
 }
 
 /**
- * Single serverless function handling /api/admin operations
+ * Strips dangerous control characters and null bytes from input strings
+ */
+function sanitizeString(str) {
+  if (typeof str !== 'string') return '';
+  return str.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '').trim();
+}
+
+/**
+ * Fortified serverless API handler for /api/admin
  */
 export default async function handler(req, res) {
-  // Always set security & cache headers
-  res.setHeader('Cache-Control', 'no-store');
-  res.setHeader('X-Robots-Tag', 'noindex, nofollow');
+  // Enterprise Security Headers
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
 
-  const action = (req.query.action || '').trim().toLowerCase();
+  // Reject oversized payloads early to prevent memory exhaustion
+  const contentLength = parseInt(req.headers['content-length'] || '0', 10);
+  if (contentLength > MAX_PAYLOAD_SIZE) {
+    return res.status(413).json({ ok: false, error: 'Payload exceeds maximum permitted size' });
+  }
+
+  // Cross-Site Request Forgery (CSRF) check on state-changing requests
+  if (req.method === 'POST' && !isTrustedOrigin(req)) {
+    console.warn('[Admin Security Alert]: Cross-origin request rejected.');
+    return res.status(403).json({ ok: false, error: 'Cross-origin request rejected' });
+  }
+
+  const action = sanitizeString(req.query.action || '').toLowerCase();
 
   // 1. Fail closed configuration check
   const adminPassword = process.env.ADMIN_PASSWORD;
@@ -103,6 +186,7 @@ export default async function handler(req, res) {
   const rawIp = forwardedIp || req.socket?.remoteAddress || '127.0.0.1';
   const salt = process.env.RATE_LIMIT_SALT || 'grace_way_accounting_salt_2026';
   const ipHash = crypto.createHash('sha256').update(rawIp + salt).digest('hex');
+  const userAgent = req.headers['user-agent'] || 'unknown';
 
   // =========================================================================
   // ACTION: login (POST ?action=login)
@@ -113,27 +197,38 @@ export default async function handler(req, res) {
       return res.status(405).json({ ok: false, error: `Method ${req.method} Not Allowed` });
     }
 
-    // Rate limiting: 5 failed attempts in last 15 minutes for this hashed IP
+    // Multi-tier Rate Limiting:
+    // Tier A: Max 5 failed attempts per IP in last 15 minutes
+    // Tier B: Max 25 failed attempts globally across all IPs in last 15 minutes (Anti-distributed botnet)
     try {
-      const recentFails = await sql`
-        SELECT COUNT(*)::int AS count 
-        FROM admin_login_attempts 
-        WHERE ip_hash = ${ipHash} 
-          AND success = false 
-          AND created_at > NOW() - INTERVAL '15 minutes'
+      const recentAttempts = await sql`
+        SELECT 
+          COUNT(*) FILTER (WHERE ip_hash = ${ipHash} AND success = false AND created_at > NOW() - INTERVAL '15 minutes')::int AS ip_failures,
+          COUNT(*) FILTER (WHERE success = false AND created_at > NOW() - INTERVAL '15 minutes')::int AS global_failures
+        FROM admin_login_attempts
       `;
-      const failCount = Number(recentFails[0]?.count || 0);
-      if (failCount >= 5) {
+      const ipFailures = Number(recentAttempts[0]?.ip_failures || 0);
+      const globalFailures = Number(recentAttempts[0]?.global_failures || 0);
+
+      if (ipFailures >= 5) {
         return res.status(429).json({
           ok: false,
           error: 'Too many attempts. Try again later.',
+        });
+      }
+
+      if (globalFailures >= 25) {
+        console.warn('[Admin Security Alert]: Global distributed login throttle activated.');
+        return res.status(429).json({
+          ok: false,
+          error: 'Too many login attempts worldwide. Access temporarily throttled.',
         });
       }
     } catch (dbErr) {
       console.error('[Admin Rate-Limit Error]:', dbErr.message || dbErr);
     }
 
-    // Parse request body
+    // Parse request body defensively
     let body = req.body;
     if (typeof body === 'string') {
       try {
@@ -144,9 +239,10 @@ export default async function handler(req, res) {
     }
     const submittedPassword = typeof body?.password === 'string' ? body.password : '';
 
-    // Compare digests using crypto.timingSafeEqual (constant time, equal length buffers)
-    const submittedDigest = crypto.createHash('sha256').update(submittedPassword).digest();
-    const adminDigest = crypto.createHash('sha256').update(adminPassword).digest();
+    // Peppered HMAC-SHA256 comparison using constant-time timingSafeEqual
+    const pepper = process.env.RATE_LIMIT_SALT || 'gw_security_pepper_2026';
+    const submittedDigest = crypto.createHmac('sha256', pepper).update(submittedPassword).digest();
+    const adminDigest = crypto.createHmac('sha256', pepper).update(adminPassword).digest();
     const isMatch = crypto.timingSafeEqual(submittedDigest, adminDigest);
 
     // Record login attempt in admin_login_attempts table
@@ -160,16 +256,17 @@ export default async function handler(req, res) {
     }
 
     if (!isMatch) {
-      // Artificial delay (~600ms) to mitigate timing analysis & brute-force throughput
-      await new Promise((resolve) => setTimeout(resolve, 600));
+      // Artificial delay with cryptographic random jitter (550ms + 0-100ms) to defeat statistical timing analysis
+      const jitterMs = 550 + crypto.randomInt(100);
+      await new Promise((resolve) => setTimeout(resolve, jitterMs));
       return res.status(401).json({
         ok: false,
         error: 'Incorrect password',
       });
     }
 
-    // Password valid -> Create signed session token and set HttpOnly SameSite cookie
-    const token = createSessionToken(sessionSecret);
+    // Password valid -> Create signed, device-bound session token
+    const token = createSessionToken(sessionSecret, adminPassword, ipHash, userAgent);
     const isProd = process.env.NODE_ENV === 'production';
     const secureFlag = isProd ? '; Secure' : '';
     const cookieHeader = `${COOKIE_NAME}=${token}; HttpOnly${secureFlag}; SameSite=Strict; Path=/; Max-Age=${COOKIE_MAX_AGE}`;
@@ -191,7 +288,7 @@ export default async function handler(req, res) {
     }
 
     const token = getCookie(req, COOKIE_NAME);
-    const isValid = verifySessionToken(token, sessionSecret);
+    const isValid = verifySessionToken(token, sessionSecret, adminPassword, ipHash, userAgent);
     if (!isValid) {
       return res.status(401).json({
         ok: false,
@@ -219,7 +316,7 @@ export default async function handler(req, res) {
 
     // Verify session
     const token = getCookie(req, COOKIE_NAME);
-    const isValid = verifySessionToken(token, sessionSecret);
+    const isValid = verifySessionToken(token, sessionSecret, adminPassword, ipHash, userAgent);
     if (!isValid) {
       return res.status(401).json({ ok: false, error: 'Unauthorized' });
     }
@@ -246,7 +343,7 @@ export default async function handler(req, res) {
 
     // Verify session
     const token = getCookie(req, COOKIE_NAME);
-    const isValid = verifySessionToken(token, sessionSecret);
+    const isValid = verifySessionToken(token, sessionSecret, adminPassword, ipHash, userAgent);
     if (!isValid) {
       return res.status(401).json({
         ok: false,
@@ -263,13 +360,13 @@ export default async function handler(req, res) {
       const pageSize = !isNaN(rawPageSize) && rawPageSize >= 1 && rawPageSize <= 50 ? rawPageSize : 20;
       const offset = (page - 1) * pageSize;
 
-      // Search parameter: clamp to 100 chars and escape % and _ for ILIKE wildcard safety
-      const rawQ = typeof req.query.q === 'string' ? req.query.q.trim().slice(0, 100) : '';
-      const escapedQ = rawQ.replace(/[%_]/g, '\\$&');
+      // Search parameter: sanitize, clamp to 100 chars and escape % and _ for ILIKE wildcard safety
+      const rawQ = sanitizeString(req.query.q || '').slice(0, 100);
+      const escapedQ = rawQ.replace(/[%_\\]/g, '\\$&');
       const qPattern = escapedQ ? `%${escapedQ}%` : '';
 
       // Service filter: must be in ALLOWED_SERVICES or empty
-      const rawService = typeof req.query.service === 'string' ? req.query.service.trim() : '';
+      const rawService = sanitizeString(req.query.service || '');
       const filterService = (ALLOWED_SERVICES || []).includes(rawService) ? rawService : '';
 
       // Sort order
