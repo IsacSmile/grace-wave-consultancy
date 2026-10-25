@@ -53,7 +53,7 @@ export function Footer() {
   return (
     <footer
       aria-label="Site footer"
-      className="bg-[#F8FAFF] text-slate-600 border-t border-[#0B1B4D]/10 pt-14 md:pt-20 pb-24 sm:pb-8 pb-[calc(env(safe-area-inset-bottom)+6rem)]"
+      className="bg-[#F8FAFF] text-slate-600 border-t border-[#0B1B4D]/10 pt-14 md:pt-20 pb-[calc(env(safe-area-inset-bottom)+6rem)] sm:pb-8"
     >
       <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 text-left">
         {/* Main Grid: Mobile (1 col), md (full width brand + 3 cols below), lg (12 cols) */}
