@@ -1,4 +1,6 @@
 import React from 'react';
+import { CursorProvider } from './context/CursorContext';
+import { CustomCursor } from './components/CustomCursor';
 import { SmoothScroll } from './components/SmoothScroll';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -15,30 +17,35 @@ import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 
 export default function App() {
   return (
-    <SmoothScroll>
-      <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800 antialiased selection:bg-gold-500 selection:text-navy-950 overflow-x-hidden">
-        {/* Sticky Accessible Navigation */}
-        <Navbar />
+    <CursorProvider>
+      <SmoothScroll>
+        <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800 antialiased selection:bg-gold-500 selection:text-navy-950 overflow-x-hidden">
+          {/* Custom Animated Cursor (mounted once, outside all sections) */}
+          <CustomCursor />
 
-        {/* Main Content Sections */}
-        <main id="main-content" className="flex-1">
-          <Hero />
-          <StatsStrip />
-          <About />
-          <Services />
-          <Marquee />
-          <ServiceTabs />
-          <WhyGraceWay />
-          <Process />
-          <Contact />
-        </main>
+          {/* Sticky Accessible Navigation */}
+          <Navbar />
 
-        {/* Footer */}
-        <Footer />
+          {/* Main Content Sections */}
+          <main id="main-content" className="flex-1">
+            <Hero />
+            <StatsStrip />
+            <About />
+            <Services />
+            <Marquee />
+            <ServiceTabs />
+            <WhyGraceWay />
+            <Process />
+            <Contact />
+          </main>
 
-        {/* Floating Quick WhatsApp Action */}
-        <FloatingWhatsApp />
-      </div>
-    </SmoothScroll>
+          {/* Footer */}
+          <Footer />
+
+          {/* Floating Quick WhatsApp Action */}
+          <FloatingWhatsApp />
+        </div>
+      </SmoothScroll>
+    </CursorProvider>
   );
 }

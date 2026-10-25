@@ -195,6 +195,9 @@ export function ServiceCursorPreview({
     }
 
     if (showPreview) {
+      if (typeof document !== 'undefined') {
+        document.documentElement.dataset.servicePreview = 'visible';
+      }
       // If returning to visible with cursor inside, sync position to prevent jump
       if (!isKeyboardActive && lastPointerPos.current.clientX > 0) {
         const targetX = lastPointerPos.current.clientX - PREVIEW_WIDTH * 0.45;
@@ -223,6 +226,9 @@ export function ServiceCursorPreview({
         overwrite: 'auto',
       });
     } else {
+      if (typeof document !== 'undefined') {
+        document.documentElement.dataset.servicePreview = 'hidden';
+      }
       // Fade out immediately, then set visibility: hidden to guarantee it never blocks clicks
       visibilityTween.current = gsap.to(previewRef.current, {
         opacity: 0,
@@ -237,6 +243,12 @@ export function ServiceCursorPreview({
         },
       });
     }
+
+    return () => {
+      if (typeof document !== 'undefined') {
+        document.documentElement.dataset.servicePreview = 'hidden';
+      }
+    };
   }, [showPreview, isKeyboardActive]);
 
   // Image crossfade on row hover/focus

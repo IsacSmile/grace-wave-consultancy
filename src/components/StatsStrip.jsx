@@ -130,6 +130,7 @@ export function StatsStrip() {
       id="stats-strip"
       ref={sectionRef}
       aria-label="Company highlights"
+      data-cursor-theme="dark"
       className="relative w-full bg-[#0A1F4D] text-white py-10 sm:py-14 border-t border-b border-navy-800/90 overflow-hidden"
     >
       {/* Decorative Background Elements (CSS/SVG, hidden on mobile) */}

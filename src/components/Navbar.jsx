@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, Phone, ArrowUpRight } from 'lucide-react';
 import { siteConfig } from '../data/siteConfig';
 import { useLenis } from './SmoothScroll';
+import { CursorToggle } from './CursorToggle';
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -92,7 +93,7 @@ export function Navbar() {
           </nav>
 
           {/* Right Action CTA (Desktop) */}
-          <div className="hidden sm:flex items-center gap-2.5">
+          <div className="hidden sm:flex items-center gap-3">
             <a
               href={`tel:${siteConfig.business.phones[0].tel}`}
               className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-bold text-[#0B1B4D] hover:text-blue-600 border border-slate-200/90 hover:border-slate-300 rounded-[7px] bg-white shadow-xs hover:shadow-sm active:scale-[0.98] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
@@ -102,6 +103,8 @@ export function Navbar() {
               <Phone className="w-3.5 h-3.5 text-blue-600 shrink-0" />
               <span>Call Now</span>
             </a>
+
+            <CursorToggle />
 
             <a
               href="#contact"

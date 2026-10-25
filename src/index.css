@@ -261,3 +261,151 @@ html.lenis, html.lenis body {
   letter-spacing: 0.04em;
 }
 
+/* ================= CUSTOM ANIMATED CURSOR ================= */
+:root {
+  --cursor-color: #0A1F4D;
+  --cursor-accent: #C9A24B;
+}
+
+/* Custom cursor hide/native cursors */
+html.has-custom-cursor,
+html.has-custom-cursor * {
+  cursor: none !important;
+}
+
+html.has-custom-cursor input,
+html.has-custom-cursor textarea,
+html.has-custom-cursor select,
+html.has-custom-cursor [contenteditable="true"],
+html.has-custom-cursor [contenteditable=""],
+html.has-custom-cursor iframe,
+html.has-custom-cursor video,
+html.has-custom-cursor [data-cursor="native"] {
+  cursor: auto !important;
+}
+
+html.has-custom-cursor input,
+html.has-custom-cursor textarea {
+  cursor: text !important;
+}
+
+/* Cursor root wrapper and elements */
+.custom-cursor-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: opacity 0.2s ease;
+}
+
+/* Hidden under touch/coarse or reduced motion */
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .custom-cursor-wrapper {
+    display: none !important;
+  }
+}
+
+.custom-cursor-dot-mover,
+.custom-cursor-ring-mover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.custom-cursor-dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  margin-top: -4px;
+  margin-left: -4px;
+  border-radius: 50%;
+  background-color: var(--cursor-color);
+  pointer-events: none;
+  will-change: transform;
+  transform: scale(1);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              background-color 0.25s ease,
+              opacity 0.2s ease;
+}
+
+.custom-cursor-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  margin-top: -18px;
+  margin-left: -18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--cursor-color);
+  background-color: transparent;
+  pointer-events: none;
+  will-change: transform;
+  transform: scale(1);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              background-color 0.25s ease,
+              border-color 0.25s ease,
+              opacity 0.2s ease;
+}
+
+/* Dark Section Theme: white cursor */
+.custom-cursor-wrapper[data-theme="dark"] .custom-cursor-dot {
+  background-color: #FFFFFF;
+}
+.custom-cursor-wrapper[data-theme="dark"] .custom-cursor-ring {
+  border-color: #FFFFFF;
+}
+
+/* Hidden state */
+.custom-cursor-wrapper[data-state="hidden"],
+.custom-cursor-wrapper[data-state="text"],
+.custom-cursor-wrapper[data-state="native"] {
+  opacity: 0;
+}
+
+/* Link State: Ring scales to ~1.6 (58px), gold border, gold fill 12% opacity; Dot scales to 0.5, turns gold */
+.custom-cursor-wrapper[data-state="link"] .custom-cursor-ring {
+  transform: scale(1.6);
+  border-color: var(--cursor-accent);
+  background-color: rgba(201, 162, 75, 0.12);
+}
+
+.custom-cursor-wrapper[data-state="link"] .custom-cursor-dot {
+  transform: scale(0.5);
+  background-color: var(--cursor-accent);
+}
+
+/* Down state (works with link or default) */
+.custom-cursor-wrapper[data-down="true"]:not([data-state="link"]) .custom-cursor-ring {
+  transform: scale(0.8);
+}
+.custom-cursor-wrapper[data-down="true"]:not([data-state="link"]) .custom-cursor-dot {
+  transform: scale(1.4);
+}
+.custom-cursor-wrapper[data-down="true"][data-state="link"] .custom-cursor-ring {
+  transform: scale(1.3);
+}
+.custom-cursor-wrapper[data-down="true"][data-state="link"] .custom-cursor-dot {
+  transform: scale(0.7);
+}
+
+/* When Service Preview is visible, set ring scale to 0.7 so they don't fight */
+html[data-service-preview="visible"] .custom-cursor-ring {
+  transform: scale(0.7) !important;
+  border-color: var(--cursor-color);
+  background-color: transparent !important;
+}
+html[data-service-preview="visible"] .custom-cursor-dot {
+  transform: scale(1) !important;
+  background-color: var(--cursor-color);
+}
+

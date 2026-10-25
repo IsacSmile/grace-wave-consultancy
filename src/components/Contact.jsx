@@ -61,6 +61,7 @@ export function Contact() {
       id="contact"
       ref={sectionRef}
       aria-labelledby="contact-heading"
+      data-cursor-theme="dark"
       className="relative w-full min-h-[100vh] lg:min-h-[100svh] flex items-center py-20 md:py-28 lg:py-32 bg-[#FAFBF9] text-slate-800 overflow-hidden"
     >
       {/* Clean Vector Dotted World Map Background Texture */}
