@@ -43,8 +43,6 @@ export const siteConfig = {
     { label: "About", href: "#about" },
     { label: "Services", href: "#services" },
     { label: "Why Grace Way", href: "#why" },
-    { label: "Process", href: "#process" },
-    { label: "Contact", href: "#contact" },
   ],
 
   hero: {
