@@ -1,3 +1,10 @@
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons/faWhatsapp';
+import { faInstagram } from '@fortawesome/free-brands-svg-icons/faInstagram';
+import { faFacebookF } from '@fortawesome/free-brands-svg-icons/faFacebookF';
+import { faLinkedinIn } from '@fortawesome/free-brands-svg-icons/faLinkedinIn';
+import { faXTwitter } from '@fortawesome/free-brands-svg-icons/faXTwitter';
+import { faYoutube } from '@fortawesome/free-brands-svg-icons/faYoutube';
+
 /**
  * Grace Way Accounting FZC LLC - Central Site Configuration
  * 
@@ -306,9 +313,13 @@ export const siteConfig = {
     ],
   },
 
-  footer: {
-    tagline: "With over 25 years of UAE market experience, Grace Way Accounting delivers comprehensive accounting, auditing, taxation, compliance, and financial advisory services.",
-    disclaimer: "Grace Way Accounting FZC LLC is a registered corporate and financial advisory consultancy in the United Arab Emirates. Information provided on this website is for general enquiry purposes and does not constitute formal legal or tax counsel until an official client engagement agreement is executed.",
-    copyrightYear: new Date().getFullYear(),
-  },
+  // PLACEHOLDER: client to provide social URLs. Empty url = icon is not rendered.
+  socials: [
+    { id: "whatsapp",  label: "WhatsApp",  url: "https://wa.me/971569148255", icon: faWhatsapp },
+    { id: "instagram", label: "Instagram", url: "", icon: faInstagram },
+    { id: "facebook",  label: "Facebook",  url: "", icon: faFacebookF },
+    { id: "linkedin",  label: "LinkedIn",  url: "", icon: faLinkedinIn },
+    { id: "x",         label: "X",         url: "", icon: faXTwitter },
+    { id: "youtube",   label: "YouTube",   url: "", icon: faYoutube },
+  ],
 };
