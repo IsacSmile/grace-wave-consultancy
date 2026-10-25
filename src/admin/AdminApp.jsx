@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Eye,
   EyeOff,
@@ -15,7 +15,8 @@ import {
   X,
   ArrowRight,
   Inbox,
-  Sparkles,
+  Trash2,
+  AlertTriangle,
 } from 'lucide-react';
 import { ALLOWED_SERVICES } from '../data/serviceOptions.js';
 
@@ -44,6 +45,16 @@ export default function AdminApp() {
   // Selected item modal state
   const [selectedEnquiry, setSelectedEnquiry] = useState(null);
   const [copiedField, setCopiedField] = useState(null);
+
+  // Multi-select & Deletion state
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [deleteTarget, setDeleteTarget] = useState(null); // null | { type: 'single'|'bulk', ids: number[], label?: string, count?: number }
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState(null);
+  const [toastMessage, setToastMessage] = useState(null);
+
+  // Ref for indeterminate state on select-all checkbox
+  const selectAllCheckboxRef = useRef(null);
 
   // Debounce search input
   useEffect(() => {
@@ -117,6 +128,104 @@ export default function AdminApp() {
     }
   }, [authStatus, fetchEnquiries]);
 
+  // Toast helper
+  const showToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 3500);
+  };
+
+  // Selection helpers
+  const pageIds = items.map((it) => it.id);
+  const isAllOnPageSelected = pageIds.length > 0 && pageIds.every((id) => selectedIds.includes(id));
+  const isSomeOnPageSelected = pageIds.some((id) => selectedIds.includes(id)) && !isAllOnPageSelected;
+
+  // Sync indeterminate DOM property
+  useEffect(() => {
+    if (selectAllCheckboxRef.current) {
+      selectAllCheckboxRef.current.indeterminate = isSomeOnPageSelected;
+    }
+  }, [isSomeOnPageSelected]);
+
+  const toggleSelectAllOnPage = () => {
+    if (isAllOnPageSelected) {
+      setSelectedIds((prev) => prev.filter((id) => !pageIds.includes(id)));
+    } else {
+      setSelectedIds((prev) => Array.from(new Set([...prev, ...pageIds])));
+    }
+  };
+
+  const toggleSelectItem = (id) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((itemId) => itemId !== id) : [...prev, id]
+    );
+  };
+
+  // Delete Prompt Handlers
+  const promptDeleteSingle = (item) => {
+    setDeleteError(null);
+    setDeleteTarget({
+      type: 'single',
+      ids: [item.id],
+      label: item.name,
+      count: 1,
+    });
+  };
+
+  const promptDeleteBulk = (ids) => {
+    if (!ids || ids.length === 0) return;
+    setDeleteError(null);
+    setDeleteTarget({
+      type: 'bulk',
+      ids: [...ids],
+      count: ids.length,
+    });
+  };
+
+  // Execute Deletion
+  const executeDelete = async () => {
+    if (!deleteTarget || !deleteTarget.ids.length) return;
+    setIsDeleting(true);
+    setDeleteError(null);
+
+    try {
+      const res = await fetch('/api/admin?action=delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'gw-admin',
+        },
+        body: JSON.stringify({ ids: deleteTarget.ids }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok && data.ok) {
+        const deletedSet = new Set(deleteTarget.ids.map(Number));
+
+        // Unselect deleted IDs
+        setSelectedIds((prev) => prev.filter((id) => !deletedSet.has(Number(id))));
+
+        // Close detail modal if deleted item was open
+        if (selectedEnquiry && deletedSet.has(Number(selectedEnquiry.id))) {
+          setSelectedEnquiry(null);
+        }
+
+        const count = data.deletedCount || deleteTarget.ids.length;
+        showToast(`Successfully deleted ${count} ${count === 1 ? 'enquiry' : 'enquiries'}.`);
+        setDeleteTarget(null);
+
+        // Refresh data
+        await fetchEnquiries();
+      } else {
+        setDeleteError(data.error || 'Failed to delete selected enquiry.');
+      }
+    } catch {
+      setDeleteError('Network error while deleting enquiry. Please try again.');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   // Handle Login
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -168,6 +277,7 @@ export default function AdminApp() {
     }
     setAuthStatus('unauthenticated');
     setItems([]);
+    setSelectedIds([]);
   };
 
   // Helper: Copy to clipboard
@@ -305,7 +415,19 @@ export default function AdminApp() {
   // RENDER: Clean Minimal Dashboard
   // =========================================================================
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-slate-900 font-sans flex flex-col antialiased selection:bg-slate-200">
+    <div className="min-h-screen bg-[#FAFAFA] text-slate-900 font-sans flex flex-col antialiased selection:bg-slate-200 relative pb-16">
+      {/* Toast Notification */}
+      {toastMessage && (
+        <aside
+          role="status"
+          aria-live="polite"
+          className="fixed top-5 right-5 z-50 bg-slate-900 text-white px-4 py-2.5 rounded-xl shadow-lg text-xs font-medium flex items-center gap-2 animate-fade-in border border-slate-800"
+        >
+          <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+          <span>{toastMessage}</span>
+        </aside>
+      )}
+
       {/* Top Navbar */}
       <header className="sticky top-0 z-20 bg-white border-b border-slate-200/70 px-4 sm:px-6 lg:px-8 py-3">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
@@ -322,8 +444,8 @@ export default function AdminApp() {
               <span className="text-xs text-slate-500 font-normal">
                 Enquiries
               </span>
-              <span className="text-[10px] text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full font-medium">
-                Read-only
+              <span className="text-[10px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full font-medium">
+                Portal
               </span>
             </div>
           </div>
@@ -462,68 +584,130 @@ export default function AdminApp() {
             ) : (
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-slate-100 text-[11px] font-medium text-slate-400">
+                  <tr className="border-b border-slate-100 text-[11px] font-medium text-slate-400 bg-slate-50/50">
+                    {/* Checkbox column */}
+                    <th className="w-10 py-3 px-3 text-center">
+                      <input
+                        ref={selectAllCheckboxRef}
+                        type="checkbox"
+                        checked={isAllOnPageSelected}
+                        onChange={toggleSelectAllOnPage}
+                        className="w-4 h-4 accent-slate-900 rounded cursor-pointer"
+                        aria-label="Select all enquiries on this page"
+                      />
+                    </th>
+
+                    {/* Serial Number # */}
+                    <th className="w-12 py-3 px-3 text-center font-medium">
+                      #
+                    </th>
+
                     <th className="py-3 px-4 font-medium">Date</th>
                     <th className="py-3 px-4 font-medium">Client</th>
                     <th className="py-3 px-4 font-medium">Contact</th>
                     <th className="py-3 px-4 font-medium">Service</th>
                     <th className="py-3 px-4 font-medium">Message</th>
-                    <th className="py-3 px-4 text-right font-medium"></th>
+                    <th className="py-3 px-4 text-right font-medium w-28">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100/70">
-                  {items.map((item) => (
-                    <tr
-                      key={item.id}
-                      onClick={() => setSelectedEnquiry(item)}
-                      className="hover:bg-slate-50/80 transition-colors cursor-pointer group"
-                    >
-                      {/* Date */}
-                      <td className="py-3.5 px-4 whitespace-nowrap text-slate-400 text-[11px]">
-                        {formatDate(item.created_at)}
-                      </td>
+                  {items.map((item, index) => {
+                    const isSelected = selectedIds.includes(item.id);
+                    const rowNumber = (page - 1) * pageSize + index + 1;
 
-                      {/* Name */}
-                      <td className="py-3.5 px-4 whitespace-nowrap font-medium text-slate-900">
-                        {item.name}
-                      </td>
+                    return (
+                      <tr
+                        key={item.id}
+                        onClick={() => setSelectedEnquiry(item)}
+                        className={`hover:bg-slate-50/80 transition-colors cursor-pointer group ${
+                          isSelected ? 'bg-slate-50/90' : ''
+                        }`}
+                      >
+                        {/* Select Checkbox */}
+                        <td
+                          className="py-3.5 px-3 text-center whitespace-nowrap"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={isSelected}
+                            onChange={() => toggleSelectItem(item.id)}
+                            className="w-4 h-4 accent-slate-900 rounded cursor-pointer"
+                            aria-label={`Select enquiry #${rowNumber} from ${item.name}`}
+                          />
+                        </td>
 
-                      {/* Contact Info */}
-                      <td className="py-3.5 px-4 whitespace-nowrap">
-                        <div className="space-y-0.5">
-                          <a
-                            href={`mailto:${item.email}`}
-                            onClick={(e) => e.stopPropagation()}
-                            className="text-slate-600 hover:text-slate-900 block"
-                          >
-                            {item.email}
-                          </a>
-                          <span className="text-[11px] text-slate-400 block font-mono">
-                            {item.phone}
+                        {/* Serial Number */}
+                        <td className="py-3.5 px-3 text-center whitespace-nowrap text-[11px] font-mono text-slate-400 select-none">
+                          {rowNumber}
+                        </td>
+
+                        {/* Date */}
+                        <td className="py-3.5 px-4 whitespace-nowrap text-slate-400 text-[11px]">
+                          {formatDate(item.created_at)}
+                        </td>
+
+                        {/* Name */}
+                        <td className="py-3.5 px-4 whitespace-nowrap font-medium text-slate-900">
+                          {item.name}
+                        </td>
+
+                        {/* Contact Info */}
+                        <td className="py-3.5 px-4 whitespace-nowrap">
+                          <div className="space-y-0.5">
+                            <a
+                              href={`mailto:${item.email}`}
+                              onClick={(e) => e.stopPropagation()}
+                              className="text-slate-600 hover:text-slate-900 block"
+                            >
+                              {item.email}
+                            </a>
+                            <span className="text-[11px] text-slate-400 block font-mono">
+                              {item.phone}
+                            </span>
+                          </div>
+                        </td>
+
+                        {/* Service Badge */}
+                        <td className="py-3.5 px-4 whitespace-nowrap">
+                          <span className="inline-block px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 text-slate-700">
+                            {item.service}
                           </span>
-                        </div>
-                      </td>
+                        </td>
 
-                      {/* Service Badge */}
-                      <td className="py-3.5 px-4 whitespace-nowrap">
-                        <span className="inline-block px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 text-slate-700">
-                          {item.service}
-                        </span>
-                      </td>
+                        {/* Message Preview */}
+                        <td className="py-3.5 px-4 max-w-xs truncate text-slate-500">
+                          {item.message}
+                        </td>
 
-                      {/* Message Preview */}
-                      <td className="py-3.5 px-4 max-w-xs truncate text-slate-500">
-                        {item.message}
-                      </td>
-
-                      {/* View Button */}
-                      <td className="py-3.5 px-4 text-right whitespace-nowrap">
-                        <span className="text-[11px] text-slate-400 group-hover:text-slate-900 transition-colors font-medium">
-                          View &rarr;
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
+                        {/* Row Actions: View and Delete */}
+                        <td
+                          className="py-3.5 px-4 text-right whitespace-nowrap"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <div className="flex items-center justify-end gap-1">
+                            <button
+                              type="button"
+                              onClick={() => setSelectedEnquiry(item)}
+                              className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-colors text-[11px] font-medium cursor-pointer"
+                            >
+                              <span>View</span>
+                              <ArrowRight className="w-3 h-3" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => promptDeleteSingle(item)}
+                              className="p-1 rounded-lg text-slate-300 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                              title={`Delete enquiry from ${item.name}`}
+                              aria-label={`Delete enquiry from ${item.name}`}
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             )}
@@ -566,6 +750,42 @@ export default function AdminApp() {
       </main>
 
       {/* ========================================================================= */}
+      {/* Floating Bulk Action Bar (when selectedIds.length > 0)                    */}
+      {/* ========================================================================= */}
+      {selectedIds.length > 0 && (
+        <aside
+          aria-label="Selection actions"
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-slate-900 text-white px-4 py-2.5 rounded-2xl shadow-xl flex items-center gap-3 animate-fade-in border border-slate-800"
+        >
+          <div className="flex items-center gap-2 pr-3 border-r border-slate-700/80">
+            <span className="w-5 h-5 rounded-full bg-white/20 text-white text-[11px] font-bold flex items-center justify-center">
+              {selectedIds.length}
+            </span>
+            <span className="text-xs font-medium">
+              {selectedIds.length === 1 ? 'selected' : 'selected'}
+            </span>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => promptDeleteBulk(selectedIds)}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium bg-rose-600 hover:bg-rose-500 text-white transition-colors cursor-pointer shadow-xs active:scale-[0.98]"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            <span>Delete Selected</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setSelectedIds([])}
+            className="px-2.5 py-1.5 rounded-xl text-xs text-slate-300 hover:text-white transition-colors cursor-pointer"
+          >
+            Clear
+          </button>
+        </aside>
+      )}
+
+      {/* ========================================================================= */}
       {/* Clean Detail Modal                                                        */}
       {/* ========================================================================= */}
       {selectedEnquiry && (
@@ -581,7 +801,7 @@ export default function AdminApp() {
             <div className="flex items-start justify-between pb-4 border-b border-slate-100 mb-5">
               <div>
                 <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider block mb-0.5">
-                  #{selectedEnquiry.id} • {formatDate(selectedEnquiry.created_at)}
+                  ID #{selectedEnquiry.id} • {formatDate(selectedEnquiry.created_at)}
                 </span>
                 <h3 className="font-heading font-semibold text-lg text-slate-900 tracking-tight">
                   {selectedEnquiry.name}
@@ -703,14 +923,111 @@ export default function AdminApp() {
               </div>
             </div>
 
-            {/* Modal Footer */}
-            <div className="mt-6 pt-3.5 border-t border-slate-100 flex justify-end">
+            {/* Modal Footer with Delete & Close buttons */}
+            <div className="mt-6 pt-3.5 border-t border-slate-100 flex items-center justify-between">
+              <button
+                type="button"
+                onClick={() => promptDeleteSingle(selectedEnquiry)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium text-rose-600 hover:text-rose-700 hover:bg-rose-50 border border-rose-200/70 transition-colors cursor-pointer"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>Delete Enquiry</span>
+              </button>
+
               <button
                 type="button"
                 onClick={() => setSelectedEnquiry(null)}
                 className="px-4 py-2 rounded-xl text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer"
               >
                 Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* Delete Confirmation Modal (Single & Multi-Select)                         */}
+      {/* ========================================================================= */}
+      {deleteTarget && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs animate-fade-in"
+          onClick={() => {
+            if (!isDeleting) setDeleteTarget(null);
+          }}
+        >
+          <div
+            className="w-full max-w-sm bg-white rounded-2xl p-6 shadow-2xl border border-slate-200/90 relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Warning Icon */}
+            <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center mb-4">
+              <Trash2 className="w-5 h-5" />
+            </div>
+
+            {/* Title */}
+            <h3 className="font-heading font-semibold text-base text-slate-900 tracking-tight mb-1.5">
+              {deleteTarget.type === 'single'
+                ? 'Delete this enquiry?'
+                : `Delete ${deleteTarget.count} enquiries?`}
+            </h3>
+
+            {/* Description */}
+            <p className="text-xs text-slate-500 leading-relaxed mb-4">
+              {deleteTarget.type === 'single' ? (
+                <>
+                  Are you sure you want to permanently delete the enquiry from{' '}
+                  <span className="font-semibold text-slate-800">{deleteTarget.label}</span>?
+                  This action cannot be undone.
+                </>
+              ) : (
+                <>
+                  Are you sure you want to permanently delete{' '}
+                  <span className="font-semibold text-slate-800">
+                    {deleteTarget.count} selected enquiries
+                  </span>
+                  ? This action cannot be undone.
+                </>
+              )}
+            </p>
+
+            {/* Error inside modal */}
+            {deleteError && (
+              <div
+                role="alert"
+                className="mb-4 p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs"
+              >
+                {deleteError}
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <div className="flex items-center justify-end gap-2.5 pt-2">
+              <button
+                type="button"
+                disabled={isDeleting}
+                onClick={() => setDeleteTarget(null)}
+                className="px-3.5 py-2 rounded-xl text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors disabled:opacity-50 cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={isDeleting}
+                onClick={executeDelete}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-medium text-white bg-rose-600 hover:bg-rose-700 active:scale-[0.98] transition-all disabled:opacity-50 cursor-pointer shadow-xs"
+              >
+                {isDeleting ? (
+                  <>
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                    <span>Deleting...</span>
+                  </>
+                ) : (
+                  <>
+                    <Trash2 className="w-3.5 h-3.5" />
+                    <span>Confirm Delete</span>
+                  </>
+                )}
               </button>
             </div>
           </div>

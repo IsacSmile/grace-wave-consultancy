@@ -333,6 +333,83 @@ export default async function handler(req, res) {
   }
 
   // =========================================================================
+  // ACTION: delete (POST ?action=delete)
+  // Supports single deletion ({ id: 123 }) and multi-select deletion ({ ids: [1, 2, ...] })
+  // =========================================================================
+  if (action === 'delete') {
+    if (req.method !== 'POST') {
+      res.setHeader('Allow', ['POST']);
+      return res.status(405).json({ ok: false, error: `Method ${req.method} Not Allowed` });
+    }
+
+    // CSRF Guard: require X-Requested-With: gw-admin
+    const csrfHeader = req.headers['x-requested-with'];
+    if (csrfHeader !== 'gw-admin') {
+      return res.status(400).json({ ok: false, error: 'Invalid request headers' });
+    }
+
+    // Verify session
+    const token = getCookie(req, COOKIE_NAME);
+    const isValid = verifySessionToken(token, sessionSecret, adminPassword, ipHash, userAgent);
+    if (!isValid) {
+      return res.status(401).json({ ok: false, error: 'Unauthorized' });
+    }
+
+    // Parse request body
+    let body = req.body;
+    if (typeof body === 'string') {
+      try {
+        body = JSON.parse(body);
+      } catch {
+        body = {};
+      }
+    }
+
+    // Extract IDs: support either { id: 123 } or { ids: [1, 2, 3] }
+    const rawIds = Array.isArray(body?.ids)
+      ? body.ids
+      : (body?.id !== undefined ? [body.id] : []);
+
+    const idsToDelete = rawIds
+      .map((n) => parseInt(n, 10))
+      .filter((n) => Number.isInteger(n) && n > 0);
+
+    if (idsToDelete.length === 0) {
+      return res.status(400).json({
+        ok: false,
+        error: 'No valid enquiry IDs specified for deletion',
+      });
+    }
+
+    if (idsToDelete.length > 100) {
+      return res.status(400).json({
+        ok: false,
+        error: 'Maximum 100 enquiries can be deleted at once',
+      });
+    }
+
+    try {
+      const deletedRows = await sql`
+        DELETE FROM enquiries
+        WHERE id = ANY(${idsToDelete})
+        RETURNING id
+      `;
+
+      return res.status(200).json({
+        ok: true,
+        deletedCount: deletedRows.length,
+        deletedIds: deletedRows.map((r) => r.id),
+      });
+    } catch (delErr) {
+      console.error('[Admin Delete Error]:', delErr.message || delErr);
+      return res.status(500).json({
+        ok: false,
+        error: 'Failed to delete enquiries',
+      });
+    }
+  }
+
+  // =========================================================================
   // ACTION: list (GET ?action=list)
   // =========================================================================
   if (action === 'list') {
