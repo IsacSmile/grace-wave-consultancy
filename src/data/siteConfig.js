@@ -313,13 +313,13 @@ export const siteConfig = {
     ],
   },
 
-  // PLACEHOLDER: client to provide social URLs. Empty url = icon is not rendered.
+  // Social profiles (LinkedIn, Instagram, X/Twitter, WhatsApp)
   socials: [
     { id: "whatsapp",  label: "WhatsApp",  url: "https://wa.me/971569148255", icon: faWhatsapp },
-    { id: "instagram", label: "Instagram", url: "", icon: faInstagram },
+    { id: "linkedin",  label: "LinkedIn",  url: "https://www.linkedin.com", icon: faLinkedinIn },
+    { id: "instagram", label: "Instagram", url: "https://www.instagram.com", icon: faInstagram },
+    { id: "x",         label: "Twitter (X)", url: "https://x.com", icon: faXTwitter },
     { id: "facebook",  label: "Facebook",  url: "", icon: faFacebookF },
-    { id: "linkedin",  label: "LinkedIn",  url: "", icon: faLinkedinIn },
-    { id: "x",         label: "X",         url: "", icon: faXTwitter },
     { id: "youtube",   label: "YouTube",   url: "", icon: faYoutube },
   ],
 };
