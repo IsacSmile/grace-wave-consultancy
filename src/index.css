@@ -9,6 +9,9 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    touch-action: manipulation;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
   body {
@@ -16,6 +19,16 @@
     width: 100%;
     margin: 0;
     padding: 0;
+    touch-action: manipulation;
+  }
+
+  /* Prevent iOS Safari from zooming into form inputs on focus */
+  @media screen and (max-width: 767px) {
+    input,
+    select,
+    textarea {
+      font-size: 16px !important;
+    }
   }
 
   /* Accessible focus indicators */
