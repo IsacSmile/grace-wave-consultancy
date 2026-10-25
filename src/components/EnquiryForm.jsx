@@ -255,13 +255,12 @@ export function EnquiryForm() {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="e.g. Tariq Al Mansoori"
                     aria-invalid={errors.name ? 'true' : 'false'}
                     aria-describedby={errors.name ? 'name-error' : undefined}
-                    className={`w-full h-12 px-4 rounded-xl text-base text-white placeholder:text-slate-400 bg-white/5 border transition-all focus:outline-none focus:ring-2 ${
+                    className={`w-full h-12 px-4 rounded-xl text-base text-white bg-white/5 hover:bg-white/[0.07] focus:bg-white/[0.08] border transition-all focus:outline-none focus:ring-2 ${
                       errors.name
                         ? 'border-rose-400 focus:ring-rose-400/40'
-                        : 'border-white/15 focus:border-blue-400 focus:ring-blue-400/30'
+                        : 'border-white/15 hover:border-white/25 focus:border-blue-400 focus:ring-blue-400/30'
                     }`}
                   />
                   {errors.name && (
@@ -282,13 +281,12 @@ export function EnquiryForm() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="e.g. +971 50 123 4567"
                     aria-invalid={errors.phone ? 'true' : 'false'}
                     aria-describedby={errors.phone ? 'phone-error' : undefined}
-                    className={`w-full h-12 px-4 rounded-xl text-base text-white placeholder:text-slate-400 bg-white/5 border transition-all focus:outline-none focus:ring-2 ${
+                    className={`w-full h-12 px-4 rounded-xl text-base text-white bg-white/5 hover:bg-white/[0.07] focus:bg-white/[0.08] border transition-all focus:outline-none focus:ring-2 ${
                       errors.phone
                         ? 'border-rose-400 focus:ring-rose-400/40'
-                        : 'border-white/15 focus:border-blue-400 focus:ring-blue-400/30'
+                        : 'border-white/15 hover:border-white/25 focus:border-blue-400 focus:ring-blue-400/30'
                     }`}
                   />
                   {errors.phone && (
@@ -311,13 +309,12 @@ export function EnquiryForm() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="e.g. name@company.ae"
                     aria-invalid={errors.email ? 'true' : 'false'}
                     aria-describedby={errors.email ? 'email-error' : undefined}
-                    className={`w-full h-12 px-4 rounded-xl text-base text-white placeholder:text-slate-400 bg-white/5 border transition-all focus:outline-none focus:ring-2 ${
+                    className={`w-full h-12 px-4 rounded-xl text-base text-white bg-white/5 hover:bg-white/[0.07] focus:bg-white/[0.08] border transition-all focus:outline-none focus:ring-2 ${
                       errors.email
                         ? 'border-rose-400 focus:ring-rose-400/40'
-                        : 'border-white/15 focus:border-blue-400 focus:ring-blue-400/30'
+                        : 'border-white/15 hover:border-white/25 focus:border-blue-400 focus:ring-blue-400/30'
                     }`}
                   />
                   {errors.email && (
@@ -336,7 +333,7 @@ export function EnquiryForm() {
                     name="service"
                     value={formData.service}
                     onChange={handleChange}
-                    className="w-full h-12 px-4 rounded-xl text-base text-white bg-[#0e1f3d] border border-white/15 transition-all focus:outline-none focus:ring-2 focus:border-blue-400 focus:ring-blue-400/30"
+                    className="w-full h-12 px-4 rounded-xl text-base text-white bg-[#0e1f3d] hover:bg-[#122548] border border-white/15 hover:border-white/25 transition-all focus:outline-none focus:ring-2 focus:border-blue-400 focus:ring-blue-400/30"
                   >
                     {siteConfig.contact.formServices.map((svc) => (
                       <option key={svc.value} value={svc.value} className="bg-[#071328] text-white">
@@ -363,13 +360,12 @@ export function EnquiryForm() {
                   rows="4"
                   value={formData.message}
                   onChange={handleChange}
-                  placeholder="Share details about your business or immediate tax / accounting requirement..."
                   aria-invalid={errors.message ? 'true' : 'false'}
                   aria-describedby={errors.message ? 'message-error' : undefined}
-                  className={`w-full p-4 rounded-xl text-base text-white placeholder:text-slate-400 bg-white/5 border transition-all focus:outline-none focus:ring-2 resize-y min-h-[120px] ${
+                  className={`w-full p-4 rounded-xl text-base text-white bg-white/5 hover:bg-white/[0.07] focus:bg-white/[0.08] border transition-all focus:outline-none focus:ring-2 resize-y min-h-[120px] ${
                     errors.message
                       ? 'border-rose-400 focus:ring-rose-400/40'
-                      : 'border-white/15 focus:border-blue-400 focus:ring-blue-400/30'
+                      : 'border-white/15 hover:border-white/25 focus:border-blue-400 focus:ring-blue-400/30'
                   }`}
                 />
                 {errors.message && (
