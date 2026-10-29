@@ -71,19 +71,14 @@ export default function NotFound() {
           <a
             href="/"
             className="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg p-1"
-            aria-label="Grace Way Chartered Accountant - Home"
+            aria-label="Grace Way - Home"
           >
             <div className="w-10 h-10 rounded-xl bg-[#0B1B4D] border border-blue-400/25 flex items-center justify-center p-1.5 shadow-xs group-hover:scale-105 transition-transform shrink-0">
               <GWEmblem className="w-full h-full" />
             </div>
-            <div className="flex flex-col text-left">
-              <span className="font-heading font-extrabold text-[#0B1B4D] text-base leading-tight tracking-tight">
-                Grace Way
-              </span>
-              <span className="text-[10px] text-[#8A6A1E] font-bold tracking-[0.14em] uppercase">
-                Chartered Accountant
-              </span>
-            </div>
+            <span className="font-heading font-extrabold text-[#0B1B4D] text-lg leading-tight tracking-tight">
+              Grace Way
+            </span>
           </a>
 
           {/* Quick Header CTA */}

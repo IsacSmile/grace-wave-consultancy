@@ -92,6 +92,5 @@
   </g>
 
   <!-- Typography -->
-  <text x="52" y="21" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="800" font-size="16" fill="#0B1B4D" letter-spacing="-0.02em">Grace Way</text>
-  <text x="52" y="33" font-family="'Inter', system-ui, sans-serif" font-weight="700" font-size="9" fill="#8A6A1E" letter-spacing="0.14em">CHARTERED ACCOUNTANT</text>
+  <text x="52" y="26" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="800" font-size="18" fill="#0B1B4D" letter-spacing="-0.02em">Grace Way</text>
 </svg>
