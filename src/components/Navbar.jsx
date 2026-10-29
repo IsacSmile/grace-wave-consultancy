@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Phone, ArrowUpRight } from 'lucide-react';
+import { GWEmblem } from '../assets/logo/GWEmblem';
 import { siteConfig } from '../data/siteConfig';
+import { testimonials } from '../data/testimonials';
 import { useLenis } from './SmoothScroll';
 import { CursorToggle } from './CursorToggle';
 
@@ -48,6 +50,13 @@ export function Navbar() {
     scrollTo(href, 76);
   };
 
+  const navItems = siteConfig.navigation.filter((item) => {
+    if (item.href === '#testimonials') {
+      return Boolean(siteConfig.showTestimonials && testimonials?.length > 0);
+    }
+    return true;
+  });
+
   return (
     <>
       <header
@@ -63,24 +72,24 @@ export function Navbar() {
             href="#hero"
             onClick={(e) => handleNavClick(e, '#hero')}
             className="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg p-1"
-            aria-label="Grace Way Accounting FZC LLC - Home"
+            aria-label="Grace Way Chartered Accountant - Home"
           >
-            <div className="w-10 h-10 rounded-xl bg-[#0B1B4D] border border-blue-400/40 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
-              <span className="font-heading font-black text-white text-base tracking-wider">GW</span>
+            <div className="w-11 h-11 rounded-xl bg-[#0B1B4D] border border-blue-400/25 flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform p-1.5 shrink-0">
+              <GWEmblem className="w-full h-full" />
             </div>
             <div className="flex flex-col text-left">
               <span className="font-heading font-extrabold text-[#0B1B4D] text-base sm:text-lg leading-tight tracking-tight">
                 Grace Way
               </span>
-              <span className="text-[10px] sm:text-xs text-blue-600 font-semibold tracking-wider uppercase">
-                Accounting FZC LLC
+              <span className="text-[10px] sm:text-xs text-[#8A6A1E] font-bold tracking-[0.14em] uppercase">
+                Chartered Accountant
               </span>
             </div>
           </a>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
-            {siteConfig.navigation.map((item) => (
+            {navItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
@@ -150,12 +159,12 @@ export function Navbar() {
           {/* Drawer Header */}
           <div className="flex items-center justify-between pb-6 border-b border-slate-200">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-lg bg-[#0B1B4D] flex items-center justify-center text-white font-bold">
-                GW
+              <div className="w-10 h-10 rounded-xl bg-[#0B1B4D] border border-blue-400/25 flex items-center justify-center p-1.5 shrink-0 shadow-xs">
+                <GWEmblem className="w-full h-full" />
               </div>
               <div className="text-left">
-                <div className="font-heading font-bold text-[#0B1B4D] text-sm">Grace Way</div>
-                <div className="text-[10px] text-blue-600 font-medium">Accounting FZC LLC</div>
+                <div className="font-heading font-bold text-[#0B1B4D] text-sm leading-tight">Grace Way</div>
+                <div className="text-[10px] text-[#8A6A1E] font-bold tracking-wider uppercase mt-0.5">Chartered Accountant</div>
               </div>
             </div>
             <button
@@ -170,7 +179,7 @@ export function Navbar() {
 
           {/* Drawer Navigation Links */}
           <nav className="mt-6 flex flex-col gap-1.5">
-            {siteConfig.navigation.map((item) => (
+            {navItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
@@ -204,7 +213,7 @@ export function Navbar() {
           </a>
 
           <p className="text-center text-[11px] text-slate-500 mt-1">
-            Sharjah, UAE • Accounting, Tax & Advisory
+            Ajman, UAE • Accounting, Tax & Advisory
           </p>
         </div>
       </aside>

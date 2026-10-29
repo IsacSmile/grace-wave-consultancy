@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 const STORAGE_KEY = 'gw-cursor';
 
 const CursorContext = createContext({
-  enabled: true,
+  enabled: false,
   setEnabled: () => {},
   toggle: () => {},
 });
@@ -15,13 +15,13 @@ export function CursorProvider({ children }) {
     try {
       if (typeof window !== 'undefined' && window.localStorage) {
         const stored = window.localStorage.getItem(STORAGE_KEY);
-        if (stored === 'off') return false;
         if (stored === 'on') return true;
+        if (stored === 'off') return false;
       }
     } catch {
       // LocalStorage unavailable (e.g. security sandbox or incognito)
     }
-    return true; // Default "on"
+    return false; // Default off (uses standard default system cursor)
   });
 
   const setEnabled = useCallback((value) => {

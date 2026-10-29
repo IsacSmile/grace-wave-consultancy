@@ -11,6 +11,7 @@ import { Marquee } from './components/Marquee';
 import { ServiceTabs } from './components/ServiceTabs';
 import { WhyGraceWay } from './components/WhyGraceWay';
 import { Process } from './components/Process';
+import { Testimonials } from './components/Testimonials';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
@@ -36,6 +37,7 @@ export default function App() {
             <ServiceTabs />
             <WhyGraceWay />
             <Process />
+            <Testimonials />
             <Contact />
           </main>
 

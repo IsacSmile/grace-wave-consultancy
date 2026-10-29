@@ -112,11 +112,11 @@ export function Contact() {
             {/* 4. Minimalist Contact Details with Outline Icons (matching website theme) */}
             <div className="contact-reveal-el space-y-4 mb-8 sm:mb-10">
               {/* Address */}
-              <div className="flex items-center gap-3.5 text-slate-700">
-                <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100 shadow-2xs">
+              <div className="flex items-start sm:items-center gap-3.5 text-slate-700">
+                <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100 shadow-2xs mt-0.5 sm:mt-0">
                   <MapPin className="w-4 h-4 text-blue-600" />
                 </div>
-                <span className="text-sm sm:text-base font-medium text-slate-800">
+                <span className="text-sm sm:text-base font-medium text-slate-800 leading-snug">
                   {siteConfig.business.address}
                 </span>
               </div>

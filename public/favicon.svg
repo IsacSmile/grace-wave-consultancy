@@ -1,7 +1,92 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
-  <rect width="100" height="100" rx="22" fill="#0B192C" />
-  <circle cx="50" cy="50" r="42" fill="none" stroke="#D4AF37" stroke-width="2.5" stroke-dasharray="6 4" opacity="0.6"/>
-  <path d="M28 32 L50 72 L72 32" fill="none" stroke="#D4AF37" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M38 32 L50 56 L62 32" fill="none" stroke="#F8FAFC" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="50" cy="24" r="4" fill="#D4AF37" />
+  <defs>
+    <!-- Platinum Surface Gradient -->
+    <linearGradient id="favPlat" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="60%" stop-color="#F8FAFC" />
+      <stop offset="100%" stop-color="#CBD5E1" />
+    </linearGradient>
+
+    <!-- Metallic Silver 3D Shadow -->
+    <linearGradient id="favSilver" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#CBD5E1" />
+      <stop offset="50%" stop-color="#94A3B8" />
+      <stop offset="100%" stop-color="#64748B" />
+    </linearGradient>
+  </defs>
+
+  <!-- Deep Executive Navy Rounded Container -->
+  <rect width="100" height="100" rx="22" fill="#0B1B4D" />
+
+  <!-- Centered Grace Way Monogram Emblem (GW with Growth Arrow) -->
+  <g transform="translate(9, 29.23) scale(0.213)">
+    <!-- G 3D Bevel Ribbon -->
+    <path
+      d="M 170 33
+         C 125 15 55 25 25 68
+         C 12 90 14 116 26 136
+         C 20 120 18 95 30 75
+         C 55 35 125 24 170 33
+         Z"
+      fill="url(#favSilver)"
+      opacity="0.8"
+    />
+
+    <!-- Main G Body -->
+    <path
+      d="M 170 33
+         C 125 10 55 10 20 52
+         C -5 85 -5 132 24 165
+         C 54 195 118 198 162 172
+         C 180 162 186 142 186 114
+         L 186 83
+         L 112 83
+         L 91 113
+         L 154 113
+         C 154 138 126 162 85 162
+         C 48 162 33 133 33 97.5
+         C 33 62 55 42 95 42
+         C 125 42 152 48 170 58
+         Z"
+      fill="url(#favPlat)"
+    />
+
+    <!-- Main W Body (Chevron + Arrow Shaft + Head) -->
+    <path
+      d="M 197 194
+         L 248 28
+         L 280 85
+         L 298 128
+         L 326 28
+         L 384 1
+         L 385 63
+         L 358 48
+         L 295 194
+         L 248 96
+         Z"
+      fill="url(#favPlat)"
+    />
+
+    <!-- 3D Bevel Edge on Right Side of Chevron -->
+    <path
+      d="M 248 28
+         L 260 35
+         L 305 194
+         L 295 194
+         Z"
+      fill="url(#favSilver)"
+      opacity="0.7"
+    />
+
+    <!-- 3D Bevel Facet on Arrowhead -->
+    <path
+      d="M 384 1
+         L 355 42
+         L 358 48
+         L 385 63
+         Z"
+      fill="url(#favSilver)"
+      opacity="0.85"
+    />
+  </g>
 </svg>

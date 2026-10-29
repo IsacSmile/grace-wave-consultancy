@@ -13,7 +13,10 @@ import { SERVICE_OPTIONS } from './serviceOptions.js';
  * copy text, service offerings, or process steps.
  */
 
+const showTestimonials = true;
+
 export const siteConfig = {
+  showTestimonials, // set to false to hide the whole section
   business: {
     name: "Grace Way Accounting FZC LLC",
     legalName: "Grace Way Accounting FZC LLC",
@@ -34,7 +37,8 @@ export const siteConfig = {
     whatsappUrl: "https://wa.me/971569148255",
     email: "info@gracewayaccounting.com", // PLACEHOLDER: client to provide
     emailMailto: "mailto:info@gracewayaccounting.com?subject=Service%20Enquiry%20-%20Grace%20Way%20Accounting",
-    address: "Sharjah, United Arab Emirates", // PLACEHOLDER: client to provide
+    address: "BC-894183, 26th Floor, Amber Gem Tower, Ajman, United Arab Emirates",
+    footerAddress: "BC-894183, 26th Floor, Amber Gem Tower, Ajman, United Arab Emirates",
     workingHours: "Monday – Friday, 09:00 AM – 06:00 PM (GST)", // PLACEHOLDER: client to provide
     statusNote: "Accounting, Auditing, Tax & Advisory Services (UAE)",
   },
@@ -45,6 +49,7 @@ export const siteConfig = {
     { label: "Services", href: "#services" },
     { label: "Why Grace Way", href: "#why" },
     { label: "Process", href: "#process" },
+    ...(showTestimonials ? [{ label: "Reviews", href: "#testimonials" }] : []),
   ],
 
   hero: {
@@ -304,7 +309,7 @@ export const siteConfig = {
     subtitle: "Have a question about UAE Corporate Tax, VAT, or bookkeeping? Send us an enquiry and our team will respond promptly.",
     cardTitle: "Let's Talk – Free Consultation",
     cardIntro: "Book your free session with our team and discover solutions crafted for your business.",
-    googleMapsEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115409.80392341499!2d55.351283628469935!3d25.321684347781077!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5f082e6d5e1b%3A0x6b7cf4b64e59f400!2sSharjah!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae", // PLACEHOLDER: client to provide
+    googleMapsEmbedUrl: "https://maps.google.com/maps?q=Amber+Gem+Tower,+Ajman,+United+Arab+Emirates&t=&z=15&ie=UTF8&iwloc=&output=embed",
     formServices: SERVICE_OPTIONS,
   },
 

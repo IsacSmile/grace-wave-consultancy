@@ -3,6 +3,7 @@ import { ArrowUp } from 'lucide-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Logo } from '../assets/logo/Logo';
 import { siteConfig } from '../data/siteConfig';
+import { testimonials } from '../data/testimonials';
 import { servicesData } from '../data/services';
 import { useLenis } from './SmoothScroll';
 import { useHoverCapable } from '../hooks/useHoverCapable';
@@ -47,6 +48,9 @@ export function Footer() {
     { label: 'Services', href: '#services' },
     { label: 'Why Grace Way', href: '#why' },
     { label: 'How We Work', href: '#process' },
+    ...(siteConfig.showTestimonials && testimonials?.length > 0
+      ? [{ label: 'Reviews', href: '#testimonials' }]
+      : []),
     { label: 'Contact', href: '#contact' },
   ];
 
