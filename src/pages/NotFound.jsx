@@ -76,9 +76,14 @@ export default function NotFound() {
             <div className="w-10 h-10 rounded-xl bg-[#0B1B4D] border border-blue-400/25 flex items-center justify-center p-1.5 shadow-xs group-hover:scale-105 transition-transform shrink-0">
               <GWEmblem className="w-full h-full" />
             </div>
-            <span className="font-heading font-extrabold text-[#0B1B4D] text-lg leading-tight tracking-tight">
-              Grace Way
-            </span>
+            <div className="flex flex-col text-left">
+              <span className="font-heading font-extrabold text-[#0B1B4D] text-base leading-tight tracking-tight">
+                Grace Way
+              </span>
+              <span className="text-[10px] text-[#8A6A1E] font-bold tracking-[0.12em] uppercase">
+                Accounting • Auditing • Tax
+              </span>
+            </div>
           </a>
 
           {/* Quick Header CTA */}

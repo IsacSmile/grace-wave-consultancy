@@ -76,9 +76,14 @@ export function Navbar() {
             <div className="w-11 h-11 rounded-xl bg-[#0B1B4D] border border-blue-400/25 flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform p-1.5 shrink-0">
               <GWEmblem className="w-full h-full" />
             </div>
-            <span className="font-heading font-extrabold text-[#0B1B4D] text-lg sm:text-xl leading-tight tracking-tight">
-              Grace Way
-            </span>
+            <div className="flex flex-col text-left">
+              <span className="font-heading font-extrabold text-[#0B1B4D] text-base sm:text-lg leading-tight tracking-tight">
+                Grace Way
+              </span>
+              <span className="text-[10px] sm:text-xs text-[#8A6A1E] font-bold tracking-[0.12em] uppercase">
+                Accounting • Auditing • Tax
+              </span>
+            </div>
           </a>
 
           {/* Desktop Navigation */}
@@ -154,7 +159,10 @@ export function Navbar() {
               <div className="w-10 h-10 rounded-xl bg-[#0B1B4D] border border-blue-400/25 flex items-center justify-center p-1.5 shrink-0 shadow-xs">
                 <GWEmblem className="w-full h-full" />
               </div>
-              <div className="font-heading font-bold text-[#0B1B4D] text-base leading-tight">Grace Way</div>
+              <div className="text-left">
+                <div className="font-heading font-bold text-[#0B1B4D] text-sm leading-tight">Grace Way</div>
+                <div className="text-[10px] text-[#8A6A1E] font-bold tracking-wider uppercase mt-0.5">Accounting • Auditing • Tax</div>
+              </div>
             </div>
             <button
               type="button"

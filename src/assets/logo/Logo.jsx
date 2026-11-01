@@ -4,7 +4,7 @@ import { GWEmblem } from './GWEmblem';
 /**
  * Grace Way - Official Logo Lockup
  * Combines the custom GW Arrow Growth Emblem badge with
- * refined "Grace Way" typography.
+ * refined "Grace Way / Accounting • Auditing • Tax" typography.
  */
 export function Logo({ className = '', height = 40, variant = 'light-bg' }) {
   const isLight = variant === 'light-bg';
@@ -17,13 +17,18 @@ export function Logo({ className = '', height = 40, variant = 'light-bg' }) {
       </div>
 
       {/* Typography Lockup */}
-      <span
-        className={`font-heading font-extrabold text-base sm:text-lg leading-tight tracking-tight ${
-          isLight ? 'text-[#0B1B4D]' : 'text-white'
-        }`}
-      >
-        Grace Way
-      </span>
+      <div className="flex flex-col text-left">
+        <span
+          className={`font-heading font-extrabold text-base sm:text-lg leading-tight tracking-tight ${
+            isLight ? 'text-[#0B1B4D]' : 'text-white'
+          }`}
+        >
+          Grace Way
+        </span>
+        <span className="text-[10px] sm:text-xs text-[#8A6A1E] font-bold tracking-[0.12em] uppercase">
+          Accounting • Auditing • Tax
+        </span>
+      </div>
     </div>
   );
 }
