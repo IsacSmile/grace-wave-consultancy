@@ -4,7 +4,6 @@ import { GWEmblem } from '../assets/logo/GWEmblem';
 import { siteConfig } from '../data/siteConfig';
 import { testimonials } from '../data/testimonials';
 import { useLenis } from './SmoothScroll';
-import { CursorToggle } from './CursorToggle';
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -107,8 +106,6 @@ export function Navbar() {
               <Phone className="w-3.5 h-3.5 text-blue-600 shrink-0" />
               <span>Call Now</span>
             </a>
-
-            <CursorToggle />
 
             <a
               href="#contact"
