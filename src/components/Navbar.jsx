@@ -61,8 +61,8 @@ export function Navbar() {
       <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           isScrolled
-            ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200/80 py-3'
-            : 'bg-[#F8FAFF]/80 backdrop-blur-xs py-4 sm:py-5 border-b border-slate-200/40'
+            ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200/80 py-2 sm:py-2.5'
+            : 'bg-[#F8FAFF]/80 backdrop-blur-xs py-2.5 sm:py-3.5 border-b border-slate-200/40'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
@@ -70,13 +70,15 @@ export function Navbar() {
           <a
             href="#hero"
             onClick={(e) => handleNavClick(e, '#hero')}
-            className="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg p-1"
+            className="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-xl p-0.5"
             aria-label="Grace Way - Home"
           >
             <img
               src={mainLogo}
               alt="Grace Way - Audit | Tax | Advisory"
-              className="h-10 sm:h-11 w-auto rounded-lg object-contain shadow-xs group-hover:scale-105 transition-transform"
+              className={`w-auto rounded-xl object-contain shadow-xs transition-all duration-300 group-hover:scale-105 ${
+                isScrolled ? 'h-12 sm:h-13 md:h-14' : 'h-14 sm:h-16 md:h-[68px]'
+              }`}
             />
           </a>
 
@@ -158,7 +160,7 @@ export function Navbar() {
               <img
                 src={mainLogo}
                 alt="Grace Way - Audit | Tax | Advisory"
-                className="h-10 w-auto rounded-lg object-contain shadow-xs"
+                className="h-12 sm:h-14 w-auto rounded-xl object-contain shadow-xs"
               />
             </a>
             <button
