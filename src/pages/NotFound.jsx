@@ -13,7 +13,7 @@ import {
   Compass,
 } from 'lucide-react';
 import { siteConfig } from '../data/siteConfig';
-import mainLogo from '../assets/logo/logo.svg';
+import mainLogo from '../assets/logo/gwa-logo.png';
 import { WhatsAppIcon } from '../components/WhatsAppIcon';
 
 export default function NotFound() {

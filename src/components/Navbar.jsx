@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Phone, ArrowUpRight } from 'lucide-react';
-import mainLogo from '../assets/logo/logo.svg';
+import mainLogo from '../assets/logo/gwa-logo.png';
 import { siteConfig } from '../data/siteConfig';
 import { testimonials } from '../data/testimonials';
 import { useLenis } from './SmoothScroll';
