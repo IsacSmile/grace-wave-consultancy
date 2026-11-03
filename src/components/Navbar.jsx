@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Phone, ArrowUpRight } from 'lucide-react';
-import { GWEmblem } from '../assets/logo/GWEmblem';
+import mainLogo from '../assets/logo/logo.svg';
 import { siteConfig } from '../data/siteConfig';
 import { testimonials } from '../data/testimonials';
 import { useLenis } from './SmoothScroll';
@@ -70,20 +70,14 @@ export function Navbar() {
           <a
             href="#hero"
             onClick={(e) => handleNavClick(e, '#hero')}
-            className="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg p-1"
+            className="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg p-1"
             aria-label="Grace Way - Home"
           >
-            <div className="w-11 h-11 rounded-xl bg-[#0B1B4D] border border-blue-400/25 flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform p-1.5 shrink-0">
-              <GWEmblem className="w-full h-full" />
-            </div>
-            <div className="flex flex-col text-left">
-              <span className="font-heading font-extrabold text-[#0B1B4D] text-base sm:text-lg leading-tight tracking-tight">
-                Grace Way
-              </span>
-              <span className="text-[10px] sm:text-xs text-[#8A6A1E] font-bold tracking-[0.12em] uppercase">
-                Accounting • Auditing • Tax
-              </span>
-            </div>
+            <img
+              src={mainLogo}
+              alt="Grace Way - Audit | Tax | Advisory"
+              className="h-10 sm:h-11 w-auto rounded-lg object-contain shadow-xs group-hover:scale-105 transition-transform"
+            />
           </a>
 
           {/* Desktop Navigation */}
@@ -155,15 +149,18 @@ export function Navbar() {
         <div>
           {/* Drawer Header */}
           <div className="flex items-center justify-between pb-6 border-b border-slate-200">
-            <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-xl bg-[#0B1B4D] border border-blue-400/25 flex items-center justify-center p-1.5 shrink-0 shadow-xs">
-                <GWEmblem className="w-full h-full" />
-              </div>
-              <div className="text-left">
-                <div className="font-heading font-bold text-[#0B1B4D] text-sm leading-tight">Grace Way</div>
-                <div className="text-[10px] text-[#8A6A1E] font-bold tracking-wider uppercase mt-0.5">Accounting • Auditing • Tax</div>
-              </div>
-            </div>
+            <a
+              href="#hero"
+              onClick={(e) => handleNavClick(e, '#hero')}
+              className="flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg p-0.5"
+              aria-label="Grace Way - Home"
+            >
+              <img
+                src={mainLogo}
+                alt="Grace Way - Audit | Tax | Advisory"
+                className="h-10 w-auto rounded-lg object-contain shadow-xs"
+              />
+            </a>
             <button
               type="button"
               onClick={() => setMobileMenuOpen(false)}
