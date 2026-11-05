@@ -76,8 +76,10 @@ export function Navbar() {
             <img
               src={mainLogo}
               alt="Grace Way - Audit | Tax | Advisory"
-              className={`w-auto rounded-xl object-contain shadow-xs transition-all duration-300 group-hover:scale-105 ${
-                isScrolled ? 'h-13 sm:h-14 md:h-[60px]' : 'h-16 sm:h-[74px] md:h-[80px]'
+              className={`w-auto shrink-0 rounded-xl object-contain shadow-xs transition-all duration-300 group-hover:scale-105 ${
+                isScrolled
+                  ? 'h-10 sm:h-12 md:h-14 lg:h-[60px] max-w-[120px] sm:max-w-[160px] md:max-w-none'
+                  : 'h-12 sm:h-14 md:h-[72px] lg:h-[80px] max-w-[140px] sm:max-w-[180px] md:max-w-none'
               }`}
             />
           </a>
@@ -160,7 +162,7 @@ export function Navbar() {
               <img
                 src={mainLogo}
                 alt="Grace Way - Audit | Tax | Advisory"
-                className="h-14 sm:h-16 w-auto rounded-xl object-contain shadow-xs"
+                className="h-11 sm:h-12 w-auto max-w-[140px] rounded-xl object-contain shadow-xs shrink-0"
               />
             </a>
             <button

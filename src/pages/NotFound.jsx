@@ -76,7 +76,7 @@ export default function NotFound() {
             <img
               src={mainLogo}
               alt="Grace Way - Audit | Tax | Advisory"
-              className="h-16 sm:h-[74px] md:h-[80px] w-auto rounded-xl object-contain shadow-xs group-hover:scale-105 transition-transform"
+              className="h-12 sm:h-14 md:h-[72px] lg:h-[80px] w-auto max-w-[140px] sm:max-w-[180px] md:max-w-none shrink-0 rounded-xl object-contain shadow-xs group-hover:scale-105 transition-transform"
             />
           </a>
 
