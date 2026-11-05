@@ -65,7 +65,7 @@ export default function NotFound() {
       </div>
 
       {/* Top Header */}
-      <header className="relative z-10 w-full bg-white/90 backdrop-blur-md border-b border-slate-200/70 px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3.5">
+      <header className="relative z-10 w-full bg-white/90 backdrop-blur-md border-b border-slate-200/70 px-4 sm:px-6 lg:px-8 py-2 sm:py-3">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Logo / Brand */}
           <a
@@ -76,7 +76,7 @@ export default function NotFound() {
             <img
               src={mainLogo}
               alt="Grace Way - Audit | Tax | Advisory"
-              className="h-14 sm:h-16 md:h-[68px] w-auto rounded-xl object-contain shadow-xs group-hover:scale-105 transition-transform"
+              className="h-16 sm:h-[74px] md:h-[80px] w-auto rounded-xl object-contain shadow-xs group-hover:scale-105 transition-transform"
             />
           </a>
 
