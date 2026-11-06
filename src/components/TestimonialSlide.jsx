@@ -27,7 +27,7 @@ export function TestimonialSlide({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
         {/* Left Column: Photo Card (5 of 12 on lg) */}
         <div className="lg:col-span-5 flex justify-center lg:justify-start">
-          <div className="testimonial-photo-card aspect-[4/5] max-h-[420px] w-full max-w-[360px] sm:max-w-[400px] lg:max-w-none rounded-3xl overflow-hidden shadow-[0_24px_60px_-24px_rgba(11,27,77,0.35)] relative bg-[#0B1B4D]/10">
+          <div className="testimonial-photo-card aspect-[4/5] max-h-[420px] w-full max-w-[360px] sm:max-w-[400px] lg:max-w-none rounded-2xl overflow-hidden shadow-sm border border-slate-200/80 relative bg-[#0B1B4D]/10">
             <img
               src={image}
               alt={imageAlt || `Portrait of ${name}`}
@@ -36,19 +36,13 @@ export function TestimonialSlide({
               loading={index === 0 ? 'eager' : 'lazy'}
               decoding="async"
               sizes="(max-width: 1023px) 90vw, 420px"
-              className="w-full h-full object-cover rounded-3xl select-none"
+              className="w-full h-full object-cover rounded-2xl select-none"
             />
           </div>
         </div>
 
         {/* Right Column: Content (7 of 12 on lg) */}
         <div className="testimonial-text-col lg:col-span-7 flex flex-col justify-center text-left relative mt-2 lg:mt-0">
-          {/* Optional decorative hollow circle (desktop only) */}
-          <div
-            className="hidden lg:block absolute -top-4 right-0 w-8 h-8 rounded-full border border-[#0B1B4D]/20 pointer-events-none select-none"
-            aria-hidden="true"
-          />
-
           {/* 1. Rating row (only if rating exists) */}
           {typeof rating === 'number' && rating > 0 && (
             <div

@@ -119,14 +119,14 @@ export function ProcessContent({ steps, activeIndex }) {
         {/* B. "What we may need from you" (lg and up only; hidden on mobile) */}
         {step.youProvide && step.youProvide.length > 0 && (
           <div className="process-chips-block hidden lg:block mt-5 lg:mt-6 pt-3.5 lg:pt-5 border-t border-[#0A1F4D]/10">
-            <span className="block text-[11px] font-bold text-[#C5A059] uppercase tracking-[0.14em] mb-2">
+            <span className="block text-[11px] font-semibold text-[#C5A059] tracking-wider uppercase mb-2">
               What we may need from you
             </span>
             <div className="flex flex-wrap gap-2">
               {step.youProvide.map((item, idx) => (
                 <span
                   key={idx}
-                  className="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs lg:text-sm text-slate-700 bg-slate-50 border border-[#0A1F4D]/[0.12] leading-none"
+                  className="inline-flex items-center px-3.5 py-1.5 rounded-md text-xs lg:text-sm text-slate-700 bg-white border border-[#0A1F4D]/10 leading-none"
                 >
                   {item}
                 </span>
@@ -141,7 +141,7 @@ export function ProcessContent({ steps, activeIndex }) {
             {/* Call */}
             <a
               href={`tel:${primaryPhone}`}
-              className="h-11 lg:h-12 px-4 lg:px-5 rounded-xl text-xs sm:text-sm font-semibold text-[#0A1F4D] bg-slate-50 hover:bg-slate-100 border border-slate-200/90 shadow-sm transition-all inline-flex items-center justify-center gap-2 flex-1 sm:flex-initial"
+              className="h-11 lg:h-12 px-4 lg:px-5 rounded-xl text-xs sm:text-sm font-semibold text-[#0A1F4D] bg-white hover:bg-slate-50 border border-slate-200/90 shadow-2xs transition-colors inline-flex items-center justify-center gap-2 flex-1 sm:flex-initial"
             >
               <Phone className="w-3.5 h-3.5 text-gold-600 shrink-0" />
               <span>Call</span>
@@ -152,7 +152,7 @@ export function ProcessContent({ steps, activeIndex }) {
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="h-11 lg:h-12 px-4 lg:px-5 rounded-xl text-xs sm:text-sm font-semibold text-emerald-950 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200/90 shadow-sm transition-all inline-flex items-center justify-center gap-2 flex-1 sm:flex-initial"
+              className="h-11 lg:h-12 px-4 lg:px-5 rounded-xl text-xs sm:text-sm font-semibold text-emerald-950 bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200/90 shadow-2xs transition-colors inline-flex items-center justify-center gap-2 flex-1 sm:flex-initial"
             >
               <WhatsAppIcon className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
               <span>WhatsApp</span>
@@ -162,7 +162,7 @@ export function ProcessContent({ steps, activeIndex }) {
             <a
               href="#contact"
               onClick={handleEnquiryClick}
-              className="hidden sm:inline-flex h-11 lg:h-12 px-4 lg:px-5 rounded-xl text-xs sm:text-sm font-semibold text-white bg-navy-950 hover:bg-navy-900 shadow-sm transition-all items-center justify-center gap-2"
+              className="hidden sm:inline-flex h-11 lg:h-12 px-4 lg:px-5 rounded-xl text-xs sm:text-sm font-semibold text-white bg-[#0A1F4D] hover:bg-[#132B4F] shadow-2xs transition-colors items-center justify-center gap-2"
             >
               <Mail className="w-3.5 h-3.5 text-gold-400 shrink-0" />
               <span>Form</span>
@@ -176,10 +176,10 @@ export function ProcessContent({ steps, activeIndex }) {
             <a
               href="#contact"
               onClick={handleEnquiryClick}
-              className="h-12 px-6 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/20 active:scale-[0.99] transition-all inline-flex items-center justify-center gap-2 min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              className="h-12 px-6 rounded-xl font-semibold text-white bg-[#0A1F4D] hover:bg-[#132B4F] shadow-2xs active:scale-[0.99] transition-colors inline-flex items-center justify-center gap-2 min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A1F4D]"
             >
               <span>Start your enquiry</span>
-              <ArrowUpRight className="w-4 h-4 shrink-0" />
+              <ArrowUpRight className="w-4 h-4 text-[#C5A059] shrink-0" />
             </a>
           </div>
         )}

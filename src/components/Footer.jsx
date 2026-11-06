@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowUp } from 'lucide-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Logo } from '../assets/logo/Logo';
+import mainLogo from '../assets/logo/gwa-logo.png';
 import { siteConfig } from '../data/siteConfig';
 import { testimonials } from '../data/testimonials';
 import { servicesData } from '../data/services';
@@ -73,10 +73,14 @@ export function Footer() {
             <a
               href="#hero"
               onClick={(e) => handleNavClick(e, '#hero')}
-              className="inline-flex items-center text-[#0B1B4D] hover:opacity-90 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg p-0.5"
+              className="inline-flex items-center text-[#0B1B4D] hover:opacity-90 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B1B4D] rounded-xl p-0.5"
               aria-label="Grace Way Accounting FZC LLC - Home"
             >
-              <Logo className="text-[#0B1B4D]" height={38} />
+              <img
+                src={mainLogo}
+                alt="Grace Way Accounting FZC LLC"
+                className="h-10 sm:h-12 w-auto object-contain rounded-xl shadow-2xs"
+              />
             </a>
 
             <p className="mt-3.5 text-sm text-slate-600 leading-relaxed max-w-sm font-medium">

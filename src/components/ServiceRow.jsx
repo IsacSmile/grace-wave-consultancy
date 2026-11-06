@@ -194,14 +194,14 @@ export function ServiceRow({
                 ))}
               </ul>
 
-              {/* 4. Enquire Now button: 20px gap (mt-5), full-width, h-12, rounded-xl, text-[15px], brand blue */}
+              {/* 4. Enquire Now button: 20px gap (mt-5), full-width, h-12, rounded-xl, text-[15px] */}
               <button
                 type="button"
                 onClick={() => onEnquire(service.serviceValue)}
-                className="mt-5 w-full h-12 rounded-xl text-[15px] font-semibold text-white bg-blue-600 hover:bg-blue-700 active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+                className="mt-5 w-full h-12 rounded-xl text-[15px] font-semibold text-white bg-[#0A1F4D] hover:bg-[#132B4F] active:scale-[0.99] transition-colors flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A1F4D]"
               >
                 <span>Enquire Now</span>
-                <ArrowUpRight className="w-4 h-4" />
+                <ArrowUpRight className="w-4 h-4 text-[#C5A059]" />
               </button>
             </div>
 
@@ -241,10 +241,10 @@ export function ServiceRow({
                   <button
                     type="button"
                     onClick={() => onEnquire(service.serviceValue)}
-                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 xl:py-3 rounded-xl text-base font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/25 active:scale-[0.99] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 cursor-pointer whitespace-nowrap"
+                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 xl:py-3 rounded-xl text-base font-semibold text-white bg-[#0A1F4D] hover:bg-[#132B4F] shadow-sm active:scale-[0.99] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A1F4D] cursor-pointer whitespace-nowrap"
                   >
                     <span>Enquire about {service.title}</span>
-                    <ArrowUpRight className="w-4 h-4 shrink-0" />
+                    <ArrowUpRight className="w-4 h-4 text-[#C5A059] shrink-0" />
                   </button>
                 </div>
               </div>

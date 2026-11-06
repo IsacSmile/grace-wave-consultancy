@@ -388,13 +388,13 @@ export function ServiceTabs() {
           tone="light"
         />
 
-        {/* Outer Panel: rounded-3xl, bg off-white (#F8FAFF), border 1px navy/8%, p-4 sm:p-6 md:p-8 lg:p-12 */}
+        {/* Outer Panel: rounded-2xl, bg off-white (#F8FAFF), border 1px navy/8% */}
         <div
           ref={outerPanelRef}
-          className="rounded-3xl bg-[#F8FAFF] border border-[#0B1B4D]/[0.08] p-4 sm:p-6 md:p-8 lg:p-12 relative"
+          className="rounded-2xl bg-[#F8FAFF] border border-[#0B1B4D]/[0.08] p-5 sm:p-7 md:p-8 lg:p-10 relative"
         >
           {/* ================= DESKTOP TABS (md+) ================= */}
-          <div className="hidden md:block relative mb-10">
+          <div className="hidden md:block relative mb-8 lg:mb-10">
             <div
               ref={tablistDesktopRef}
               role="tablist"
@@ -417,7 +417,7 @@ export function ServiceTabs() {
                     onMouseEnter={() => preloadTabImage(idx)}
                     onFocus={() => preloadTabImage(idx)}
                     onTouchStart={() => preloadTabImage(idx)}
-                    className={`pb-4 text-base lg:text-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-t-sm whitespace-nowrap ${
+                    className={`pb-4 text-base lg:text-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B1B4D] rounded-t-sm whitespace-nowrap ${
                       isActive
                         ? 'text-[#0B1B4D] font-semibold'
                         : 'text-slate-500 font-medium hover:text-[#0B1B4D]'
@@ -443,7 +443,7 @@ export function ServiceTabs() {
               ref={tablistMobileRef}
               role="tablist"
               aria-label="Service Solutions"
-              className="flex items-center gap-2.5 overflow-x-auto snap-x no-scrollbar py-1 px-0.5"
+              className="flex items-center gap-2 overflow-x-auto snap-x no-scrollbar py-1 px-0.5"
             >
               {serviceTabsData.map((tab, idx) => {
                 const isActive = activeTab === idx;
@@ -459,9 +459,9 @@ export function ServiceTabs() {
                     onClick={() => handleTabChange(idx)}
                     onKeyDown={(e) => handleKeyDown(e, idx)}
                     onTouchStart={() => preloadTabImage(idx)}
-                    className={`snap-center h-11 px-4 whitespace-nowrap text-sm font-medium rounded-full shrink-0 flex items-center justify-center transition-all min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+                    className={`snap-center h-10 px-4 whitespace-nowrap text-sm font-medium rounded-lg shrink-0 flex items-center justify-center transition-colors min-h-[40px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B1B4D] ${
                       isActive
-                        ? 'bg-[#0B1B4D] text-white shadow-sm'
+                        ? 'bg-[#0B1B4D] text-white shadow-2xs'
                         : 'bg-white border border-[#0B1B4D]/10 text-slate-700 hover:bg-slate-50'
                     }`}
                   >

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Sparkles } from 'lucide-react';
 import { Reveal } from './Reveal';
 
 /**
@@ -16,7 +15,7 @@ import { Reveal } from './Reveal';
  */
 export function SectionHeading({
   badge,
-  badgeIcon: BadgeIcon = Sparkles,
+  badgeIcon: BadgeIcon = null,
   title,
   subtitle,
   tone = 'light', // 'light' | 'dark'
@@ -36,28 +35,28 @@ export function SectionHeading({
       once={true}
       className="max-w-3xl text-left"
     >
-      {/* 1. Subtle Gold Accent Bar (48px x 2px) */}
+      {/* 1. Subtle Gold Accent Bar (40px x 2px) */}
       {accent && (
         <div
-          className="w-12 h-0.5 bg-[#C5A059] rounded-full mb-5 md:mb-6"
+          className="w-10 h-0.5 bg-[#C5A059] mb-4 md:mb-5"
           aria-hidden="true"
         />
       )}
 
-      {/* 2. Uppercase Pill Badge */}
+      {/* 2. Refined Tag Badge */}
       {badge && (
-        <div className="mb-5 md:mb-6">
+        <div className="mb-4 md:mb-5">
           <div
-            className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-[0.14em] shadow-xs ${
+            className={`inline-flex items-center gap-2 px-3 py-1 rounded-md text-xs font-semibold tracking-wide ${
               isDark
                 ? 'bg-navy-800/90 border border-gold-500/30 text-gold-400'
-                : 'bg-blue-50 border border-blue-200/90 text-[#0B1B4D]'
+                : 'bg-navy-50 border border-[#0B1B4D]/10 text-[#0B1B4D]'
             }`}
           >
             {BadgeIcon && (
               <BadgeIcon
-                className={`w-3.5 h-3.5 ${
-                  isDark ? 'text-gold-400' : 'text-blue-600'
+                className={`w-3.5 h-3.5 shrink-0 ${
+                  isDark ? 'text-gold-400' : 'text-[#C5A059]'
                 }`}
               />
             )}
@@ -70,7 +69,7 @@ export function SectionHeading({
       {title && (
         <Component
           id={id}
-          className={`font-heading font-bold text-3xl sm:text-4xl lg:text-5xl xl:text-[3.25rem] tracking-tight leading-[1.15] text-balance ${
+          className={`font-heading font-bold text-3xl sm:text-4xl lg:text-[2.75rem] tracking-tight leading-[1.18] text-balance ${
             isDark ? 'text-white' : 'text-[#0B1B4D]'
           }`}
         >
@@ -81,7 +80,7 @@ export function SectionHeading({
       {/* 4. Subtitle */}
       {subtitle && (
         <p
-          className={`mt-5 md:mt-6 text-base md:text-lg font-normal leading-[1.7] max-w-xl lg:max-w-2xl text-pretty ${
+          className={`mt-4 md:mt-5 text-base md:text-lg font-normal leading-[1.7] max-w-xl lg:max-w-2xl text-pretty ${
             isDark ? 'text-slate-300' : 'text-slate-600'
           }`}
         >

@@ -1,9 +1,9 @@
 import React, { lazy, Suspense, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
+import PublicApp from './App';
 import './index.css';
 
 const AdminApp = lazy(() => import('./admin/AdminApp'));
-const PublicApp = lazy(() => import('./App'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 function RootRouter() {

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Phone, MapPin, Mail, Sparkles } from 'lucide-react';
+import { Phone, MapPin, Mail } from 'lucide-react';
 import { siteConfig } from '../data/siteConfig';
 import { EnquiryForm } from './EnquiryForm';
 import { useReducedMotion } from '../hooks/useReducedMotion';
@@ -37,8 +37,8 @@ export function Contact() {
         const leftElements = leftContentRef.current.querySelectorAll('.contact-reveal-el');
         tl.fromTo(
           leftElements,
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 0.7, stagger: 0.08, ease: 'power3.out' }
+          { opacity: 0, y: 24 },
+          { opacity: 1, y: 0, duration: 0.65, stagger: 0.08, ease: 'power3.out' }
         );
       }
 
@@ -46,8 +46,8 @@ export function Contact() {
       if (formCardRef.current) {
         tl.fromTo(
           formCardRef.current,
-          { opacity: 0, y: 40 },
-          { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
+          { opacity: 0, y: 32 },
+          { opacity: 1, y: 0, duration: 0.75, ease: 'power3.out' },
           '-=0.4'
         );
       }
@@ -61,14 +61,14 @@ export function Contact() {
       id="contact"
       ref={sectionRef}
       aria-labelledby="contact-heading"
-      className="relative w-full min-h-[100vh] lg:min-h-[100svh] flex items-center py-20 md:py-28 lg:py-32 bg-[#FAFBF9] text-slate-800 overflow-hidden"
+      className="relative w-full min-h-[100vh] lg:min-h-[100svh] flex items-center py-18 md:py-24 lg:py-28 bg-[#FAFBF9] text-slate-800 overflow-hidden border-b border-slate-200/60"
     >
       {/* Clean Vector Dotted World Map Background Texture */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none flex items-center justify-center">
         <img
           src={worldDots}
           alt=""
-          className="w-full max-w-7xl h-auto object-contain opacity-35 select-none"
+          className="w-full max-w-7xl h-auto object-contain opacity-25 select-none"
         />
       </div>
 
@@ -76,29 +76,28 @@ export function Contact() {
       <div className="relative max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 w-full z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
-          {/* ================= LEFT CONTENT BLOCK (MATCHING REFERENCE DESIGN) ================= */}
+          {/* ================= LEFT CONTENT BLOCK ================= */}
           <div
             ref={leftContentRef}
             className="lg:col-span-6 flex flex-col justify-center text-left"
           >
-            {/* 0. Defined Gold Accent Bar */}
+            {/* 0. Subtle Gold Accent Bar */}
             <div
-              className="contact-reveal-el w-12 h-0.5 bg-[#C5A059] rounded-full mb-4 sm:mb-5"
+              className="contact-reveal-el w-10 h-0.5 bg-[#C5A059] mb-4 sm:mb-5"
               aria-hidden="true"
             />
 
-            {/* 1. Website Defined Pill Badge */}
+            {/* 1. Refined Executive Tag Badge */}
             <div className="contact-reveal-el mb-4 sm:mb-5">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-[0.14em] shadow-xs bg-blue-50 border border-blue-200/90 text-[#0B1B4D]">
-                <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md text-xs font-semibold tracking-wide bg-navy-50 border border-[#0B1B4D]/10 text-[#0B1B4D]">
                 <span>{siteConfig.contact.sectionBadge}</span>
               </div>
             </div>
 
-            {/* 2. Bold H2 Heading */}
+            {/* 2. Heading */}
             <h2
               id="contact-heading"
-              className="contact-reveal-el font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl xl:text-[3.25rem] text-navy-950 tracking-tight leading-[1.14] text-balance mb-4 sm:mb-5"
+              className="contact-reveal-el font-heading font-bold text-3xl sm:text-4xl lg:text-[2.75rem] text-[#0B1B4D] tracking-tight leading-[1.18] text-balance mb-4 sm:mb-5"
             >
               {siteConfig.contact.heading}
             </h2>
@@ -108,12 +107,12 @@ export function Contact() {
               Make the decision to move forward. Commit your vision to clarity, and let our senior accounting consultants bring structure and compliance to your business.
             </p>
 
-            {/* 4. Minimalist Contact Details with Outline Icons (matching website theme) */}
+            {/* 4. Minimalist Contact Details with Refined Icons */}
             <div className="contact-reveal-el space-y-4 mb-8 sm:mb-10">
               {/* Address */}
               <div className="flex items-start sm:items-center gap-3.5 text-slate-700">
-                <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100 shadow-2xs mt-0.5 sm:mt-0">
-                  <MapPin className="w-4 h-4 text-blue-600" />
+                <div className="w-9 h-9 rounded-lg bg-navy-50 text-[#0B1B4D] flex items-center justify-center shrink-0 border border-[#0B1B4D]/10 shadow-2xs mt-0.5 sm:mt-0">
+                  <MapPin className="w-4 h-4 text-[#0B1B4D]" />
                 </div>
                 <span className="text-sm sm:text-base font-medium text-slate-800 leading-snug">
                   {siteConfig.business.address}
@@ -122,20 +121,20 @@ export function Contact() {
 
               {/* Phone */}
               <div className="flex items-center gap-3.5 text-slate-700">
-                <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100 shadow-2xs">
-                  <Phone className="w-4 h-4 text-blue-600" />
+                <div className="w-9 h-9 rounded-lg bg-navy-50 text-[#0B1B4D] flex items-center justify-center shrink-0 border border-[#0B1B4D]/10 shadow-2xs">
+                  <Phone className="w-4 h-4 text-[#0B1B4D]" />
                 </div>
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm sm:text-base font-medium">
                   <a
                     href={siteConfig.business.phoneTel}
-                    className="text-slate-800 hover:text-blue-600 transition-colors"
+                    className="text-slate-800 hover:text-[#0B1B4D] font-semibold transition-colors"
                   >
                     {siteConfig.business.phoneDisplay}
                   </a>
                   <span className="text-slate-300">/</span>
                   <a
                     href={siteConfig.business.phoneSecondaryTel}
-                    className="text-slate-800 hover:text-blue-600 transition-colors"
+                    className="text-slate-800 hover:text-[#0B1B4D] font-semibold transition-colors"
                   >
                     {siteConfig.business.phoneSecondaryDisplay}
                   </a>
@@ -144,42 +143,42 @@ export function Contact() {
 
               {/* Email */}
               <div className="flex items-center gap-3.5 text-slate-700">
-                <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100 shadow-2xs">
-                  <Mail className="w-4 h-4 text-blue-600" />
+                <div className="w-9 h-9 rounded-lg bg-navy-50 text-[#0B1B4D] flex items-center justify-center shrink-0 border border-[#0B1B4D]/10 shadow-2xs">
+                  <Mail className="w-4 h-4 text-[#0B1B4D]" />
                 </div>
                 <a
                   href={siteConfig.business.emailMailto}
-                  className="text-sm sm:text-base font-medium text-slate-800 hover:text-blue-600 transition-colors"
+                  className="text-sm sm:text-base font-medium text-slate-800 hover:text-[#0B1B4D] transition-colors"
                 >
                   {siteConfig.business.email}
                 </a>
               </div>
             </div>
 
-            {/* 5. Client Social Proof Avatar Stack (matching reference) */}
+            {/* 5. Client Social Proof Avatar Stack */}
             <div className="contact-reveal-el flex items-center gap-3.5 pt-6 border-t border-slate-200/80">
               <div className="flex -space-x-2.5">
                 <img
                   src={avatar1}
                   alt="UAE Client"
-                  className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-xs"
+                  className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-2xs"
                 />
                 <img
                   src={avatar2}
                   alt="UAE Client"
-                  className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-xs"
+                  className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-2xs"
                 />
                 <img
                   src={avatar3}
                   alt="UAE Client"
-                  className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-xs"
+                  className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-2xs"
                 />
-                <div className="w-10 h-10 rounded-full bg-gold-200 text-gold-950 font-bold text-xs flex items-center justify-center border-2 border-white shadow-xs">
+                <div className="w-10 h-10 rounded-full bg-[#0A1F4D] text-[#C5A059] font-bold text-xs flex items-center justify-center border-2 border-white shadow-2xs tabular-nums">
                   +500
                 </div>
               </div>
               <div className="text-xs sm:text-sm">
-                <span className="block font-bold text-navy-950">Trusted by 500+</span>
+                <span className="block font-bold text-[#0B1B4D]">Trusted by 500+</span>
                 <span className="text-slate-500 font-medium">Businesses across the UAE</span>
               </div>
             </div>

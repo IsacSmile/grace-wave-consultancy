@@ -131,32 +131,8 @@ export function StatsStrip() {
       id="stats-strip"
       ref={sectionRef}
       aria-label="Company highlights"
-      className="relative w-full bg-[#0A1F4D] text-white py-10 sm:py-14 border-t border-b border-navy-800/90 overflow-hidden"
+      className="relative w-full bg-[#08172E] text-white py-12 sm:py-16 border-t border-b border-[#0B1B4D]/40 overflow-hidden"
     >
-      {/* Decorative Background Elements (CSS/SVG, hidden on mobile) */}
-      <div
-        className="hidden md:block absolute -top-24 right-[10%] w-80 h-80 rounded-full bg-blue-500/10 blur-3xl pointer-events-none -z-10"
-        aria-hidden="true"
-      />
-      <div
-        className="hidden md:block absolute -bottom-20 left-[5%] w-72 h-72 rounded-full bg-teal-400/10 blur-3xl pointer-events-none -z-10"
-        aria-hidden="true"
-      />
-      <svg
-        className="hidden lg:block absolute inset-0 w-full h-full pointer-events-none opacity-10 -z-10"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 1440 240"
-        fill="none"
-        aria-hidden="true"
-      >
-        <path
-          d="M0,120 Q360,20 720,120 T1440,120"
-          stroke="#38BDF8"
-          strokeWidth="1.5"
-          strokeDasharray="4 6"
-        />
-      </svg>
-
       {/* Centered Cards Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <dl className={`grid ${getGridColsClass(statsData.length)} gap-3.5 sm:gap-6`}>
@@ -166,12 +142,12 @@ export function StatsStrip() {
             return (
               <div
                 key={stat.id}
-                className="stat-strip-card relative flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-3.5 sm:gap-4 p-4 sm:p-5 lg:p-6 rounded-2xl border border-white/15 bg-white/[0.05] backdrop-blur-xs hover:border-white/30 transition-colors shadow-sm"
+                className="stat-strip-card relative flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-3.5 sm:gap-4 p-4 sm:p-5 lg:p-6 rounded-xl border border-white/10 bg-white/[0.03] hover:border-[#C5A059]/40 transition-colors shadow-2xs"
                 style={prefersReducedMotion ? { opacity: 1, transform: 'none' } : undefined}
               >
-                {/* Circular White Icon Badge (56px-64px desktop, 44px mobile) */}
-                <div className="w-11 h-11 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full bg-white text-blue-600 flex items-center justify-center shrink-0 shadow-md">
-                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-[#0066FF]" />
+                {/* Refined Icon Badge */}
+                <div className="w-11 h-11 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-lg bg-white/5 border border-white/10 text-[#C5A059] flex items-center justify-center shrink-0">
+                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#C5A059]" />
                 </div>
 
                 {/* Number & Label */}
@@ -183,20 +159,20 @@ export function StatsStrip() {
                       {stat.value}{stat.suffix} {stat.label}
                     </span>
 
-                    {/* Visual animated counter + persistent bright blue suffix */}
+                    {/* Visual animated counter + warm gold suffix */}
                     <div
                       aria-hidden="true"
-                      className="font-heading font-black text-2xl sm:text-4xl lg:text-5xl text-white tracking-tight flex items-baseline justify-center sm:justify-start"
+                      className="font-heading font-bold text-2xl sm:text-3xl lg:text-4xl text-white tracking-tight flex items-baseline justify-center sm:justify-start tabular-nums"
                     >
                       <span className="stat-number-val">
                         {prefersReducedMotion ? stat.value.toLocaleString() : '0'}
                       </span>
-                      <span className="text-[#38BDF8] ml-0.5">
+                      <span className="text-[#C5A059] ml-0.5">
                         {stat.suffix}
                       </span>
                     </div>
 
-                    <div className="text-xs sm:text-sm font-semibold text-slate-200 mt-1 leading-tight break-words sm:break-normal">
+                    <div className="text-xs sm:text-sm font-medium text-slate-300 mt-1 leading-tight break-words sm:break-normal">
                       {stat.label}
                     </div>
                   </dd>

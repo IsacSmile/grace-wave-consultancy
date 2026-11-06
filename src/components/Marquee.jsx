@@ -376,30 +376,30 @@ export function Marquee() {
  */
 const marqueeStyles = `
   .marquee-word {
-    font-size: clamp(2.75rem, 9vw, 7rem);
+    font-size: clamp(2.5rem, 8vw, 6rem);
     font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
-    font-weight: 800;
+    font-weight: 700;
     font-style: italic;
     text-transform: uppercase;
-    letter-spacing: -0.035em;
+    letter-spacing: -0.025em;
     line-height: 1;
     display: inline-block;
     cursor: default;
     user-select: none;
-    transform: skewX(-8deg) translateY(0);
+    transform: translateY(0);
     transform-origin: center bottom;
-    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), background-size 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), background-size 0.4s cubic-bezier(0.22, 1, 0.36, 1);
     -webkit-font-smoothing: antialiased;
   }
 
   @media (hover: hover) and (pointer: fine) {
     .marquee-word:hover {
-      transform: skewX(-4deg) translateY(-4px);
+      transform: translateY(-2px);
     }
   }
 
   .marquee-word.is-active {
-    transform: skewX(-4deg) translateY(-4px);
+    transform: translateY(-2px);
   }
 
   /* 1. OUTLINE: transparent fill, 1.5px navy text-stroke. Fills gold on hover/active while keeping stroke */
@@ -478,6 +478,6 @@ const marqueeStyles = `
   .marquee-word-reduced:hover,
   .marquee-word-reduced:focus-visible {
     background-size: 100% 100%, 100% 100% !important;
-    transform: skewX(-4deg) translateY(-4px) !important;
+    transform: translateY(-2px) !important;
   }
 `;

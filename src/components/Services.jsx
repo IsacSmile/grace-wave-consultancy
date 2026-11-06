@@ -123,18 +123,8 @@ export function Services() {
       id="services"
       ref={sectionRef}
       aria-labelledby="services-title"
-      className="relative py-20 md:py-28 lg:py-32 bg-[#F8FAFF] text-slate-800 overflow-hidden"
+      className="relative py-18 md:py-24 lg:py-28 bg-[#F8FAFF] text-slate-800 overflow-hidden border-b border-slate-200/60"
     >
-      {/* Background Soft Ambient Light */}
-      <div
-        className="absolute top-0 right-1/4 w-[500px] h-[500px] rounded-full bg-blue-100/40 blur-3xl pointer-events-none -z-10"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute bottom-10 left-10 w-[450px] h-[450px] rounded-full bg-teal-50/50 blur-3xl pointer-events-none -z-10"
-        aria-hidden="true"
-      />
-
       <div className="max-w-7xl mx-auto px-5 md:px-6 lg:px-8">
         {/* ================= SECTION HEADER ================= */}
         <SectionHeading
@@ -142,7 +132,7 @@ export function Services() {
           title={siteConfig.services.title}
           subtitle={siteConfig.services.subtitle}
           id="services-title"
-          className="!mb-8 md:!mb-14 lg:!mb-16"
+          className="!mb-8 md:!mb-12 lg:!mb-14"
         />
 
         {/* ================= EDITORIAL SERVICE ROWS ================= */}
@@ -188,7 +178,7 @@ export function Services() {
         </div>
 
         {/* ================= TAILORED ASSISTANCE BANNER ================= */}
-        <div className="mt-10 md:mt-20 p-6 md:p-8 rounded-2xl bg-gradient-to-r from-[#071328] via-[#0A1F4D] to-[#071328] text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-xl border border-blue-900/40">
+        <div className="mt-12 md:mt-16 p-6 md:p-8 rounded-2xl bg-[#08172E] text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm border border-white/10">
           <div className="text-left w-full md:w-auto">
             <h3 className="font-heading font-semibold md:font-bold text-xl text-white mb-1.5 leading-snug text-balance">
               {siteConfig.services.ctaBanner.title}
@@ -200,10 +190,10 @@ export function Services() {
           <button
             type="button"
             onClick={() => handleEnquire('Other')}
-            className="w-full md:w-auto h-12 px-6 rounded-xl text-[15px] md:text-base font-semibold md:font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/25 active:scale-[0.99] transition-all shrink-0 cursor-pointer flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            className="w-full md:w-auto h-12 px-6 rounded-xl text-sm md:text-base font-semibold text-[#08172E] bg-[#C5A059] hover:bg-[#d4b068] active:scale-[0.99] transition-colors shrink-0 cursor-pointer flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059]"
           >
             <span>{siteConfig.services.ctaBanner.buttonText}</span>
-            <ArrowUpRight className="w-4 h-4" />
+            <ArrowUpRight className="w-4 h-4 text-[#08172E]" />
           </button>
         </div>
 
