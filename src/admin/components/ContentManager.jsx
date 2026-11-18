@@ -188,13 +188,13 @@ export function ContentManager() {
   const activeSectionInfo = SECTIONS.find((s) => s.id === activeSection) || SECTIONS[0];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Toast Alert */}
       {statusMessage && (
         <aside
           role="status"
           aria-live="polite"
-          className="fixed top-5 right-5 z-50 bg-slate-900 text-white px-4 py-2.5 rounded-xl shadow-lg text-xs font-medium flex items-center gap-2 animate-fade-in border border-slate-800"
+          className="fixed top-6 right-6 z-50 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-xl text-sm font-medium flex items-center gap-2.5 animate-fade-in border border-slate-800"
         >
           <Check className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>{statusMessage}</span>
@@ -205,16 +205,16 @@ export function ContentManager() {
       {errorMessage && (
         <div
           role="alert"
-          className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center justify-between animate-fade-in"
+          className="p-4 sm:p-5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-sm flex items-center justify-between animate-fade-in shadow-2xs"
         >
-          <div className="flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+          <div className="flex items-center gap-2.5">
+            <AlertCircle className="w-5 h-5 text-rose-600 shrink-0" />
             <span>{errorMessage}</span>
           </div>
           <button
             type="button"
             onClick={() => setErrorMessage(null)}
-            className="text-rose-500 hover:text-rose-700 text-xs font-bold"
+            className="text-rose-500 hover:text-rose-700 text-sm font-bold p-1 cursor-pointer"
           >
             ✕
           </button>
@@ -222,41 +222,41 @@ export function ContentManager() {
       )}
 
       {/* Top Toolbar / Action Bar */}
-      <section className="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-5 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <section className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-7 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-5 sm:gap-6">
         <div>
-          <div className="flex items-center gap-2.5">
-            <h2 className="font-heading font-bold text-base sm:text-lg text-slate-900 tracking-tight">
+          <div className="flex items-center gap-3 flex-wrap">
+            <h2 className="font-heading font-bold text-lg sm:text-xl text-slate-900 tracking-tight">
               Website Content Manager
             </h2>
             {isDirty && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-900 border border-amber-300">
+                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
                 Unsaved Changes
               </span>
             )}
             {!isDirty && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
-                <Check className="w-3 h-3 text-emerald-600" />
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <Check className="w-3.5 h-3.5 text-emerald-600" />
                 All changes live
               </span>
             )}
           </div>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs sm:text-sm text-slate-500 mt-1.5 leading-relaxed">
             Edit text content and images for each section. Layout, styling and animations remain 100% intact.
           </p>
         </div>
 
         {/* Global Buttons */}
-        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+        <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap shrink-0">
           {/* View Website Link */}
           <a
             href="/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition-colors shadow-2xs"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition-colors shadow-2xs"
             title="Open website in a new tab"
           >
-            <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
+            <ExternalLink className="w-4 h-4 text-slate-500" />
             <span>View Live Site</span>
           </a>
 
@@ -265,9 +265,9 @@ export function ContentManager() {
             <button
               type="button"
               onClick={handleDiscard}
-              className="inline-flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 hover:bg-slate-50 transition-colors shadow-2xs cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 hover:bg-slate-50 transition-colors shadow-2xs cursor-pointer"
             >
-              <Undo2 className="w-3.5 h-3.5" />
+              <Undo2 className="w-4 h-4" />
               <span>Discard</span>
             </button>
           )}
@@ -276,10 +276,10 @@ export function ContentManager() {
           <button
             type="button"
             onClick={() => setConfirmResetOpen(true)}
-            className="inline-flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-semibold text-rose-700 hover:bg-rose-50 border border-rose-200/70 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-rose-700 hover:bg-rose-50 border border-rose-200/70 transition-colors cursor-pointer"
             title="Reset current section to defaults"
           >
-            <RotateCcw className="w-3.5 h-3.5 text-rose-500" />
+            <RotateCcw className="w-4 h-4 text-rose-500" />
             <span className="hidden sm:inline">Reset Section</span>
           </button>
 
@@ -288,18 +288,18 @@ export function ContentManager() {
             type="button"
             onClick={handleSave}
             disabled={!isDirty || isSaving}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm cursor-pointer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-white bg-slate-900 hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm cursor-pointer"
           >
-            <Save className={`w-3.5 h-3.5 ${isSaving ? 'animate-spin' : ''}`} />
+            <Save className={`w-4 h-4 ${isSaving ? 'animate-spin' : ''}`} />
             <span>{isSaving ? 'Publishing...' : 'Save & Publish Live'}</span>
           </button>
         </div>
       </section>
 
       {/* Main Grid: Sidebar Section List + Active Section Editor */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Sidebar Nav: 4 cols on lg */}
-        <aside className="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 p-3 sm:p-4 shadow-2xs space-y-1">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+        {/* Sidebar Nav: 4 cols on lg, 3 cols on xl */}
+        <aside className="lg:col-span-4 xl:col-span-3 bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-5 shadow-2xs space-y-2 sticky top-20">
           <div className="px-3 py-2 mb-1">
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
               Website Sections
@@ -314,25 +314,25 @@ export function ContentManager() {
                 key={sec.id}
                 type="button"
                 onClick={() => setActiveSection(sec.id)}
-                className={`w-full text-left p-3 rounded-xl transition-all flex items-start gap-3 cursor-pointer ${
+                className={`w-full text-left p-3.5 rounded-xl transition-all flex items-start gap-3.5 cursor-pointer ${
                   isActive
                     ? 'bg-slate-900 text-white shadow-xs'
                     : 'text-slate-700 hover:bg-slate-100'
                 }`}
               >
                 <div
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${
+                  className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${
                     isActive ? 'bg-white/10 text-white' : 'bg-slate-100 text-slate-600'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className={`text-xs font-bold ${isActive ? 'text-white' : 'text-slate-900'}`}>
+                  <div className={`text-sm font-bold ${isActive ? 'text-white' : 'text-slate-900'}`}>
                     {sec.label}
                   </div>
                   <div
-                    className={`text-[11px] truncate mt-0.5 ${
+                    className={`text-xs truncate mt-0.5 leading-snug ${
                       isActive ? 'text-slate-300' : 'text-slate-500'
                     }`}
                   >
@@ -344,15 +344,15 @@ export function ContentManager() {
           })}
         </aside>
 
-        {/* Section Editor Card: 8 cols on lg */}
-        <section className="lg:col-span-8 bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-7 shadow-2xs space-y-6">
+        {/* Section Editor Card: 8 cols on lg, 9 cols on xl */}
+        <section className="lg:col-span-8 xl:col-span-9 bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 lg:p-10 shadow-2xs space-y-8">
           {/* Section Header */}
-          <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+          <div className="flex items-center justify-between pb-5 border-b border-slate-100">
             <div>
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
                 Editing Section
               </span>
-              <h3 className="font-heading font-bold text-lg text-slate-900">
+              <h3 className="font-heading font-bold text-xl sm:text-2xl text-slate-900 tracking-tight mt-0.5">
                 {activeSectionInfo.label}
               </h3>
             </div>
@@ -363,9 +363,9 @@ export function ContentManager() {
                 type="button"
                 onClick={handleSave}
                 disabled={isSaving}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 disabled:opacity-50 cursor-pointer shadow-2xs"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold text-white bg-slate-900 hover:bg-slate-800 disabled:opacity-50 cursor-pointer shadow-2xs"
               >
-                <Save className="w-3 h-3" />
+                <Save className="w-3.5 h-3.5" />
                 <span>Save</span>
               </button>
             )}
@@ -422,18 +422,18 @@ export function ContentManager() {
           )}
 
           {/* Bottom Save Bar */}
-          <div className="pt-6 border-t border-slate-200 flex items-center justify-between">
-            <span className="text-xs text-slate-400">
-              Shortcut: <kbd className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-mono text-[10px]">Ctrl</kbd> + <kbd className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-mono text-[10px]">S</kbd> to save
+          <div className="pt-8 border-t border-slate-200 flex items-center justify-between flex-wrap gap-4">
+            <span className="text-xs sm:text-sm text-slate-400">
+              Shortcut: <kbd className="px-2 py-1 rounded-md bg-slate-100 border border-slate-200 text-slate-700 font-mono text-xs">Ctrl</kbd> + <kbd className="px-2 py-1 rounded-md bg-slate-100 border border-slate-200 text-slate-700 font-mono text-xs">S</kbd> to save
             </span>
 
             <button
               type="button"
               onClick={handleSave}
               disabled={!isDirty || isSaving}
-              className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs sm:text-sm font-semibold text-white bg-slate-900 hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-md cursor-pointer"
             >
-              <Save className={`w-3.5 h-3.5 ${isSaving ? 'animate-spin' : ''}`} />
+              <Save className={`w-4 h-4 ${isSaving ? 'animate-spin' : ''}`} />
               <span>{isSaving ? 'Saving...' : 'Save & Publish Live'}</span>
             </button>
           </div>

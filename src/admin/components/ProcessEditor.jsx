@@ -64,15 +64,15 @@ export function ProcessEditor({ data, onChange }) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 sm:space-y-10">
       {/* Overview Box */}
-      <div className="bg-blue-50/60 border border-blue-200/70 rounded-xl p-4 text-xs text-blue-900 leading-relaxed">
+      <div className="bg-blue-50/70 border border-blue-200/80 rounded-2xl p-5 sm:p-6 text-xs sm:text-sm text-blue-950 leading-relaxed shadow-2xs">
         <strong>How We Work Section:</strong> As seen in your screenshot, this section features the revolving wheel showing steps .01, .02, etc. with step title (e.g. &ldquo;Enquiry&rdquo;), description, checklist points, and &ldquo;What we may need from you&rdquo; chips.
       </div>
 
       {/* Global Badge */}
-      <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
-        <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+      <div className="p-5 sm:p-6 rounded-2xl bg-slate-50/80 border border-slate-200 shadow-2xs">
+        <label className="block text-xs sm:text-sm font-semibold text-slate-700 mb-2">
           Section Badge Tag
         </label>
         <input
@@ -80,19 +80,19 @@ export function ProcessEditor({ data, onChange }) {
           value={data.badge || ''}
           onChange={(e) => handleGlobalChange('badge', e.target.value)}
           placeholder="HOW WE WORK"
-          className="w-full sm:w-64 h-9 px-3 rounded-lg text-xs bg-white border border-slate-200 text-slate-900 focus:outline-none focus:border-slate-900 shadow-2xs"
+          className="w-full sm:w-72 h-11 px-4 rounded-xl text-sm bg-white border border-slate-200 text-slate-900 focus:outline-none focus:border-slate-900 shadow-2xs transition-colors"
         />
       </div>
 
       {/* Step Switcher */}
       <div>
-        <div className="flex border-b border-slate-200 gap-2">
+        <div className="flex border-b border-slate-200 gap-3">
           {steps.map((step, idx) => (
             <button
               key={step.id || idx}
               type="button"
               onClick={() => setActiveStepIdx(idx)}
-              className={`pb-2.5 px-4 text-xs font-semibold border-b-2 transition-colors cursor-pointer ${
+              className={`pb-3 px-5 text-xs sm:text-sm font-semibold border-b-2 transition-colors cursor-pointer ${
                 activeStepIdx === idx
                   ? 'border-slate-900 text-slate-900'
                   : 'border-transparent text-slate-400 hover:text-slate-700'
@@ -105,10 +105,10 @@ export function ProcessEditor({ data, onChange }) {
       </div>
 
       {/* Step Card Editor */}
-      <div className="p-5 rounded-xl bg-white border border-slate-200 space-y-5">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div className="p-6 sm:p-8 rounded-2xl bg-white border border-slate-200 space-y-6 shadow-2xs">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">
               Step Number
             </label>
             <input
@@ -116,12 +116,12 @@ export function ProcessEditor({ data, onChange }) {
               value={currentStep.number || ''}
               onChange={(e) => handleCurrentStepChange('number', e.target.value)}
               placeholder="01"
-              className="w-full h-9 px-3 rounded-lg text-xs bg-white border border-slate-200 font-mono font-bold"
+              className="w-full h-11 px-4 rounded-xl text-sm bg-white border border-slate-200 font-mono font-bold shadow-2xs"
             />
           </div>
 
           <div className="sm:col-span-2">
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">
               Step Title
             </label>
             <input
@@ -129,57 +129,57 @@ export function ProcessEditor({ data, onChange }) {
               value={currentStep.title || ''}
               onChange={(e) => handleCurrentStepChange('title', e.target.value)}
               placeholder="Enquiry"
-              className="w-full h-9 px-3 rounded-lg text-xs bg-white border border-slate-200 font-semibold"
+              className="w-full h-11 px-4 rounded-xl text-sm bg-white border border-slate-200 font-semibold shadow-2xs"
             />
           </div>
 
           <div className="sm:col-span-3">
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">
               Step Narrative Description
             </label>
             <textarea
-              rows={2}
+              rows={3}
               value={currentStep.text || ''}
               onChange={(e) => handleCurrentStepChange('text', e.target.value)}
               placeholder="Reach us by form, call or WhatsApp and tell us what you need."
-              className="w-full p-2.5 rounded-lg text-xs bg-white border border-slate-200 leading-relaxed"
+              className="w-full p-3.5 rounded-xl text-sm bg-white border border-slate-200 leading-relaxed shadow-2xs"
             />
           </div>
         </div>
 
         {/* Checklist Points */}
-        <div className="pt-4 border-t border-slate-100 space-y-3">
+        <div className="pt-6 border-t border-slate-100 space-y-4">
           <div className="flex items-center justify-between">
-            <h5 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+            <h5 className="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider">
               Checklist Bullet Points
             </h5>
             <button
               type="button"
               onClick={handleAddPoint}
-              className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700 font-semibold cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50 font-semibold cursor-pointer transition-colors"
             >
-              <Plus className="w-3.5 h-3.5" />
+              <Plus className="w-4 h-4" />
               <span>Add Point</span>
             </button>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-3">
             {(currentStep.points || []).map((point, pIdx) => (
-              <div key={pIdx} className="flex items-center gap-2 p-2 rounded-lg bg-slate-50 border border-slate-200">
-                <span className="text-emerald-600 font-bold text-xs">✓</span>
+              <div key={pIdx} className="flex items-center gap-3 p-3 rounded-xl bg-slate-50/80 border border-slate-200 shadow-2xs">
+                <span className="text-emerald-600 font-bold text-sm">✓</span>
                 <input
                   type="text"
                   value={point}
                   onChange={(e) => handlePointChange(pIdx, e.target.value)}
-                  className="flex-1 h-8 px-2.5 rounded text-xs bg-white border border-slate-200"
+                  className="flex-1 h-10 px-3.5 rounded-lg text-sm bg-white border border-slate-200"
                 />
                 {(currentStep.points || []).length > 1 && (
                   <button
                     type="button"
                     onClick={() => handleRemovePoint(pIdx)}
-                    className="text-slate-400 hover:text-rose-600 p-1"
+                    className="text-slate-400 hover:text-rose-600 p-1.5 rounded-lg hover:bg-white"
                   >
-                    <Trash2 className="w-3.5 h-3.5" />
+                    <Trash2 className="w-4 h-4" />
                   </button>
                 )}
               </div>
@@ -188,43 +188,43 @@ export function ProcessEditor({ data, onChange }) {
         </div>
 
         {/* What we may need from you tags */}
-        <div className="pt-4 border-t border-slate-100 space-y-3">
+        <div className="pt-6 border-t border-slate-100 space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h5 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+              <h5 className="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider">
                 What We May Need From You (Requirement Chips)
               </h5>
-              <span className="text-[11px] text-slate-500">
+              <span className="text-xs text-slate-500">
                 Pill tags displayed below the step checklist
               </span>
             </div>
             <button
               type="button"
               onClick={handleAddTag}
-              className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700 font-semibold cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50 font-semibold cursor-pointer transition-colors"
             >
-              <Plus className="w-3.5 h-3.5" />
+              <Plus className="w-4 h-4" />
               <span>Add Chip</span>
             </button>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {(currentStep.youProvide || []).map((tag, tIdx) => (
-              <div key={tIdx} className="flex items-center gap-2 p-2 rounded-lg bg-slate-50 border border-slate-200">
+              <div key={tIdx} className="flex items-center gap-2.5 p-3 rounded-xl bg-slate-50/80 border border-slate-200 shadow-2xs">
                 <input
                   type="text"
                   value={tag}
                   onChange={(e) => handleTagChange(tIdx, e.target.value)}
                   placeholder="e.g. Your business name"
-                  className="flex-1 h-7 px-2 rounded text-xs bg-white border border-slate-200 font-medium"
+                  className="flex-1 h-9 px-3 rounded-lg text-sm bg-white border border-slate-200 font-medium"
                 />
                 {(currentStep.youProvide || []).length > 1 && (
                   <button
                     type="button"
                     onClick={() => handleRemoveTag(tIdx)}
-                    className="text-slate-400 hover:text-rose-600 p-1"
+                    className="text-slate-400 hover:text-rose-600 p-1.5 rounded-lg hover:bg-white"
                   >
-                    <Trash2 className="w-3 h-3" />
+                    <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 )}
               </div>

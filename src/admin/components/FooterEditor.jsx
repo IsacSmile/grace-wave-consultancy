@@ -11,20 +11,20 @@ export function FooterEditor({ data, onChange }) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 sm:space-y-10">
       {/* Overview Box */}
-      <div className="bg-blue-50/60 border border-blue-200/70 rounded-xl p-4 text-xs text-blue-900 leading-relaxed">
+      <div className="bg-blue-50/70 border border-blue-200/80 rounded-2xl p-5 sm:p-6 text-xs sm:text-sm text-blue-950 leading-relaxed shadow-2xs">
         <strong>Footer & Brand Section:</strong> As shown in your screenshot, this section displays the Grace Way Accounting emblem logo, the company tagline, the social profile link icons (WhatsApp, LinkedIn, Instagram, X), and the bottom copyright notice. Updating the logo here also automatically updates the navigation header logo!
       </div>
 
       {/* Logo & Tagline */}
-      <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-4">
-        <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+      <div className="p-5 sm:p-6 rounded-2xl bg-slate-50/80 border border-slate-200 space-y-5 shadow-2xs">
+        <h3 className="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider">
           Brand Logo & Tagline
         </h3>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1">
+          <label className="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">
             Brand Tagline / Description
           </label>
           <input
@@ -32,7 +32,7 @@ export function FooterEditor({ data, onChange }) {
             value={data.tagline || ''}
             onChange={(e) => handleChange('tagline', e.target.value)}
             placeholder="Accounting, auditing, tax, compliance and advisory support for UAE businesses."
-            className="w-full h-9 px-3 rounded-lg text-xs bg-white border border-slate-200"
+            className="w-full h-11 px-4 rounded-xl text-sm bg-white border border-slate-200 text-slate-900 shadow-2xs"
           />
         </div>
 
@@ -47,14 +47,14 @@ export function FooterEditor({ data, onChange }) {
       </div>
 
       {/* Social Media Links */}
-      <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-4">
-        <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+      <div className="p-5 sm:p-6 rounded-2xl bg-slate-50/80 border border-slate-200 space-y-5 shadow-2xs">
+        <h3 className="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider">
           Social Media Links (Circular Icon Buttons)
         </h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">
               WhatsApp Link
             </label>
             <input
@@ -62,12 +62,12 @@ export function FooterEditor({ data, onChange }) {
               value={data.whatsappUrl || ''}
               onChange={(e) => handleChange('whatsappUrl', e.target.value)}
               placeholder="https://wa.me/971569148255"
-              className="w-full h-9 px-3 rounded-lg text-xs bg-white border border-slate-200"
+              className="w-full h-11 px-4 rounded-xl text-sm bg-white border border-slate-200 text-slate-900 shadow-2xs"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">
               LinkedIn Profile URL
             </label>
             <input
@@ -75,12 +75,12 @@ export function FooterEditor({ data, onChange }) {
               value={data.linkedinUrl || ''}
               onChange={(e) => handleChange('linkedinUrl', e.target.value)}
               placeholder="https://www.linkedin.com/company/grace-way"
-              className="w-full h-9 px-3 rounded-lg text-xs bg-white border border-slate-200"
+              className="w-full h-11 px-4 rounded-xl text-sm bg-white border border-slate-200 text-slate-900 shadow-2xs"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">
               Instagram Profile URL
             </label>
             <input
@@ -88,12 +88,12 @@ export function FooterEditor({ data, onChange }) {
               value={data.instagramUrl || ''}
               onChange={(e) => handleChange('instagramUrl', e.target.value)}
               placeholder="https://www.instagram.com/graceway"
-              className="w-full h-9 px-3 rounded-lg text-xs bg-white border border-slate-200"
+              className="w-full h-11 px-4 rounded-xl text-sm bg-white border border-slate-200 text-slate-900 shadow-2xs"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">
               X (Twitter) Profile URL
             </label>
             <input
@@ -101,15 +101,15 @@ export function FooterEditor({ data, onChange }) {
               value={data.xUrl || ''}
               onChange={(e) => handleChange('xUrl', e.target.value)}
               placeholder="https://x.com/graceway"
-              className="w-full h-9 px-3 rounded-lg text-xs bg-white border border-slate-200"
+              className="w-full h-11 px-4 rounded-xl text-sm bg-white border border-slate-200 text-slate-900 shadow-2xs"
             />
           </div>
         </div>
       </div>
 
       {/* Copyright Notice */}
-      <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
-        <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+      <div className="p-5 sm:p-6 rounded-2xl bg-slate-50/80 border border-slate-200 space-y-4 shadow-2xs">
+        <h3 className="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider">
           Copyright Text
         </h3>
         <input
@@ -117,7 +117,7 @@ export function FooterEditor({ data, onChange }) {
           value={data.copyright || ''}
           onChange={(e) => handleChange('copyright', e.target.value)}
           placeholder="© 2026 Grace Way Accounting FZC LLC. All rights reserved."
-          className="w-full h-9 px-3 rounded-lg text-xs bg-white border border-slate-200 font-medium"
+          className="w-full h-11 px-4 rounded-xl text-sm bg-white border border-slate-200 font-medium text-slate-900 shadow-2xs"
         />
       </div>
     </div>

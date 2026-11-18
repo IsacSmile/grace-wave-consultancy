@@ -432,51 +432,51 @@ export default function AdminApp() {
       )}
 
       {/* Top Navbar */}
-      <header className="sticky top-0 z-20 bg-white border-b border-slate-200/70 px-4 sm:px-6 lg:px-8 py-3">
-        <div className="max-w-6xl mx-auto flex items-center justify-between gap-3 flex-wrap">
+      <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-sm border-b border-slate-200/80 px-4 sm:px-8 lg:px-12 py-3.5 shadow-2xs">
+        <div className="max-w-[1536px] mx-auto flex items-center justify-between gap-4 flex-wrap">
           {/* Brand + View Indicator */}
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold text-[11px] tracking-wider shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-xs tracking-wider shrink-0 shadow-2xs">
               GW
             </div>
             <div className="flex items-center gap-2">
-              <span className="font-heading font-semibold text-sm text-slate-900 tracking-tight">
+              <span className="font-heading font-semibold text-sm sm:text-base text-slate-900 tracking-tight">
                 Grace Way
               </span>
               <span className="text-slate-300">/</span>
-              <span className="text-xs text-slate-500 font-normal">
+              <span className="text-xs sm:text-sm text-slate-500 font-medium">
                 {adminTab === 'content' ? 'Website Editor' : 'Enquiries Portal'}
               </span>
             </div>
           </div>
 
           {/* Navigation Tab Pills */}
-          <nav className="flex items-center bg-slate-100 p-1 rounded-xl">
+          <nav className="flex items-center bg-slate-100 p-1.5 rounded-xl gap-1">
             <button
               type="button"
               onClick={() => setAdminTab('content')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
                 adminTab === 'content'
                   ? 'bg-white text-slate-900 shadow-2xs'
                   : 'text-slate-500 hover:text-slate-900'
               }`}
             >
-              <FileEdit className="w-3.5 h-3.5" />
+              <FileEdit className="w-4 h-4" />
               <span>Website Content</span>
             </button>
             <button
               type="button"
               onClick={() => setAdminTab('enquiries')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
                 adminTab === 'enquiries'
                   ? 'bg-white text-slate-900 shadow-2xs'
                   : 'text-slate-500 hover:text-slate-900'
               }`}
             >
-              <Inbox className="w-3.5 h-3.5" />
+              <Inbox className="w-4 h-4" />
               <span>Enquiries</span>
               {counts.all > 0 && (
-                <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-slate-200 text-slate-700">
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-700">
                   {counts.all}
                 </span>
               )}
@@ -484,15 +484,15 @@ export default function AdminApp() {
           </nav>
 
           {/* Actions */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-3">
             <a
               href="/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors"
               title="Open public website in new tab"
             >
-              <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
+              <ExternalLink className="w-4 h-4 text-slate-500" />
               <span className="hidden sm:inline">Live Site</span>
             </a>
 
@@ -502,18 +502,18 @@ export default function AdminApp() {
                 onClick={fetchEnquiries}
                 disabled={isLoading}
                 title="Refresh"
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+                className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
               >
-                <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+                <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
               </button>
             )}
 
             <button
               type="button"
               onClick={handleLogout}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
             >
-              <LogOut className="w-3.5 h-3.5" />
+              <LogOut className="w-4 h-4" />
               <span>Sign out</span>
             </button>
           </div>
@@ -521,61 +521,61 @@ export default function AdminApp() {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-5">
+      <main className="flex-1 max-w-[1536px] mx-auto w-full px-4 sm:px-8 lg:px-12 py-8 sm:py-10 space-y-8">
         {adminTab === 'content' ? (
           <ContentManager />
         ) : (
           <>
         {/* Metric Badges Strip (Minimalist) */}
-        <section className="flex flex-wrap items-center gap-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-slate-200/70 text-xs shadow-2xs">
-            <span className="text-slate-400">Total</span>
-            <span className="font-semibold text-slate-900">{counts.all}</span>
+        <section className="flex flex-wrap items-center gap-3.5">
+          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-white border border-slate-200/80 text-xs sm:text-sm shadow-2xs">
+            <span className="text-slate-400">Total Enquiries</span>
+            <span className="font-bold text-slate-900">{counts.all}</span>
           </div>
 
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-slate-200/70 text-xs shadow-2xs">
+          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-white border border-slate-200/80 text-xs sm:text-sm shadow-2xs">
             <span className="text-slate-400">Today</span>
-            <span className="font-semibold text-slate-900">{counts.today}</span>
+            <span className="font-bold text-slate-900">{counts.today}</span>
           </div>
 
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-slate-200/70 text-xs shadow-2xs">
+          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-white border border-slate-200/80 text-xs sm:text-sm shadow-2xs">
             <span className="text-slate-400">Past 7 days</span>
-            <span className="font-semibold text-slate-900">{counts.last7days}</span>
+            <span className="font-bold text-slate-900">{counts.last7days}</span>
           </div>
         </section>
 
         {/* Filter & Search Bar */}
-        <section className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+        <section className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
           {/* Search Box */}
           <div className="relative flex-1">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search enquiries..."
-              className="w-full h-9 pl-9 pr-8 rounded-xl text-xs bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-colors shadow-2xs"
+              placeholder="Search enquiries by name, company, email, phone..."
+              className="w-full h-11 pl-10 pr-9 rounded-xl text-sm bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-colors shadow-2xs"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 cursor-pointer"
               >
-                <X className="w-3.5 h-3.5" />
+                <X className="w-4 h-4" />
               </button>
             )}
           </div>
 
           {/* Service Dropdown */}
-          <div className="w-full sm:w-56">
+          <div className="w-full sm:w-64">
             <select
               value={serviceFilter}
               onChange={(e) => {
                 setServiceFilter(e.target.value);
                 setPage(1);
               }}
-              className="w-full h-9 px-3 rounded-xl text-xs bg-white border border-slate-200 text-slate-700 focus:outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-colors cursor-pointer shadow-2xs"
+              className="w-full h-11 px-3.5 rounded-xl text-sm bg-white border border-slate-200 text-slate-700 focus:outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-colors cursor-pointer shadow-2xs"
             >
               <option value="">All Services</option>
               {(ALLOWED_SERVICES || []).map((svc) => (
@@ -587,14 +587,14 @@ export default function AdminApp() {
           </div>
 
           {/* Sort Dropdown */}
-          <div className="w-full sm:w-36">
+          <div className="w-full sm:w-44">
             <select
               value={sortOrder}
               onChange={(e) => {
                 setSortOrder(e.target.value);
                 setPage(1);
               }}
-              className="w-full h-9 px-3 rounded-xl text-xs bg-white border border-slate-200 text-slate-700 focus:outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-colors cursor-pointer shadow-2xs"
+              className="w-full h-11 px-3.5 rounded-xl text-sm bg-white border border-slate-200 text-slate-700 focus:outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-colors cursor-pointer shadow-2xs"
             >
               <option value="newest">Newest first</option>
               <option value="oldest">Oldest first</option>
