@@ -8,6 +8,7 @@ import {
   LayoutTemplate,
   TrendingUp,
   Briefcase,
+  Layers,
   Milestone,
   MessageSquareQuote,
   Mail,
@@ -19,6 +20,7 @@ import { defaultSiteContent } from '../../data/defaultContent';
 import { useSiteContent } from '../../context/ContentContext';
 import { HeroEditor } from './HeroEditor';
 import { StatsEditor } from './StatsEditor';
+import { CoreServicesEditor } from './CoreServicesEditor';
 import { ServicesEditor } from './ServicesEditor';
 import { ProcessEditor } from './ProcessEditor';
 import { TestimonialsEditor } from './TestimonialsEditor';
@@ -28,7 +30,8 @@ import { FooterEditor } from './FooterEditor';
 const SECTIONS = [
   { id: 'hero', label: 'Hero Section', icon: LayoutTemplate, hint: 'Top banner, headline, description, actions, trust chips & advisor portrait' },
   { id: 'stats', label: 'Stats Strip', icon: TrendingUp, hint: 'Key credentials and metrics displayed directly beneath the Hero' },
-  { id: 'serviceTabs', label: 'What We Deliver', icon: Briefcase, hint: 'Interactive service tabs, item breakdowns, badges and showcase imagery' },
+  { id: 'coreServices', label: 'Our Core Services', icon: Briefcase, hint: 'Editorial service rows, deliverables, cursor images & custom assistance banner' },
+  { id: 'serviceTabs', label: 'What We Deliver', icon: Layers, hint: 'Interactive service tabs, item breakdowns, badges and showcase imagery' },
   { id: 'process', label: 'How We Work', icon: Milestone, hint: 'Revolving 4-step client roadmap with deliverables & requirement tags' },
   { id: 'testimonials', label: 'Client Feedback', icon: MessageSquareQuote, hint: 'Executive testimonials, star ratings, quotes & client portraits' },
   { id: 'contact', label: 'Get In Touch', icon: Mail, hint: 'Firm contact details, office location, direct advisory enquiry form' },
@@ -398,6 +401,13 @@ export function ContentManager() {
             <StatsEditor
               data={formData.stats || defaultSiteContent.stats}
               onChange={(val) => handleSectionUpdate('stats', val)}
+            />
+          )}
+
+          {activeSection === 'coreServices' && (
+            <CoreServicesEditor
+              data={formData.coreServices || defaultSiteContent.coreServices}
+              onChange={(val) => handleSectionUpdate('coreServices', val)}
             />
           )}
 

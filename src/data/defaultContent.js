@@ -3,6 +3,7 @@
 
 import { siteConfig } from './siteConfig';
 import { statsData } from './stats';
+import { servicesData } from './services';
 import { serviceTabsData } from './serviceTabs';
 import { processSteps } from './process';
 import { testimonials } from './testimonials';
@@ -33,6 +34,25 @@ export const defaultSiteContent = {
     label: s.label,
     icon: s.icon,
   })),
+
+  coreServices: {
+    badge: siteConfig.services?.sectionBadge || "Our Core Services",
+    title: siteConfig.services?.title || "Comprehensive Accounting & Financial Solutions",
+    subtitle: siteConfig.services?.subtitle || "Accounting, auditing, tax, compliance and advisory support for UAE businesses.",
+    ctaBannerTitle: siteConfig.services?.ctaBanner?.title || "Need custom financial assistance for your enterprise?",
+    ctaBannerSubtitle: siteConfig.services?.ctaBanner?.subtitle || "Speak directly with our consultancy team to structure a tailored plan.",
+    ctaBannerButtonText: siteConfig.services?.ctaBanner?.buttonText || "Request Service Consultation",
+    items: servicesData.map((svc) => ({
+      id: svc.id,
+      index: svc.index,
+      title: svc.title,
+      short: svc.short,
+      description: svc.description,
+      bullets: svc.bullets ? [...svc.bullets] : [],
+      icon: svc.icon,
+      customImage: "", // Empty string means use default image asset
+    })),
+  },
 
   serviceTabs: {
     badge: "WHAT WE DELIVER",

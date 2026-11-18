@@ -163,8 +163,8 @@ export function ServiceRow({
               {/* 1. Image: aspect-[16/10], rounded-2xl, object-cover, no shadow */}
               <div className="overflow-hidden rounded-2xl">
                 <img
-                  src={service.image}
-                  alt={service.imageAlt}
+                  src={service.customImage || service.image}
+                  alt={service.imageAlt || service.title}
                   width="800"
                   height="500"
                   loading="lazy"
@@ -209,8 +209,8 @@ export function ServiceRow({
             <div className="hidden lg:grid lg:grid-cols-12 lg:gap-6 items-center bg-white/70 backdrop-blur-md rounded-2xl p-5 xl:p-6 border border-slate-200/80 shadow-xs">
               <div className="lg:col-span-4 rounded-xl overflow-hidden shadow-sm aspect-[4/3] max-h-[220px]">
                 <img
-                  src={service.image}
-                  alt={service.imageAlt}
+                  src={service.customImage || service.image}
+                  alt={service.imageAlt || service.title}
                   width="800"
                   height="1000"
                   loading="lazy"

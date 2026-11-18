@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Sparkles, ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { siteConfig } from '../data/siteConfig';
@@ -10,6 +10,8 @@ import { SectionHeading } from './SectionHeading';
 import { useHoverCapable } from '../hooks/useHoverCapable';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { useLenis } from './SmoothScroll';
+import { useSiteContent } from '../context/ContentContext';
+import { defaultSiteContent } from '../data/defaultContent';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -27,11 +29,24 @@ export function Services() {
   const prefersReducedMotion = useReducedMotion();
   const { scrollTo } = useLenis();
 
+  const { content } = useSiteContent();
+  const coreContent = content?.coreServices || defaultSiteContent.coreServices;
+
+  // Merge items with fallback defaults:
+  const items = (coreContent?.items || defaultSiteContent.coreServices.items).map((item, idx) => {
+    const fallback = servicesData[idx] || {};
+    return {
+      ...fallback,
+      ...item,
+      image: item.customImage || fallback.image,
+    };
+  });
+
   const sectionRef = useRef(null);
   const listRef = useRef(null);
 
-  // First row (01 Accounting & Bookkeeping) open by default as requested
-  const [openId, setOpenId] = useState(servicesData[0].id);
+  // First row open by default
+  const [openId, setOpenId] = useState(() => items[0]?.id || 'accounting-bookkeeping');
 
   // Desktop hover tracking
   const [hoveredIndex, setHoveredIndex] = useState(-1);
@@ -128,9 +143,9 @@ export function Services() {
       <div className="max-w-7xl mx-auto px-5 md:px-6 lg:px-8">
         {/* ================= SECTION HEADER ================= */}
         <SectionHeading
-          badge={siteConfig.services.sectionBadge}
-          title={siteConfig.services.title}
-          subtitle={siteConfig.services.subtitle}
+          badge={coreContent?.badge || siteConfig.services.sectionBadge}
+          title={coreContent?.title || siteConfig.services.title}
+          subtitle={coreContent?.subtitle || siteConfig.services.subtitle}
           id="services-title"
           className="!mb-8 md:!mb-12 lg:!mb-14"
         />
@@ -142,7 +157,7 @@ export function Services() {
             className="relative flex flex-col w-full divide-y-0"
             role="list"
           >
-            {servicesData.map((service, index) => (
+            {items.map((service, index) => (
               <ServiceRow
                 key={service.id}
                 service={service}
@@ -165,7 +180,7 @@ export function Services() {
           {/* Desktop Floating Cursor Preview (Only mounted on hover-capable pointer devices) */}
           {isHoverCapable && !prefersReducedMotion && (
             <ServiceCursorPreview
-              services={servicesData}
+              services={items}
               containerRef={listRef}
               activeHoverIndex={hoveredIndex}
               openId={openId}
@@ -181,10 +196,10 @@ export function Services() {
         <div className="mt-12 md:mt-16 p-6 md:p-8 rounded-2xl bg-[#08172E] text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm border border-white/10">
           <div className="text-left w-full md:w-auto">
             <h3 className="font-heading font-semibold md:font-bold text-xl text-white mb-1.5 leading-snug text-balance">
-              {siteConfig.services.ctaBanner.title}
+              {coreContent?.ctaBannerTitle || siteConfig.services.ctaBanner.title}
             </h3>
             <p className="text-sm sm:text-base text-slate-300 line-clamp-2 md:line-clamp-none">
-              {siteConfig.services.ctaBanner.subtitle}
+              {coreContent?.ctaBannerSubtitle || siteConfig.services.ctaBanner.subtitle}
             </p>
           </div>
           <button
@@ -192,7 +207,7 @@ export function Services() {
             onClick={() => handleEnquire('Other')}
             className="w-full md:w-auto h-12 px-6 rounded-xl text-sm md:text-base font-semibold text-[#08172E] bg-[#C5A059] hover:bg-[#d4b068] active:scale-[0.99] transition-colors shrink-0 cursor-pointer flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059]"
           >
-            <span>{siteConfig.services.ctaBanner.buttonText}</span>
+            <span>{coreContent?.ctaBannerButtonText || siteConfig.services.ctaBanner.buttonText}</span>
             <ArrowUpRight className="w-4 h-4 text-[#08172E]" />
           </button>
         </div>
