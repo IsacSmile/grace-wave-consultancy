@@ -65,13 +65,8 @@ export function ProcessEditor({ data, onChange }) {
 
   return (
     <div className="space-y-8 sm:space-y-10">
-      {/* Overview Box */}
-      <div className="bg-blue-50/70 border border-blue-200/80 rounded-2xl p-5 sm:p-6 text-xs sm:text-sm text-blue-950 leading-relaxed shadow-2xs">
-        <strong>How We Work Section:</strong> As seen in your screenshot, this section features the revolving wheel showing steps .01, .02, etc. with step title (e.g. &ldquo;Enquiry&rdquo;), description, checklist points, and &ldquo;What we may need from you&rdquo; chips.
-      </div>
-
       {/* Global Badge */}
-      <div className="p-5 sm:p-6 rounded-2xl bg-slate-50/80 border border-slate-200 shadow-2xs">
+      <div className="p-5 sm:p-6 rounded-2xl bg-slate-50/70 border border-slate-200/80 shadow-2xs">
         <label className="block text-xs sm:text-sm font-semibold text-slate-700 mb-2">
           Section Badge Tag
         </label>
@@ -92,9 +87,9 @@ export function ProcessEditor({ data, onChange }) {
               key={step.id || idx}
               type="button"
               onClick={() => setActiveStepIdx(idx)}
-              className={`pb-3 px-5 text-xs sm:text-sm font-semibold border-b-2 transition-colors cursor-pointer ${
+              className={`pb-3 px-4 text-xs sm:text-sm font-semibold border-b-2 transition-colors cursor-pointer ${
                 activeStepIdx === idx
-                  ? 'border-slate-900 text-slate-900'
+                  ? 'border-[#C5A059] text-slate-900'
                   : 'border-transparent text-slate-400 hover:text-slate-700'
               }`}
             >

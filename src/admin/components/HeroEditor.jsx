@@ -21,11 +21,6 @@ export function HeroEditor({ data, onChange }) {
 
   return (
     <div className="space-y-8 sm:space-y-10">
-      {/* Section Overview Box */}
-      <div className="bg-blue-50/70 border border-blue-200/80 rounded-2xl p-5 sm:p-6 text-xs sm:text-sm text-blue-950 leading-relaxed shadow-2xs">
-        <strong>Hero Section:</strong> The top introduction of the homepage. You can edit the executive badge, the 2-line headline, description paragraph, call-to-action buttons, the 4 trust highlight chips, and the professional advisor portrait image.
-      </div>
-
       {/* Basic Text Inputs */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Badge */}
@@ -86,13 +81,18 @@ export function HeroEditor({ data, onChange }) {
       </div>
 
       {/* Call To Action Buttons */}
-      <div className="pt-6 sm:pt-8 border-t border-slate-200/80">
-        <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider mb-4">
-          Call to Action Buttons
-        </h3>
+      <div className="pt-6 sm:pt-8 border-t border-slate-100">
+        <div className="mb-4">
+          <h4 className="text-sm font-semibold text-slate-900">
+            Call to Action Buttons
+          </h4>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Primary enquiry trigger and instant WhatsApp consultation links
+          </p>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-          <div className="p-5 sm:p-6 rounded-2xl bg-slate-50/80 border border-slate-200 space-y-4 shadow-2xs">
-            <h4 className="text-xs sm:text-sm font-bold text-slate-800">Primary Button</h4>
+          <div className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-4">
+            <span className="text-xs font-semibold text-slate-800 block">Primary Button</span>
             <div>
               <label className="block text-xs font-medium text-slate-500 mb-1.5">Button Text</label>
               <input
@@ -104,7 +104,7 @@ export function HeroEditor({ data, onChange }) {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-500 mb-1.5">Button Link</label>
+              <label className="block text-xs font-medium text-slate-500 mb-1.5">Button Target Link</label>
               <input
                 type="text"
                 value={data.primaryCtaHref || ''}
@@ -115,8 +115,8 @@ export function HeroEditor({ data, onChange }) {
             </div>
           </div>
 
-          <div className="p-5 sm:p-6 rounded-2xl bg-slate-50/80 border border-slate-200 space-y-4 shadow-2xs">
-            <h4 className="text-xs sm:text-sm font-bold text-slate-800">WhatsApp Button</h4>
+          <div className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-4">
+            <span className="text-xs font-semibold text-slate-800 block">WhatsApp Direct Action</span>
             <div>
               <label className="block text-xs font-medium text-slate-500 mb-1.5">Button Text</label>
               <input
@@ -142,15 +142,20 @@ export function HeroEditor({ data, onChange }) {
       </div>
 
       {/* 4 Trust Row Chips */}
-      <div className="pt-6 sm:pt-8 border-t border-slate-200/80">
-        <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider mb-4">
-          Trust Highlight Chips (4 Items)
-        </h3>
+      <div className="pt-6 sm:pt-8 border-t border-slate-100">
+        <div className="mb-4">
+          <h4 className="text-sm font-semibold text-slate-900">
+            Trust Highlights (4 Pillars)
+          </h4>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Key practice areas displayed on the trust cards directly under the hero actions
+          </p>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-4 sm:gap-5">
           {(data.trustRow || []).map((chip, idx) => (
-            <div key={chip.id || idx} className="p-4 sm:p-5 rounded-2xl bg-slate-50/80 border border-slate-200 space-y-3.5 shadow-2xs">
-              <span className="text-[11px] font-bold text-slate-400 block uppercase tracking-wider">
-                Chip #{idx + 1}
+            <div key={chip.id || idx} className="p-4 sm:p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-3.5 shadow-2xs">
+              <span className="text-xs font-mono font-semibold text-[#C5A059] block">
+                0{idx + 1}
               </span>
               <div>
                 <label className="block text-xs font-medium text-slate-600 mb-1.5">Label</label>
@@ -176,10 +181,15 @@ export function HeroEditor({ data, onChange }) {
       </div>
 
       {/* Professional Advisor Portrait Image */}
-      <div className="pt-6 sm:pt-8 border-t border-slate-200/80">
-        <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider mb-4">
-          Hero Advisor Image
-        </h3>
+      <div className="pt-6 sm:pt-8 border-t border-slate-100">
+        <div className="mb-4">
+          <h4 className="text-sm font-semibold text-slate-900">
+            Hero Advisor Portrait
+          </h4>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Cutout or executive portrait image featured prominently in the hero section
+          </p>
+        </div>
         <ImageInput
           label="Advisor Portrait Photo"
           value={data.customImage || ''}

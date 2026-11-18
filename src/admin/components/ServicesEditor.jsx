@@ -87,16 +87,11 @@ export function ServicesEditor({ data, onChange }) {
 
   return (
     <div className="space-y-8 sm:space-y-10">
-      {/* Section Overview Box */}
-      <div className="bg-blue-50/70 border border-blue-200/80 rounded-2xl p-5 sm:p-6 text-xs sm:text-sm text-blue-950 leading-relaxed shadow-2xs">
-        <strong>What We Deliver Section:</strong> This corresponds to the screenshot titled &ldquo;What We Deliver: Accounting, tax and advisory support, in detail&rdquo;. It contains three interactive service tabs. You can customize the section badge, headline, subtitle, each tab&apos;s title and intro text, the accordion/bullet items, the enquiry button text, and each tab&apos;s preview image and experience badge!
-      </div>
-
       {/* Global Section Heading Settings */}
-      <div className="p-5 sm:p-6 rounded-2xl bg-slate-50/80 border border-slate-200 space-y-4 shadow-2xs">
-        <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider">
-          Section Header
-        </h3>
+      <div className="p-5 sm:p-6 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-4 shadow-2xs">
+        <h4 className="text-sm font-semibold text-slate-900">
+          Section Headline & Subtitle
+        </h4>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
           <div>
             <label className="block text-xs font-semibold text-slate-700 mb-1.5">
@@ -147,13 +142,13 @@ export function ServicesEditor({ data, onChange }) {
               key={tab.id || idx}
               type="button"
               onClick={() => setActiveTabIdx(idx)}
-              className={`pb-3 px-5 text-xs sm:text-sm font-semibold border-b-2 transition-colors cursor-pointer ${
+              className={`pb-3 px-4 text-xs sm:text-sm font-semibold border-b-2 transition-colors cursor-pointer ${
                 activeTabIdx === idx
-                  ? 'border-slate-900 text-slate-900'
+                  ? 'border-[#C5A059] text-slate-900'
                   : 'border-transparent text-slate-400 hover:text-slate-700'
               }`}
             >
-              Tab #{idx + 1}: {tab.tabLabel || `Tab ${idx + 1}`}
+              Tab 0{idx + 1}: {tab.tabLabel || `Tab ${idx + 1}`}
             </button>
           ))}
         </div>

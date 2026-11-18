@@ -55,13 +55,8 @@ export function TestimonialsEditor({ data, onChange }) {
 
   return (
     <div className="space-y-8 sm:space-y-10">
-      {/* Overview Box */}
-      <div className="bg-blue-50/70 border border-blue-200/80 rounded-2xl p-5 sm:p-6 text-xs sm:text-sm text-blue-950 leading-relaxed shadow-2xs">
-        <strong>Client Feedback Section:</strong> As seen in your screenshot titled &ldquo;What our clients say&rdquo;, this displays testimonial slides with client photo, star rating, quote, author name and job title. You can add new reviews, delete reviews, edit quotes, and upload custom client portraits!
-      </div>
-
       {/* Global Section Header */}
-      <div className="p-5 sm:p-6 rounded-2xl bg-slate-50/80 border border-slate-200 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 shadow-2xs">
+      <div className="p-5 sm:p-6 rounded-2xl bg-slate-50/70 border border-slate-200/80 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 shadow-2xs">
         <div>
           <label className="block text-xs font-semibold text-slate-700 mb-1.5">
             Section Badge Tag
@@ -113,11 +108,11 @@ export function TestimonialsEditor({ data, onChange }) {
               onClick={() => setSelectedIdx(idx)}
               className={`pb-3 px-4 text-xs sm:text-sm font-semibold border-b-2 whitespace-nowrap transition-colors cursor-pointer ${
                 selectedIdx === idx
-                  ? 'border-slate-900 text-slate-900'
+                  ? 'border-[#C5A059] text-slate-900'
                   : 'border-transparent text-slate-400 hover:text-slate-700'
               }`}
             >
-              #{idx + 1}: {item.name || 'Anonymous'}
+              Review 0{idx + 1}: {item.name || 'Anonymous'}
             </button>
           ))}
         </div>

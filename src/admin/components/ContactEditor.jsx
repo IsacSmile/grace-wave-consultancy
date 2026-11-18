@@ -10,16 +10,11 @@ export function ContactEditor({ data, onChange }) {
 
   return (
     <div className="space-y-8 sm:space-y-10">
-      {/* Overview Box */}
-      <div className="bg-blue-50/70 border border-blue-200/80 rounded-2xl p-5 sm:p-6 text-xs sm:text-sm text-blue-950 leading-relaxed shadow-2xs">
-        <strong>Get In Touch / Contact Section:</strong> As shown in your screenshot, this section displays the &ldquo;Turning Challenges into Opportunities&rdquo; heading, narrative text, office address, contact telephone numbers, email address, social proof trust badge, and the direct enquiry consultation form header.
-      </div>
-
       {/* Main Narrative & Header */}
-      <div className="p-5 sm:p-6 rounded-2xl bg-slate-50/80 border border-slate-200 space-y-5 shadow-2xs">
-        <h3 className="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wider">
+      <div className="p-5 sm:p-6 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-5 shadow-2xs">
+        <h4 className="text-sm font-semibold text-slate-900">
           Section Header & Narrative
-        </h3>
+        </h4>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
           <div>

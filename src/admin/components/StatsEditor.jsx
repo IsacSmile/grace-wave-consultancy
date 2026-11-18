@@ -44,28 +44,23 @@ export function StatsEditor({ data, onChange }) {
 
   return (
     <div className="space-y-8 sm:space-y-10">
-      {/* Informative Header */}
-      <div className="bg-blue-50/70 border border-blue-200/80 rounded-2xl p-5 sm:p-6 text-xs sm:text-sm text-blue-950 leading-relaxed shadow-2xs">
-        <strong>Stats Strip Section:</strong> Highlight counters that appear directly below the Hero section. As seen in your screenshot, this displays figures such as &ldquo;25+ Years of UAE Experience&rdquo;, &ldquo;9 Core Services&rdquo;, and &ldquo;7 Emirates Covered&rdquo;. The counter animation automatically scales to whatever number you set.
-      </div>
-
       {/* Stats Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
         {statsList.map((stat, idx) => (
           <div
             key={stat.id || idx}
-            className="p-5 sm:p-6 rounded-2xl bg-slate-50/80 border border-slate-200 space-y-4 relative group shadow-2xs"
+            className="p-5 sm:p-6 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-4 relative group shadow-2xs"
           >
             <div className="flex items-center justify-between pb-3 border-b border-slate-200">
-              <span className="text-xs sm:text-sm font-bold text-slate-800">
-                Stat Card #{idx + 1}
+              <span className="text-xs font-mono font-semibold text-[#C5A059]">
+                Metric 0{idx + 1}
               </span>
               {statsList.length > 2 && (
                 <button
                   type="button"
                   onClick={() => handleRemoveStat(idx)}
-                  className="text-slate-400 hover:text-rose-600 transition-colors p-1.5 rounded-lg hover:bg-white"
-                  title="Remove this stat"
+                  className="text-slate-400 hover:text-rose-600 transition-colors p-1.5 rounded-lg hover:bg-white cursor-pointer"
+                  title="Remove this metric"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
