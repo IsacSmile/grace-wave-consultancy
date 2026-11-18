@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FileCheck2, ThumbsUp, Users, Award, Smile, MapPin } from 'lucide-react';
 import { statsData } from '../data/stats';
 import { useReducedMotion } from '../hooks/useReducedMotion';
+import { useSiteContent } from '../context/ContentContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,6 +18,9 @@ const iconMap = {
 };
 
 export function StatsStrip() {
+  const { stats: dynamicStats } = useSiteContent();
+  const activeStats = (dynamicStats && dynamicStats.length > 0) ? dynamicStats : statsData;
+
   const sectionRef = useRef(null);
   const prefersReducedMotion = useReducedMotion();
 
@@ -46,8 +50,8 @@ export function StatsStrip() {
         card.style.transform = 'none';
       });
       numbers.forEach((numEl, idx) => {
-        if (numEl && statsData[idx]) {
-          numEl.textContent = statsData[idx].value.toLocaleString();
+        if (numEl && activeStats[idx]) {
+          numEl.textContent = Number(activeStats[idx].value || 0).toLocaleString();
         }
       });
       return;
@@ -63,8 +67,8 @@ export function StatsStrip() {
           gsap.set(card, { opacity: 1, y: 0 });
         });
         numbers.forEach((numEl, idx) => {
-          if (numEl && statsData[idx]) {
-            numEl.textContent = statsData[idx].value.toLocaleString();
+          if (numEl && activeStats[idx]) {
+            numEl.textContent = Number(activeStats[idx].value || 0).toLocaleString();
           }
         });
         return;
@@ -89,7 +93,7 @@ export function StatsStrip() {
       // 2. Then all counters count up together in parallel
       cards.forEach((_, idx) => {
         const numEl = numbers[idx];
-        const targetVal = statsData[idx]?.value || 0;
+        const targetVal = Number(activeStats[idx]?.value) || 0;
         const counterObj = { val: 0 };
 
         tl.to(
@@ -122,9 +126,9 @@ export function StatsStrip() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [prefersReducedMotion]);
+  }, [prefersReducedMotion, activeStats]);
 
-  if (!statsData || statsData.length === 0) return null;
+  if (!activeStats || activeStats.length === 0) return null;
 
   return (
     <section
@@ -135,8 +139,8 @@ export function StatsStrip() {
     >
       {/* Centered Cards Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <dl className={`grid ${getGridColsClass(statsData.length)} gap-3.5 sm:gap-6`}>
-          {statsData.map((stat) => {
+        <dl className={`grid ${getGridColsClass(activeStats.length)} gap-3.5 sm:gap-6`}>
+          {activeStats.map((stat) => {
             const Icon = iconMap[stat.icon] || FileCheck2;
 
             return (

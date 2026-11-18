@@ -7,11 +7,17 @@ import { ProcessContent } from './ProcessContent';
 import { ProcessList } from './ProcessList';
 import { useLenis } from './SmoothScroll';
 import { useReducedMotion } from '../hooks/useReducedMotion';
+import { useSiteContent } from '../context/ContentContext';
 
 gsap.registerPlugin(ScrollTrigger);
 ScrollTrigger.config({ ignoreMobileResize: true });
 
 export function Process() {
+  const { process: dynamicProcess } = useSiteContent();
+  const activeSteps = (dynamicProcess?.steps && dynamicProcess.steps.length > 0)
+    ? dynamicProcess.steps
+    : processSteps;
+
   const sectionRef = useRef(null);
   const wheelRef = useRef(null);
   const arcRef = useRef(null);
@@ -49,7 +55,7 @@ export function Process() {
   const handleStepSelect = (idx) => {
     if (!scrollTriggerRef.current) return;
     const st = scrollTriggerRef.current;
-    const n = processSteps.length;
+    const n = activeSteps.length;
     const targetProgress = idx / (n - 1);
     const targetScroll = st.start + targetProgress * (st.end - st.start);
 
@@ -67,7 +73,7 @@ export function Process() {
     if (prefersReducedMotion || isShortViewport || !sectionRef.current || !wheelRef.current) return;
 
     const ctx = gsap.context(() => {
-      const n = processSteps.length;
+      const n = activeSteps.length;
       const isLg = window.innerWidth >= 1024;
       const stepAngle = isLg ? 22 : 24;
       const totalRotation = -(n - 1) * stepAngle;
@@ -180,7 +186,7 @@ export function Process() {
 
   // Fallback mode for reduced motion or short viewports (<520px)
   if (prefersReducedMotion || isShortViewport) {
-    return <ProcessList steps={processSteps} />;
+    return <ProcessList steps={activeSteps} />;
   }
 
   return (
@@ -205,7 +211,7 @@ export function Process() {
       <div className="absolute top-0 left-0 right-0 pt-[74px] sm:pt-[84px] px-5 sm:px-6 lg:px-8 pointer-events-none z-30">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md text-xs font-semibold tracking-wide bg-navy-50 border border-[#0B1B4D]/10 text-[#0B1B4D] pointer-events-auto">
-            <span>HOW WE WORK</span>
+            <span>{dynamicProcess?.badge || "HOW WE WORK"}</span>
           </div>
 
           {/* Mobile small "01 / 04" counter */}
@@ -213,16 +219,16 @@ export function Process() {
             className="lg:hidden pointer-events-auto shrink-0 inline-flex items-center gap-1 font-numeric-slashed text-[11px] sm:text-xs font-semibold text-gold-700 tracking-wider bg-gold-50/90 px-2.5 py-0.5 sm:py-1 rounded-md border border-gold-200/60"
             aria-hidden="true"
           >
-            <span>STEP {processSteps[activeIndex]?.number || '01'}</span>
+            <span>STEP {activeSteps[activeIndex]?.number || '01'}</span>
             <span className="text-gold-400">/</span>
-            <span className="text-gold-600">04</span>
+            <span className="text-gold-600">{String(activeSteps.length).padStart(2, '0')}</span>
           </div>
         </div>
       </div>
 
       {/* Rotating Wheel (Arc, Dots, Numbers) */}
       <ProcessWheel
-        steps={processSteps}
+        steps={activeSteps}
         wheelRef={wheelRef}
         arcRef={arcRef}
         itemRefs={itemRefs}
@@ -232,7 +238,7 @@ export function Process() {
 
       {/* Content Column (Title, Description, Checklist, Chips, CTA) */}
       <ProcessContent
-        steps={processSteps}
+        steps={activeSteps}
         activeIndex={activeIndex}
       />
 
@@ -246,11 +252,11 @@ export function Process() {
           <div
             className="absolute top-0 left-0 w-full bg-gold-500 rounded-full transition-all duration-200 ease-out"
             style={{
-              height: `${(activeIndex / (processSteps.length - 1)) * 100}%`,
+              height: `${(activeIndex / (activeSteps.length - 1)) * 100}%`,
             }}
           />
           {/* 4 Step Ticks */}
-          {processSteps.map((_, i) => (
+          {activeSteps.map((_, i) => (
             <div
               key={i}
               className={`absolute left-1/2 -translate-x-1/2 w-2 h-2 rounded-full border transition-all duration-200 ${
@@ -259,22 +265,22 @@ export function Process() {
                   : 'bg-white border-slate-300'
               }`}
               style={{
-                top: `${(i / (processSteps.length - 1)) * 100}%`,
+                top: `${(i / (activeSteps.length - 1)) * 100}%`,
                 transform: 'translate(-50%, -50%)',
               }}
             />
           ))}
         </div>
         <div className="flex flex-col items-center font-numeric-slashed text-[11px] font-bold text-slate-400 leading-tight">
-          <span className="text-navy-950 font-extrabold">{processSteps[activeIndex]?.number || '01'}</span>
+          <span className="text-navy-950 font-extrabold">{activeSteps[activeIndex]?.number || '01'}</span>
           <span className="text-slate-300">/</span>
-          <span>04</span>
+          <span>{String(activeSteps.length).padStart(2, '0')}</span>
         </div>
       </div>
 
       {/* Visually hidden <ol> containing all four steps with points & youProvide for screen readers and SEO */}
       <ol className="sr-only">
-        {processSteps.map((step) => (
+        {activeSteps.map((step) => (
           <li key={step.id}>
             <h3>
               Step {step.number}: {step.title}

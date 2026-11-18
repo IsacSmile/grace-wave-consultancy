@@ -4,8 +4,10 @@ import mainLogo from '../assets/logo/gwa-logo.png';
 import { siteConfig } from '../data/siteConfig';
 import { testimonials } from '../data/testimonials';
 import { useLenis } from './SmoothScroll';
+import { useSiteContent } from '../context/ContentContext';
 
 export function Navbar() {
+  const { footer } = useSiteContent();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollTo } = useLenis();
@@ -74,7 +76,7 @@ export function Navbar() {
             aria-label="Grace Way - Home"
           >
             <img
-              src={mainLogo}
+              src={footer?.customLogo || mainLogo}
               alt="Grace Way - Audit | Tax | Advisory"
               className={`w-auto shrink-0 rounded-xl object-contain shadow-xs transition-all duration-300 group-hover:scale-105 ${
                 isScrolled

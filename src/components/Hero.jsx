@@ -5,6 +5,7 @@ import { WhatsAppIcon } from './WhatsAppIcon';
 import { siteConfig } from '../data/siteConfig';
 import { useLenis } from './SmoothScroll';
 import { useReducedMotion } from '../hooks/useReducedMotion';
+import { useSiteContent } from '../context/ContentContext';
 
 import advisor1200 from '../assets/hero/advisor-1200w.webp';
 import advisor768 from '../assets/hero/advisor-768w.webp';
@@ -18,6 +19,7 @@ const trustIconMap = {
 };
 
 export function Hero() {
+  const { hero } = useSiteContent();
   const heroRef = useRef(null);
   const badgeRef = useRef(null);
   const h1Line1Ref = useRef(null);
@@ -163,7 +165,7 @@ export function Hero() {
                   className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-navy-900/5 border border-[#0B1B4D]/10 text-[#0B1B4D] text-xs sm:text-sm font-semibold tracking-wide"
                 >
                   <span className="w-2 h-2 rounded-full bg-[#C5A059]" aria-hidden="true" />
-                  <span>{siteConfig.hero.badge}</span>
+                  <span>{hero.badge || siteConfig.hero.badge}</span>
                 </div>
               </div>
 
@@ -171,12 +173,12 @@ export function Hero() {
               <h1 className="font-heading font-bold text-2xl xs:text-3xl sm:text-4xl md:text-[2.65rem] lg:text-[2.85rem] xl:text-[3.35rem] tracking-tight text-[#0B1B4D] leading-tight sm:leading-[1.18] mb-3 sm:mb-4 lg:mb-6 max-w-none flex flex-col gap-1 sm:gap-2 lg:gap-2">
                 <span className="block overflow-hidden py-0.5 sm:py-1">
                   <span ref={h1Line1Ref} className="block whitespace-nowrap leading-tight sm:leading-[1.18]">
-                    {siteConfig.hero.headlineLine1}
+                    {hero.headlineLine1 || siteConfig.hero.headlineLine1}
                   </span>
                 </span>
                 <span className="block overflow-hidden py-0.5 sm:py-1">
                   <span ref={h1Line2Ref} className="block text-[#0B1B4D] sm:text-[#132B4F] whitespace-nowrap leading-tight sm:leading-[1.18]">
-                    {siteConfig.hero.headlineLine2}
+                    {hero.headlineLine2 || siteConfig.hero.headlineLine2}
                   </span>
                 </span>
               </h1>
@@ -186,7 +188,7 @@ export function Hero() {
                 ref={descRef}
                 className="text-[14px] xs:text-[15px] sm:text-base lg:text-lg text-slate-600 font-normal leading-relaxed max-w-xl mb-3 sm:mb-5 lg:mb-8 line-clamp-3 lg:line-clamp-none"
               >
-                {siteConfig.hero.description}
+                {hero.description || siteConfig.hero.description}
               </p>
             </div>
 
@@ -205,22 +207,22 @@ export function Hero() {
                 className="hidden lg:flex lg:flex-row items-center gap-3.5 w-full lg:max-w-none mb-10"
               >
                 <a
-                  href="#contact"
+                  href={hero.primaryCtaHref || "#contact"}
                   onClick={handleEnquiryClick}
                   className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-base font-semibold text-white bg-[#0A1F4D] hover:bg-[#132B4F] shadow-sm hover:shadow transition-all min-h-[48px] h-12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A1F4D]"
                 >
-                  <span>{siteConfig.hero.primaryCta.text}</span>
+                  <span>{hero.primaryCtaText || siteConfig.hero.primaryCta.text}</span>
                   <ArrowUpRight className="w-4 h-4 text-[#C5A059]" />
                 </a>
 
                 <a
-                  href={siteConfig.hero.secondaryCta.href}
+                  href={hero.secondaryCtaHref || siteConfig.hero.secondaryCta.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-base font-semibold text-[#0B1B4D] bg-white hover:bg-slate-50 border border-slate-300 hover:border-slate-400 shadow-2xs transition-all min-h-[48px] h-12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
                 >
                   <WhatsAppIcon className="w-4 h-4 text-emerald-600" />
-                  <span>{siteConfig.hero.secondaryCta.text}</span>
+                  <span>{hero.secondaryCtaText || siteConfig.hero.secondaryCta.text}</span>
                 </a>
               </div>
 
@@ -230,7 +232,7 @@ export function Hero() {
                 className="pt-0 lg:pt-6 border-t-0 lg:border-t border-slate-200/80 max-w-xl w-full"
               >
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-3.5">
-                  {siteConfig.hero.trustRow.map((item) => {
+                  {(hero.trustRow || siteConfig.hero.trustRow).map((item) => {
                     const Icon = trustIconMap[item.id] || CheckCircle2;
                     return (
                       <div
@@ -271,8 +273,8 @@ export function Hero() {
               {/* Professional Person Cutout Image */}
               <img
                 ref={advisorImgRef}
-                src={advisor768}
-                srcSet={`${advisor480} 480w, ${advisor768} 768w, ${advisor1200} 1200w`}
+                src={hero.customImage || advisor768}
+                srcSet={hero.customImage ? undefined : `${advisor480} 480w, ${advisor768} 768w, ${advisor1200} 1200w`}
                 sizes="(max-width: 1023px) 100vw, 50vw"
                 width={510}
                 height={900}

@@ -5,8 +5,18 @@ import { TestimonialSlide } from './TestimonialSlide';
 import { testimonials } from '../data/testimonials';
 import { siteConfig } from '../data/siteConfig';
 import { useHoverCapable } from '../hooks/useHoverCapable';
+import { useSiteContent } from '../context/ContentContext';
 
 export function Testimonials() {
+  const { testimonials: dynamicTestimonials } = useSiteContent();
+  const activeItems = (dynamicTestimonials?.items && dynamicTestimonials.items.length > 0)
+    ? dynamicTestimonials.items.map((t, idx) => ({
+        ...testimonials[idx],
+        ...t,
+        image: t.customImage || t.image || testimonials[idx]?.image,
+      }))
+    : testimonials;
+
   const [activeIndex, setActiveIndex] = useState(0);
 
   const containerRef = useRef(null);
@@ -14,7 +24,7 @@ export function Testimonials() {
   const touchStartY = useRef(0);
 
   const isHoverCapable = useHoverCapable();
-  const total = testimonials?.length || 0;
+  const total = activeItems?.length || 0;
 
   // Conditional Rendering Check
   if (!siteConfig.showTestimonials || total === 0) {
@@ -140,7 +150,7 @@ export function Testimonials() {
     >
       {/* Live region for screen readers */}
       <div className="sr-only" aria-live="polite" aria-atomic="true">
-        Review {activeIndex + 1} of {total}: {testimonials[activeIndex]?.name}
+        Review {activeIndex + 1} of {total}: {activeItems[activeIndex]?.name}
       </div>
 
       <div
@@ -154,8 +164,8 @@ export function Testimonials() {
       >
         {/* Section Header */}
         <SectionHeading
-          badge="CLIENT FEEDBACK"
-          title="What our clients say"
+          badge={dynamicTestimonials?.badge || "CLIENT FEEDBACK"}
+          title={dynamicTestimonials?.title || "What our clients say"}
           id="testimonials-heading"
           className="mb-10 md:mb-14 lg:mb-16"
         />
@@ -213,7 +223,7 @@ export function Testimonials() {
                 transform: `translateX(-${activeIndex * 100}%)`,
               }}
             >
-              {testimonials.map((item, idx) => (
+              {activeItems.map((item, idx) => (
                 <TestimonialSlide
                   key={item.id}
                   testimonial={item}

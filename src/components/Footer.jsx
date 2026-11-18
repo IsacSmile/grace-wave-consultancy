@@ -9,8 +9,10 @@ import { useLenis } from './SmoothScroll';
 import { useHoverCapable } from '../hooks/useHoverCapable';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { Reveal } from './Reveal';
+import { useSiteContent } from '../context/ContentContext';
 
 export function Footer() {
+  const { footer } = useSiteContent();
   const { lenis, scrollTo } = useLenis();
   const isHoverCapable = useHoverCapable();
   const prefersReducedMotion = useReducedMotion();
@@ -37,10 +39,17 @@ export function Footer() {
     }
   };
 
-  // Filter only items with non-empty URL (if none besides WhatsApp exist, only WhatsApp is rendered)
-  const activeSocials = (siteConfig.socials || []).filter(
-    (item) => Boolean(item.url && item.url.trim() && item.url !== '#')
-  );
+  // Dynamically resolve social profile URLs from content
+  const activeSocials = (siteConfig.socials || [])
+    .map((item) => {
+      let resolvedUrl = item.url;
+      if (item.id === 'whatsapp' && footer?.whatsappUrl) resolvedUrl = footer.whatsappUrl;
+      if (item.id === 'linkedin' && footer?.linkedinUrl) resolvedUrl = footer.linkedinUrl;
+      if (item.id === 'instagram' && footer?.instagramUrl) resolvedUrl = footer.instagramUrl;
+      if (item.id === 'x' && footer?.xUrl) resolvedUrl = footer.xUrl;
+      return { ...item, url: resolvedUrl };
+    })
+    .filter((item) => Boolean(item.url && item.url.trim() && item.url !== '#'));
 
   const exploreLinks = [
     { label: 'Home', href: '#hero' },
@@ -77,14 +86,14 @@ export function Footer() {
               aria-label="Grace Way Accounting FZC LLC - Home"
             >
               <img
-                src={mainLogo}
+                src={footer?.customLogo || mainLogo}
                 alt="Grace Way Accounting FZC LLC"
                 className="h-10 sm:h-12 w-auto object-contain rounded-xl shadow-2xs"
               />
             </a>
 
             <p className="mt-3.5 text-sm text-slate-600 leading-relaxed max-w-sm font-medium">
-              Accounting, auditing, tax, compliance and advisory support for UAE businesses.
+              {footer?.tagline || "Accounting, auditing, tax, compliance and advisory support for UAE businesses."}
             </p>
 
             {/* Social Row: 40-44px circles, 1px navy/15% border, transparent bg, navy icon (18px) */}
@@ -267,7 +276,7 @@ export function Footer() {
         {/* Bottom Bar: Single hairline above, computed year, Back to top */}
         <div className="border-t border-[#0B1B4D]/10 pt-6 mt-12 md:mt-16 flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-xs sm:text-sm text-slate-500 font-medium">
           <div>
-            © {new Date().getFullYear()} Grace Way Accounting FZC LLC. All rights reserved.
+            {footer?.copyright || `© ${new Date().getFullYear()} Grace Way Accounting FZC LLC. All rights reserved.`}
           </div>
 
           <button

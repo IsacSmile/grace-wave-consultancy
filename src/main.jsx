@@ -1,6 +1,7 @@
 import React, { lazy, Suspense, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import PublicApp from './App';
+import { ContentProvider } from './context/ContentContext';
 import './index.css';
 
 const AdminApp = lazy(() => import('./admin/AdminApp'));
@@ -35,14 +36,16 @@ function RootRouter() {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Suspense
-      fallback={
-        <div className="min-h-screen bg-[#F8FAFF] flex items-center justify-center text-slate-400">
-          <div className="w-8 h-8 border-2 border-[#0B1B4D] border-t-transparent rounded-full animate-spin" />
-        </div>
-      }
-    >
-      <RootRouter />
-    </Suspense>
+    <ContentProvider>
+      <Suspense
+        fallback={
+          <div className="min-h-screen bg-[#F8FAFF] flex items-center justify-center text-slate-400">
+            <div className="w-8 h-8 border-2 border-[#0B1B4D] border-t-transparent rounded-full animate-spin" />
+          </div>
+        }
+      >
+        <RootRouter />
+      </Suspense>
+    </ContentProvider>
   </React.StrictMode>
 );

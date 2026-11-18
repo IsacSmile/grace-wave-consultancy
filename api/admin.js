@@ -132,9 +132,14 @@ export default async function handler(req, res) {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'DENY');
 
+  const action = sanitizeString(req.query.action || '').toLowerCase();
+
   // Reject oversized payloads early to prevent memory exhaustion
+  // Allow up to 8MB for content updates (which may include optimized image data URLs)
+  const isContentSave = action === 'save_content';
+  const maxPermitted = isContentSave ? 8 * 1024 * 1024 : MAX_PAYLOAD_SIZE;
   const contentLength = parseInt(req.headers['content-length'] || '0', 10);
-  if (contentLength > MAX_PAYLOAD_SIZE) {
+  if (contentLength > maxPermitted) {
     return res.status(413).json({ ok: false, error: 'Payload exceeds maximum permitted size' });
   }
 
@@ -143,8 +148,6 @@ export default async function handler(req, res) {
     console.warn('[Admin Security Alert]: Cross-origin request rejected.');
     return res.status(403).json({ ok: false, error: 'Cross-origin request rejected' });
   }
-
-  const action = sanitizeString(req.query.action || '').toLowerCase();
 
   // 1. Fail closed configuration check
   const adminPassword = process.env.ADMIN_PASSWORD;
@@ -523,6 +526,169 @@ export default async function handler(req, res) {
         ok: false,
         error: 'Failed to retrieve enquiries list',
       });
+    }
+  }
+
+  // =========================================================================
+  // ACTION: get_content (GET ?action=get_content)
+  // =========================================================================
+  if (action === 'get_content') {
+    if (req.method !== 'GET') {
+      res.setHeader('Allow', ['GET']);
+      return res.status(405).json({ ok: false, error: `Method ${req.method} Not Allowed` });
+    }
+
+    const token = getCookie(req, COOKIE_NAME);
+    const isValid = verifySessionToken(token, sessionSecret, adminPassword, ipHash, userAgent);
+    if (!isValid) {
+      return res.status(401).json({ ok: false, error: 'Unauthorized' });
+    }
+
+    try {
+      await sql`
+        CREATE TABLE IF NOT EXISTS site_content (
+          key TEXT PRIMARY KEY,
+          content JSONB NOT NULL,
+          updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+          updated_by TEXT DEFAULT 'admin'
+        )
+      `;
+
+      const rows = await sql`
+        SELECT key, content, updated_at
+        FROM site_content
+      `;
+
+      const content = {};
+      for (const row of rows) {
+        content[row.key] = row.content;
+      }
+
+      return res.status(200).json({ ok: true, content });
+    } catch (err) {
+      console.error('[Admin get_content Error]:', err.message || err);
+      return res.status(500).json({ ok: false, error: 'Failed to retrieve site content' });
+    }
+  }
+
+  // =========================================================================
+  // ACTION: save_content (POST ?action=save_content)
+  // =========================================================================
+  if (action === 'save_content') {
+    if (req.method !== 'POST') {
+      res.setHeader('Allow', ['POST']);
+      return res.status(405).json({ ok: false, error: `Method ${req.method} Not Allowed` });
+    }
+
+    const csrfHeader = req.headers['x-requested-with'];
+    if (csrfHeader !== 'gw-admin') {
+      return res.status(400).json({ ok: false, error: 'Invalid request headers' });
+    }
+
+    const token = getCookie(req, COOKIE_NAME);
+    const isValid = verifySessionToken(token, sessionSecret, adminPassword, ipHash, userAgent);
+    if (!isValid) {
+      return res.status(401).json({ ok: false, error: 'Unauthorized' });
+    }
+
+    let body = req.body;
+    if (typeof body === 'string') {
+      try {
+        body = JSON.parse(body);
+      } catch {
+        return res.status(400).json({ ok: false, error: 'Invalid JSON payload' });
+      }
+    }
+
+    const entriesToSave = [];
+    if (body.key && body.content !== undefined) {
+      entriesToSave.push({ key: String(body.key), content: body.content });
+    } else if (body.content && typeof body.content === 'object') {
+      for (const [k, v] of Object.entries(body.content)) {
+        if (v !== undefined) {
+          entriesToSave.push({ key: String(k), content: v });
+        }
+      }
+    }
+
+    if (entriesToSave.length === 0) {
+      return res.status(400).json({ ok: false, error: 'No content specified to save' });
+    }
+
+    try {
+      await sql`
+        CREATE TABLE IF NOT EXISTS site_content (
+          key TEXT PRIMARY KEY,
+          content JSONB NOT NULL,
+          updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+          updated_by TEXT DEFAULT 'admin'
+        )
+      `;
+
+      for (const item of entriesToSave) {
+        const jsonVal = JSON.stringify(item.content);
+        await sql`
+          INSERT INTO site_content (key, content, updated_at)
+          VALUES (${item.key}, ${jsonVal}::jsonb, NOW())
+          ON CONFLICT (key)
+          DO UPDATE SET
+            content = EXCLUDED.content,
+            updated_at = NOW()
+        `;
+      }
+
+      return res.status(200).json({
+        ok: true,
+        message: 'Website content updated and published live',
+        savedKeys: entriesToSave.map((e) => e.key),
+      });
+    } catch (saveErr) {
+      console.error('[Admin save_content Error]:', saveErr.message || saveErr);
+      return res.status(500).json({ ok: false, error: 'Failed to update website content' });
+    }
+  }
+
+  // =========================================================================
+  // ACTION: reset_content (POST ?action=reset_content)
+  // =========================================================================
+  if (action === 'reset_content') {
+    if (req.method !== 'POST') {
+      res.setHeader('Allow', ['POST']);
+      return res.status(405).json({ ok: false, error: `Method ${req.method} Not Allowed` });
+    }
+
+    const csrfHeader = req.headers['x-requested-with'];
+    if (csrfHeader !== 'gw-admin') {
+      return res.status(400).json({ ok: false, error: 'Invalid request headers' });
+    }
+
+    const token = getCookie(req, COOKIE_NAME);
+    const isValid = verifySessionToken(token, sessionSecret, adminPassword, ipHash, userAgent);
+    if (!isValid) {
+      return res.status(401).json({ ok: false, error: 'Unauthorized' });
+    }
+
+    let body = req.body;
+    if (typeof body === 'string') {
+      try {
+        body = JSON.parse(body);
+      } catch {
+        body = {};
+      }
+    }
+
+    const targetKey = body.key ? String(body.key) : null;
+
+    try {
+      if (targetKey) {
+        await sql`DELETE FROM site_content WHERE key = ${targetKey}`;
+      } else {
+        await sql`DELETE FROM site_content`;
+      }
+      return res.status(200).json({ ok: true, message: 'Content reset to defaults' });
+    } catch (resetErr) {
+      console.error('[Admin reset_content Error]:', resetErr.message || resetErr);
+      return res.status(500).json({ ok: false, error: 'Failed to reset content' });
     }
   }
 

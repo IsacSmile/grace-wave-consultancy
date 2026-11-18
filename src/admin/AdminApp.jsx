@@ -17,10 +17,13 @@ import {
   Inbox,
   Trash2,
   AlertTriangle,
+  FileEdit,
 } from 'lucide-react';
 import { ALLOWED_SERVICES } from '../data/serviceOptions.js';
+import { ContentManager } from './components/ContentManager';
 
 export default function AdminApp() {
+  const [adminTab, setAdminTab] = useState('content'); // 'content' | 'enquiries'
   const [authStatus, setAuthStatus] = useState('checking'); // 'checking' | 'unauthenticated' | 'authenticated'
   const [loginPassword, setLoginPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -430,7 +433,7 @@ export default function AdminApp() {
 
       {/* Top Navbar */}
       <header className="sticky top-0 z-20 bg-white border-b border-slate-200/70 px-4 sm:px-6 lg:px-8 py-3">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
+        <div className="max-w-6xl mx-auto flex items-center justify-between gap-3 flex-wrap">
           {/* Brand + View Indicator */}
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold text-[11px] tracking-wider shrink-0">
@@ -442,25 +445,68 @@ export default function AdminApp() {
               </span>
               <span className="text-slate-300">/</span>
               <span className="text-xs text-slate-500 font-normal">
-                Enquiries
-              </span>
-              <span className="text-[10px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full font-medium">
-                Portal
+                {adminTab === 'content' ? 'Website Editor' : 'Enquiries Portal'}
               </span>
             </div>
           </div>
 
-          {/* Actions */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          {/* Navigation Tab Pills */}
+          <nav className="flex items-center bg-slate-100 p-1 rounded-xl">
             <button
               type="button"
-              onClick={fetchEnquiries}
-              disabled={isLoading}
-              title="Refresh"
-              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+              onClick={() => setAdminTab('content')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                adminTab === 'content'
+                  ? 'bg-white text-slate-900 shadow-2xs'
+                  : 'text-slate-500 hover:text-slate-900'
+              }`}
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+              <FileEdit className="w-3.5 h-3.5" />
+              <span>Website Content</span>
             </button>
+            <button
+              type="button"
+              onClick={() => setAdminTab('enquiries')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                adminTab === 'enquiries'
+                  ? 'bg-white text-slate-900 shadow-2xs'
+                  : 'text-slate-500 hover:text-slate-900'
+              }`}
+            >
+              <Inbox className="w-3.5 h-3.5" />
+              <span>Enquiries</span>
+              {counts.all > 0 && (
+                <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-slate-200 text-slate-700">
+                  {counts.all}
+                </span>
+              )}
+            </button>
+          </nav>
+
+          {/* Actions */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            <a
+              href="/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
+              title="Open public website in new tab"
+            >
+              <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
+              <span className="hidden sm:inline">Live Site</span>
+            </a>
+
+            {adminTab === 'enquiries' && (
+              <button
+                type="button"
+                onClick={fetchEnquiries}
+                disabled={isLoading}
+                title="Refresh"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+              </button>
+            )}
 
             <button
               type="button"
@@ -476,6 +522,10 @@ export default function AdminApp() {
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-5">
+        {adminTab === 'content' ? (
+          <ContentManager />
+        ) : (
+          <>
         {/* Metric Badges Strip (Minimalist) */}
         <section className="flex flex-wrap items-center gap-3">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-slate-200/70 text-xs shadow-2xs">
@@ -747,6 +797,8 @@ export default function AdminApp() {
             )}
           </div>
         </section>
+        </>
+      )}
       </main>
 
       {/* ========================================================================= */}

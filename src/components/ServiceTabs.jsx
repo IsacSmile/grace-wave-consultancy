@@ -6,10 +6,20 @@ import { ServiceTabPanel } from './ServiceTabPanel';
 import { serviceTabsData } from '../data/serviceTabs';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { aboutData } from '../data/about';
+import { useSiteContent } from '../context/ContentContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function ServiceTabs() {
+  const { serviceTabs: dynamicTabsSection } = useSiteContent();
+  const tabsList = (dynamicTabsSection?.tabs && dynamicTabsSection.tabs.length > 0)
+    ? dynamicTabsSection.tabs.map((tab, idx) => ({
+        ...serviceTabsData[idx],
+        ...tab,
+        image: tab.customImage || tab.image || serviceTabsData[idx]?.image,
+      }))
+    : serviceTabsData;
+
   const [activeTab, setActiveTab] = useState(0);
   const prefersReducedMotion = useReducedMotion();
 
@@ -39,13 +49,13 @@ export function ServiceTabs() {
 
   // Preload tab images on hover / focus / touch
   const preloadTabImage = useCallback((idx) => {
-    const tab = serviceTabsData[idx];
+    const tab = tabsList[idx];
     if (tab && tab.image && !preloadedImages.current.has(tab.image)) {
       preloadedImages.current.add(tab.image);
       const img = new Image();
       img.src = tab.image;
     }
-  }, []);
+  }, [tabsList]);
 
   // Update animated desktop underline position
   const updateUnderline = useCallback((instant = false) => {
@@ -210,13 +220,13 @@ export function ServiceTabs() {
   const handleKeyDown = (e, currentIndex) => {
     let nextIndex = null;
     if (e.key === 'ArrowRight') {
-      nextIndex = (currentIndex + 1) % serviceTabsData.length;
+      nextIndex = (currentIndex + 1) % tabsList.length;
     } else if (e.key === 'ArrowLeft') {
-      nextIndex = (currentIndex - 1 + serviceTabsData.length) % serviceTabsData.length;
+      nextIndex = (currentIndex - 1 + tabsList.length) % tabsList.length;
     } else if (e.key === 'Home') {
       nextIndex = 0;
     } else if (e.key === 'End') {
-      nextIndex = serviceTabsData.length - 1;
+      nextIndex = tabsList.length - 1;
     }
 
     if (nextIndex !== null) {
@@ -247,11 +257,11 @@ export function ServiceTabs() {
       if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
         if (deltaX < 0) {
           // Swiped left -> next tab
-          const nextIdx = (activeTab + 1) % serviceTabsData.length;
+          const nextIdx = (activeTab + 1) % tabsList.length;
           handleTabChange(nextIdx);
         } else {
           // Swiped right -> prev tab
-          const prevIdx = (activeTab - 1 + serviceTabsData.length) % serviceTabsData.length;
+          const prevIdx = (activeTab - 1 + tabsList.length) % tabsList.length;
           handleTabChange(prevIdx);
         }
       }
@@ -382,9 +392,9 @@ export function ServiceTabs() {
         {/* Section Header: Left-aligned global heading tokens */}
         <SectionHeading
           id="solutions-heading"
-          badge="WHAT WE DELIVER"
-          title="Accounting, tax and advisory support, in detail"
-          subtitle="Choose a service to see what is included."
+          badge={dynamicTabsSection?.badge || "WHAT WE DELIVER"}
+          title={dynamicTabsSection?.title || "Accounting, tax and advisory support, in detail"}
+          subtitle={dynamicTabsSection?.subtitle || "Choose a service to see what is included."}
           tone="light"
         />
 
@@ -401,7 +411,7 @@ export function ServiceTabs() {
               aria-label="Service Solutions"
               className="flex items-center gap-8 lg:gap-10 border-b border-[#0B1B4D]/10 relative"
             >
-              {serviceTabsData.map((tab, idx) => {
+              {tabsList.map((tab, idx) => {
                 const isActive = activeTab === idx;
                 return (
                   <button
@@ -445,7 +455,7 @@ export function ServiceTabs() {
               aria-label="Service Solutions"
               className="flex items-center gap-2 overflow-x-auto snap-x no-scrollbar py-1 px-0.5"
             >
-              {serviceTabsData.map((tab, idx) => {
+              {tabsList.map((tab, idx) => {
                 const isActive = activeTab === idx;
                 return (
                   <button
@@ -479,7 +489,7 @@ export function ServiceTabs() {
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
-            {serviceTabsData.map((tab, idx) => {
+            {tabsList.map((tab, idx) => {
               const isActive = activeTab === idx;
               return (
                 <div

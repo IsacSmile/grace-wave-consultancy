@@ -25,3 +25,12 @@ CREATE TABLE IF NOT EXISTS admin_login_attempts (
 );
 CREATE INDEX IF NOT EXISTS idx_admin_attempts ON admin_login_attempts (ip_hash, created_at DESC);
 
+-- Dynamic Website Content CMS table
+CREATE TABLE IF NOT EXISTS site_content (
+  key TEXT PRIMARY KEY,
+  content JSONB NOT NULL,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_by TEXT DEFAULT 'admin'
+);
+
+

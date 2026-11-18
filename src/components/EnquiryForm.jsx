@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Send, Loader2, CheckCircle2, AlertCircle, RefreshCw, Phone } from 'lucide-react';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { siteConfig } from '../data/siteConfig';
+import { useSiteContent } from '../context/ContentContext';
 
 export function EnquiryForm() {
+  const { contact } = useSiteContent();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -180,10 +182,10 @@ export function EnquiryForm() {
       <div className="pb-4 sm:pb-5 mb-5 border-b border-slate-100 flex items-center justify-between">
         <div>
           <span className="text-[11px] font-semibold text-[#C5A059] tracking-wider uppercase block mb-1">
-            Direct Enquiry
+            {contact?.formBadge || "Direct Enquiry"}
           </span>
           <h3 className="font-heading font-bold text-lg sm:text-xl text-[#0B1B4D] tracking-tight">
-            Consult With Our Senior Advisors
+            {contact?.formTitle || "Consult With Our Senior Advisors"}
           </h3>
         </div>
       </div>
@@ -229,7 +231,7 @@ export function EnquiryForm() {
           <>
             {/* Intro text */}
             <p className="text-xs sm:text-sm text-slate-500 mb-5 leading-relaxed">
-              Please provide your details below, and our team will get back to you promptly.
+              {contact?.formSubtitle || "Please provide your details below, and our team will get back to you promptly."}
             </p>
 
             {/* Error banner */}
@@ -440,7 +442,7 @@ export function EnquiryForm() {
                     </>
                   ) : (
                     <>
-                      <span>Send Message</span>
+                      <span>{contact?.formButtonText || "Send Message"}</span>
                       <Send className="w-4 h-4 text-[#C5A059]" />
                     </>
                   )}

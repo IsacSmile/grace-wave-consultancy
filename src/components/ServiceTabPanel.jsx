@@ -25,6 +25,12 @@ export function ServiceTabPanel({
     label: 'Years of UAE experience',
   };
 
+  const badgeText = tab.badgeText || 'UAE Experience';
+  const badgeVal = tab.badgeValue !== undefined ? tab.badgeValue : expStat.value;
+  const badgeSuf = tab.badgeSuffix !== undefined ? tab.badgeSuffix : expStat.suffix;
+  const badgeSub = tab.badgeSubtext || 'Years of UAE market experience';
+  const buttonLabel = tab.buttonText || `Enquire about ${tab.tabLabel}`;
+
   const handleEnquireClick = (e) => {
     e.preventDefault();
     window.dispatchEvent(
@@ -40,8 +46,8 @@ export function ServiceTabPanel({
         <div className="relative rounded-3xl overflow-hidden w-full max-w-[360px] sm:max-w-[400px] lg:max-w-[440px] aspect-[4/3] lg:aspect-[4/5] bg-slate-100 shadow-sm border border-[#0B1B4D]/5">
           <img
             ref={imageRef}
-            src={tab.image}
-            alt={tab.imageAlt}
+            src={tab.customImage || tab.image}
+            alt={tab.imageAlt || tab.tabLabel}
             width="800"
             height="1000"
             loading={isActive ? 'eager' : 'lazy'}
@@ -60,7 +66,7 @@ export function ServiceTabPanel({
             {/* Top Row: Label + circular link button */}
             <div className="flex items-center justify-between gap-1.5 xs:gap-2 mb-1 xs:mb-1.5 md:mb-2.5">
               <span className="text-[8px] xs:text-[9px] sm:text-[10px] md:text-xs font-semibold tracking-wider text-[#C5A059] uppercase truncate">
-                UAE Experience
+                {badgeText}
               </span>
               <button
                 type="button"
@@ -78,16 +84,16 @@ export function ServiceTabPanel({
                 <span
                   ref={counterRef}
                   className="font-heading font-bold text-base xs:text-lg sm:text-2xl md:text-3xl text-white tracking-tight"
-                  aria-label={`${expStat.value}${expStat.suffix} Years of UAE market experience`}
+                  aria-label={`${badgeVal}${badgeSuf} ${badgeSub}`}
                 >
-                  {expStat.value}
+                  {badgeVal}
                 </span>
                 <span className="font-heading font-bold text-xs xs:text-sm sm:text-xl md:text-2xl text-[#C5A059]">
-                  {expStat.suffix}
+                  {badgeSuf}
                 </span>
               </div>
               <p className="text-[8px] xs:text-[9px] sm:text-xs md:text-sm text-slate-300 font-medium leading-tight line-clamp-2 sm:line-clamp-none">
-                Years of UAE market experience
+                {badgeSub}
               </p>
             </div>
           </div>
@@ -172,7 +178,7 @@ export function ServiceTabPanel({
                 className="h-11 sm:h-12 px-3.5 xs:px-4 sm:px-6 rounded-xl font-semibold text-white bg-[#0A1F4D] hover:bg-[#132B4F] shadow-2xs active:scale-[0.99] transition-colors inline-flex items-center justify-center gap-1.5 sm:gap-2 w-full sm:w-auto min-h-[44px] sm:min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A1F4D] whitespace-nowrap text-xs min-[360px]:text-[13px] min-[390px]:text-sm sm:text-base tracking-tight"
               >
                 <span className="hidden min-[340px]:inline whitespace-nowrap">
-                  Enquire about {tab.tabLabel}
+                  {buttonLabel}
                 </span>
                 <span className="min-[340px]:hidden whitespace-nowrap">
                   Enquire Now
@@ -212,7 +218,7 @@ export function ServiceTabPanel({
                 className="h-11 sm:h-12 px-3.5 xs:px-4 sm:px-6 rounded-xl font-semibold text-white bg-[#0A1F4D] hover:bg-[#132B4F] shadow-2xs active:scale-[0.99] transition-colors inline-flex items-center justify-center gap-1.5 sm:gap-2 w-full sm:w-auto min-h-[44px] sm:min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A1F4D] whitespace-nowrap text-xs min-[360px]:text-[13px] min-[390px]:text-sm sm:text-base tracking-tight"
               >
                 <span className="hidden min-[340px]:inline whitespace-nowrap">
-                  Enquire about {tab.tabLabel}
+                  {buttonLabel}
                 </span>
                 <span className="min-[340px]:hidden whitespace-nowrap">
                   Enquire Now
@@ -257,7 +263,7 @@ export function ServiceTabPanel({
                 className="h-11 sm:h-12 px-3.5 xs:px-4 sm:px-6 rounded-xl font-semibold text-white bg-[#0A1F4D] hover:bg-[#132B4F] shadow-2xs active:scale-[0.99] transition-colors inline-flex items-center justify-center gap-1.5 sm:gap-2 w-full sm:w-auto min-h-[44px] sm:min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A1F4D] whitespace-nowrap text-xs min-[360px]:text-[13px] min-[390px]:text-sm sm:text-base tracking-tight"
               >
                 <span className="hidden min-[340px]:inline whitespace-nowrap">
-                  Enquire about {tab.tabLabel}
+                  {buttonLabel}
                 </span>
                 <span className="min-[340px]:hidden whitespace-nowrap">
                   Enquire Now

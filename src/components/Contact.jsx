@@ -5,6 +5,7 @@ import { Phone, MapPin, Mail } from 'lucide-react';
 import { siteConfig } from '../data/siteConfig';
 import { EnquiryForm } from './EnquiryForm';
 import { useReducedMotion } from '../hooks/useReducedMotion';
+import { useSiteContent } from '../context/ContentContext';
 
 import worldDots from '../assets/contact/world-dots.svg';
 import avatar1 from '../assets/contact/avatar-1.webp';
@@ -14,6 +15,7 @@ import avatar3 from '../assets/contact/avatar-3.webp';
 gsap.registerPlugin(ScrollTrigger);
 
 export function Contact() {
+  const { contact } = useSiteContent();
   const sectionRef = useRef(null);
   const leftContentRef = useRef(null);
   const formCardRef = useRef(null);
@@ -90,7 +92,7 @@ export function Contact() {
             {/* 1. Refined Executive Tag Badge */}
             <div className="contact-reveal-el mb-4 sm:mb-5">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md text-xs font-semibold tracking-wide bg-navy-50 border border-[#0B1B4D]/10 text-[#0B1B4D]">
-                <span>{siteConfig.contact.sectionBadge}</span>
+                <span>{contact.badge || siteConfig.contact.sectionBadge}</span>
               </div>
             </div>
 
@@ -99,12 +101,12 @@ export function Contact() {
               id="contact-heading"
               className="contact-reveal-el font-heading font-bold text-3xl sm:text-4xl lg:text-[2.75rem] text-[#0B1B4D] tracking-tight leading-[1.18] text-balance mb-4 sm:mb-5"
             >
-              {siteConfig.contact.heading}
+              {contact.heading || siteConfig.contact.heading}
             </h2>
 
             {/* 3. Subtitle / Narrative Copy */}
             <p className="contact-reveal-el text-slate-600 text-sm sm:text-base leading-relaxed max-w-lg mb-8 sm:mb-10">
-              Make the decision to move forward. Commit your vision to clarity, and let our senior accounting consultants bring structure and compliance to your business.
+              {contact.narrative || "Make the decision to move forward. Commit your vision to clarity, and let our senior accounting consultants bring structure and compliance to your business."}
             </p>
 
             {/* 4. Minimalist Contact Details with Refined Icons */}
@@ -115,7 +117,7 @@ export function Contact() {
                   <MapPin className="w-4 h-4 text-[#0B1B4D]" />
                 </div>
                 <span className="text-sm sm:text-base font-medium text-slate-800 leading-snug">
-                  {siteConfig.business.address}
+                  {contact.address || siteConfig.business.address}
                 </span>
               </div>
 
@@ -126,17 +128,17 @@ export function Contact() {
                 </div>
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm sm:text-base font-medium">
                   <a
-                    href={siteConfig.business.phoneTel}
+                    href={contact.phonePrimaryTel || `tel:${(contact.phonePrimary || siteConfig.business.phoneDisplay).replace(/[^0-9+]/g, '')}`}
                     className="text-slate-800 hover:text-[#0B1B4D] font-semibold transition-colors"
                   >
-                    {siteConfig.business.phoneDisplay}
+                    {contact.phonePrimary || siteConfig.business.phoneDisplay}
                   </a>
                   <span className="text-slate-300">/</span>
                   <a
-                    href={siteConfig.business.phoneSecondaryTel}
+                    href={contact.phoneSecondaryTel || `tel:${(contact.phoneSecondary || siteConfig.business.phoneSecondaryDisplay).replace(/[^0-9+]/g, '')}`}
                     className="text-slate-800 hover:text-[#0B1B4D] font-semibold transition-colors"
                   >
-                    {siteConfig.business.phoneSecondaryDisplay}
+                    {contact.phoneSecondary || siteConfig.business.phoneSecondaryDisplay}
                   </a>
                 </div>
               </div>
@@ -147,10 +149,10 @@ export function Contact() {
                   <Mail className="w-4 h-4 text-[#0B1B4D]" />
                 </div>
                 <a
-                  href={siteConfig.business.emailMailto}
+                  href={`mailto:${contact.email || siteConfig.business.email}?subject=Service%20Enquiry`}
                   className="text-sm sm:text-base font-medium text-slate-800 hover:text-[#0B1B4D] transition-colors"
                 >
-                  {siteConfig.business.email}
+                  {contact.email || siteConfig.business.email}
                 </a>
               </div>
             </div>
@@ -178,8 +180,8 @@ export function Contact() {
                 </div>
               </div>
               <div className="text-xs sm:text-sm">
-                <span className="block font-bold text-[#0B1B4D]">Trusted by 500+</span>
-                <span className="text-slate-500 font-medium">Businesses across the UAE</span>
+                <span className="block font-bold text-[#0B1B4D]">{contact.trustBadgeCount || "Trusted by 500+"}</span>
+                <span className="text-slate-500 font-medium">{contact.trustBadgeText || "Businesses across the UAE"}</span>
               </div>
             </div>
 
