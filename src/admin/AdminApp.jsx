@@ -22,8 +22,39 @@ import {
 import { ALLOWED_SERVICES } from '../data/serviceOptions.js';
 import { ContentManager } from './components/ContentManager';
 
+// Helper to safely decode HTML entities from any legacy database entries
+function decodeHtmlEntities(str) {
+  if (typeof str !== 'string') return '';
+  return str
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#x27;/g, "'")
+    .replace(/&#39;/g, "'");
+}
+
 export default function AdminApp() {
-  const [adminTab, setAdminTab] = useState('content'); // 'content' | 'enquiries'
+  const [adminTab, setAdminTab] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const searchParam = new URLSearchParams(window.location.search).get('tab');
+      if (searchParam === 'enquiries' || searchParam === 'content') return searchParam;
+      if (window.location.hash.includes('enquiries')) return 'enquiries';
+      const saved = sessionStorage.getItem('gw_admin_tab');
+      if (saved === 'enquiries' || saved === 'content') return saved;
+    }
+    return 'enquiries';
+  });
+
+  const handleTabChange = (newTab) => {
+    setAdminTab(newTab);
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('gw_admin_tab', newTab);
+    }
+    if (newTab === 'enquiries') {
+      fetchEnquiries();
+    }
+  };
   const [authStatus, setAuthStatus] = useState('checking'); // 'checking' | 'unauthenticated' | 'authenticated'
   const [loginPassword, setLoginPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -85,7 +116,7 @@ export default function AdminApp() {
     checkSession();
   }, []);
 
-  // Fetch enquiries list
+  // Fetch enquiries list (always fresh, no disk/HTTP cache)
   const fetchEnquiries = useCallback(async () => {
     setIsLoading(true);
     setListError(null);
@@ -95,6 +126,7 @@ export default function AdminApp() {
         page: page.toString(),
         pageSize: pageSize.toString(),
         sort: sortOrder,
+        _t: Date.now().toString(),
       });
       if (debouncedQuery) {
         params.set('q', debouncedQuery);
@@ -103,7 +135,13 @@ export default function AdminApp() {
         params.set('service', serviceFilter);
       }
 
-      const res = await fetch(`/api/admin?${params.toString()}`);
+      const res = await fetch(`/api/admin?${params.toString()}`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          Pragma: 'no-cache',
+        },
+      });
       if (res.status === 401) {
         setAuthStatus('unauthenticated');
         return;
@@ -129,6 +167,68 @@ export default function AdminApp() {
     if (authStatus === 'authenticated') {
       fetchEnquiries();
     }
+  }, [authStatus, fetchEnquiries]);
+
+  // Real-time synchronization across all tabs and windows
+  useEffect(() => {
+    if (authStatus !== 'authenticated') return;
+
+    // 1. BroadcastChannel: instant response when visitor submits enquiry in another tab
+    let bc = null;
+    if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
+      try {
+        bc = new BroadcastChannel('gw_enquiry_sync_channel');
+        bc.onmessage = (event) => {
+          if (event?.data?.type === 'NEW_ENQUIRY') {
+            fetchEnquiries();
+            const clientName = event.data.name || 'New client';
+            showToast(`New enquiry received from ${clientName}`);
+          }
+        };
+      } catch (err) {
+        console.warn('BroadcastChannel error:', err);
+      }
+    }
+
+    // 2. Storage event listener: cross-tab fallback
+    const handleStorage = (e) => {
+      if (e.key === 'gw_last_enquiry_event' && e.newValue) {
+        fetchEnquiries();
+        try {
+          const parsed = JSON.parse(e.newValue);
+          if (parsed?.name) {
+            showToast(`New enquiry received from ${parsed.name}`);
+          }
+        } catch {
+          // ignore
+        }
+      }
+    };
+    window.addEventListener('storage', handleStorage);
+
+    // 3. Tab visibility and focus listener: refetch when user switches back to this admin tab
+    const handleVisibilityOrFocus = () => {
+      if (document.visibilityState === 'visible') {
+        fetchEnquiries();
+      }
+    };
+    window.addEventListener('focus', handleVisibilityOrFocus);
+    document.addEventListener('visibilitychange', handleVisibilityOrFocus);
+
+    // 4. Background polling interval: checks for remote/mobile submissions every 15 seconds
+    const pollInterval = setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        fetchEnquiries();
+      }
+    }, 15000);
+
+    return () => {
+      if (bc) bc.close();
+      window.removeEventListener('storage', handleStorage);
+      window.removeEventListener('focus', handleVisibilityOrFocus);
+      document.removeEventListener('visibilitychange', handleVisibilityOrFocus);
+      clearInterval(pollInterval);
+    };
   }, [authStatus, fetchEnquiries]);
 
   // Toast helper
@@ -454,7 +554,7 @@ export default function AdminApp() {
           <nav className="flex items-center bg-slate-100 p-1.5 rounded-xl gap-1">
             <button
               type="button"
-              onClick={() => setAdminTab('content')}
+              onClick={() => handleTabChange('content')}
               className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
                 adminTab === 'content'
                   ? 'bg-white text-slate-900 shadow-2xs'
@@ -466,7 +566,7 @@ export default function AdminApp() {
             </button>
             <button
               type="button"
-              onClick={() => setAdminTab('enquiries')}
+              onClick={() => handleTabChange('enquiries')}
               className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer ${
                 adminTab === 'enquiries'
                   ? 'bg-white text-slate-900 shadow-2xs'
@@ -699,7 +799,7 @@ export default function AdminApp() {
 
                         {/* Name */}
                         <td className="py-3.5 px-4 whitespace-nowrap font-medium text-slate-900">
-                          {item.name}
+                          {decodeHtmlEntities(item.name)}
                         </td>
 
                         {/* Contact Info */}
@@ -721,13 +821,13 @@ export default function AdminApp() {
                         {/* Service Badge */}
                         <td className="py-3.5 px-4 whitespace-nowrap">
                           <span className="inline-block px-2 py-0.5 rounded-md text-[11px] font-medium bg-slate-100 text-slate-700">
-                            {item.service}
+                            {decodeHtmlEntities(item.service)}
                           </span>
                         </td>
 
                         {/* Message Preview */}
                         <td className="py-3.5 px-4 max-w-xs truncate text-slate-500">
-                          {item.message}
+                          {decodeHtmlEntities(item.message)}
                         </td>
 
                         {/* Row Actions: View and Delete */}
@@ -856,7 +956,7 @@ export default function AdminApp() {
                   ID #{selectedEnquiry.id} • {formatDate(selectedEnquiry.created_at)}
                 </span>
                 <h3 className="font-heading font-semibold text-lg text-slate-900 tracking-tight">
-                  {selectedEnquiry.name}
+                  {decodeHtmlEntities(selectedEnquiry.name)}
                 </h3>
               </div>
               <button
@@ -877,7 +977,7 @@ export default function AdminApp() {
                   Service
                 </span>
                 <span className="inline-block px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-100 text-slate-800">
-                  {selectedEnquiry.service}
+                  {decodeHtmlEntities(selectedEnquiry.service)}
                 </span>
               </div>
 
@@ -970,7 +1070,7 @@ export default function AdminApp() {
                   </button>
                 </div>
                 <div className="p-3.5 rounded-xl bg-slate-50/70 border border-slate-200/60 text-slate-800 text-xs whitespace-pre-wrap leading-relaxed max-h-56 overflow-y-auto">
-                  {selectedEnquiry.message}
+                  {decodeHtmlEntities(selectedEnquiry.message)}
                 </div>
               </div>
             </div>

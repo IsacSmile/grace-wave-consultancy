@@ -136,6 +136,9 @@ export function EnquiryForm() {
 
       if (response.ok && data?.ok) {
         setSubmitSuccess(true);
+        const submittedName = formData.name.trim();
+        const submittedService = formData.service;
+
         setFormData({
           name: '',
           email: '',
@@ -145,6 +148,32 @@ export function EnquiryForm() {
           website: '',
         });
         setErrors({});
+
+        // Real-time notification across all active tabs and windows for Admin portal
+        try {
+          if (typeof window !== 'undefined') {
+            if ('BroadcastChannel' in window) {
+              const channel = new BroadcastChannel('gw_enquiry_sync_channel');
+              channel.postMessage({
+                type: 'NEW_ENQUIRY',
+                timestamp: Date.now(),
+                name: submittedName,
+                service: submittedService,
+              });
+              setTimeout(() => channel.close(), 100);
+            }
+            localStorage.setItem(
+              'gw_last_enquiry_event',
+              JSON.stringify({
+                timestamp: Date.now(),
+                name: submittedName,
+                service: submittedService,
+              })
+            );
+          }
+        } catch {
+          // ignore
+        }
       } else if (response.status === 400) {
         setSubmitError('Please check the highlighted fields.');
         if (data?.fields && Array.isArray(data.fields)) {

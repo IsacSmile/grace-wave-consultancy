@@ -5,18 +5,15 @@ import { ALLOWED_SERVICES } from '../src/data/serviceOptions.js';
 const MAX_PAYLOAD_SIZE = 10240; // 10KB cap to prevent memory exhaustion DoS
 
 /**
- * Sanitizes input strings by stripping dangerous control characters, null bytes,
- * and escaping HTML entities to eliminate stored XSS vulnerabilities.
+ * Sanitizes input strings by stripping dangerous control characters and null bytes.
+ * Parameterized Neon SQL queries prevent SQL injection, and React JSX auto-escapes
+ * on render, so preserving natural characters (such as '&' and apostrophes) avoids
+ * corrupting search queries, filters, and display.
  */
 function sanitizeInput(str) {
   if (typeof str !== 'string') return '';
   return str
     .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#x27;')
     .trim();
 }
 

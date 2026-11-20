@@ -476,7 +476,7 @@ export default async function handler(req, res) {
           phone ILIKE ${qPattern} OR 
           message ILIKE ${qPattern}
         ))
-        AND (${filterService} = '' OR service = ${filterService})
+        AND (${filterService} = '' OR service = ${filterService} OR service = ${filterService.replace(/&/g, '&amp;')})
       `;
       const total = Number(totalResult[0]?.total || 0);
 
@@ -492,7 +492,7 @@ export default async function handler(req, res) {
             phone ILIKE ${qPattern} OR 
             message ILIKE ${qPattern}
           ))
-          AND (${filterService} = '' OR service = ${filterService})
+          AND (${filterService} = '' OR service = ${filterService} OR service = ${filterService.replace(/&/g, '&amp;')})
           ORDER BY created_at ASC, id ASC
           LIMIT ${pageSize} OFFSET ${offset}
         `;
@@ -506,7 +506,7 @@ export default async function handler(req, res) {
             phone ILIKE ${qPattern} OR 
             message ILIKE ${qPattern}
           ))
-          AND (${filterService} = '' OR service = ${filterService})
+          AND (${filterService} = '' OR service = ${filterService} OR service = ${filterService.replace(/&/g, '&amp;')})
           ORDER BY created_at DESC, id DESC
           LIMIT ${pageSize} OFFSET ${offset}
         `;
